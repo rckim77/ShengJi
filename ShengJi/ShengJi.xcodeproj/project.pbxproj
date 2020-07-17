@@ -8,22 +8,20 @@
 
 /* Begin PBXBuildFile section */
 		ECCACB8924C247250077CD89 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCACB8824C247250077CD89 /* AppDelegate.swift */; };
-		ECCACB8B24C247250077CD89 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCACB8A24C247250077CD89 /* SceneDelegate.swift */; };
-		ECCACB8D24C247250077CD89 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCACB8C24C247250077CD89 /* ContentView.swift */; };
 		ECCACB8F24C247270077CD89 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ECCACB8E24C247270077CD89 /* Assets.xcassets */; };
 		ECCACB9224C247270077CD89 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ECCACB9124C247270077CD89 /* Preview Assets.xcassets */; };
 		ECCACB9524C247270077CD89 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ECCACB9324C247270077CD89 /* LaunchScreen.storyboard */; };
+		ECCACB9D24C248EF0077CD89 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCACB9C24C248EF0077CD89 /* MenuViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		ECCACB8524C247250077CD89 /* ShengJi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShengJi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ECCACB8824C247250077CD89 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		ECCACB8A24C247250077CD89 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		ECCACB8C24C247250077CD89 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		ECCACB8E24C247270077CD89 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		ECCACB9124C247270077CD89 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		ECCACB9424C247270077CD89 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		ECCACB9624C247270077CD89 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		ECCACB9C24C248EF0077CD89 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,8 +55,7 @@
 			isa = PBXGroup;
 			children = (
 				ECCACB8824C247250077CD89 /* AppDelegate.swift */,
-				ECCACB8A24C247250077CD89 /* SceneDelegate.swift */,
-				ECCACB8C24C247250077CD89 /* ContentView.swift */,
+				ECCACB9C24C248EF0077CD89 /* MenuViewController.swift */,
 				ECCACB8E24C247270077CD89 /* Assets.xcassets */,
 				ECCACB9324C247270077CD89 /* LaunchScreen.storyboard */,
 				ECCACB9624C247270077CD89 /* Info.plist */,
@@ -147,8 +144,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				ECCACB8924C247250077CD89 /* AppDelegate.swift in Sources */,
-				ECCACB8B24C247250077CD89 /* SceneDelegate.swift in Sources */,
-				ECCACB8D24C247250077CD89 /* ContentView.swift in Sources */,
+				ECCACB9D24C248EF0077CD89 /* MenuViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -296,7 +292,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = rckim.ShengJi;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -316,7 +312,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = rckim.ShengJi;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
