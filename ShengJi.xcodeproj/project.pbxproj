@@ -12,9 +12,13 @@
 		ECCACB9224C247270077CD89 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ECCACB9124C247270077CD89 /* Preview Assets.xcassets */; };
 		ECCACB9524C247270077CD89 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ECCACB9324C247270077CD89 /* LaunchScreen.storyboard */; };
 		ECCACB9D24C248EF0077CD89 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCACB9C24C248EF0077CD89 /* MenuViewController.swift */; };
+		F2ACBAC8C88F57D0A4CB4A1B /* Pods_ShengJi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A2411FE280B73A920C93D27 /* Pods_ShengJi.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0B994224B80E1AF25B92DD92 /* Pods-ShengJi.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShengJi.release.xcconfig"; path = "Target Support Files/Pods-ShengJi/Pods-ShengJi.release.xcconfig"; sourceTree = "<group>"; };
+		287F0557ED6CCA52A7C01E06 /* Pods-ShengJi.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShengJi.debug.xcconfig"; path = "Target Support Files/Pods-ShengJi/Pods-ShengJi.debug.xcconfig"; sourceTree = "<group>"; };
+		6A2411FE280B73A920C93D27 /* Pods_ShengJi.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ShengJi.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		ECCACB8524C247250077CD89 /* ShengJi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShengJi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ECCACB8824C247250077CD89 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ECCACB8E24C247270077CD89 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -29,17 +33,38 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F2ACBAC8C88F57D0A4CB4A1B /* Pods_ShengJi.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1C017C8AD1CE8A3420278CB0 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				287F0557ED6CCA52A7C01E06 /* Pods-ShengJi.debug.xcconfig */,
+				0B994224B80E1AF25B92DD92 /* Pods-ShengJi.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		A2EE7DBF89E941E16268C024 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				6A2411FE280B73A920C93D27 /* Pods_ShengJi.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		ECCACB7C24C247250077CD89 = {
 			isa = PBXGroup;
 			children = (
 				ECCACB8724C247250077CD89 /* ShengJi */,
 				ECCACB8624C247250077CD89 /* Products */,
+				1C017C8AD1CE8A3420278CB0 /* Pods */,
+				A2EE7DBF89E941E16268C024 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -79,9 +104,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = ECCACB9924C247270077CD89 /* Build configuration list for PBXNativeTarget "ShengJi" */;
 			buildPhases = (
+				6E96DBB3BCC238A6F2EFCBAF /* [CP] Check Pods Manifest.lock */,
 				ECCACB8124C247250077CD89 /* Sources */,
 				ECCACB8224C247250077CD89 /* Frameworks */,
 				ECCACB8324C247250077CD89 /* Resources */,
+				5DC9A97E08B0E00B7B4EF219 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -137,6 +164,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		5DC9A97E08B0E00B7B4EF219 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ShengJi/Pods-ShengJi-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ShengJi/Pods-ShengJi-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ShengJi/Pods-ShengJi-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6E96DBB3BCC238A6F2EFCBAF /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ShengJi-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		ECCACB8124C247250077CD89 /* Sources */ = {
@@ -278,6 +347,7 @@
 		};
 		ECCACB9A24C247270077CD89 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 287F0557ED6CCA52A7C01E06 /* Pods-ShengJi.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -298,6 +368,7 @@
 		};
 		ECCACB9B24C247270077CD89 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0B994224B80E1AF25B92DD92 /* Pods-ShengJi.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
