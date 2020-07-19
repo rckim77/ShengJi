@@ -13,15 +13,16 @@ final class MenuViewController: UIViewController {
     
     private lazy var joinButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Join game", for: .normal)
+        button.setTitle("Join room", for: .normal)
         button.titleLabel?.font = .preferredFont(forTextStyle: .title1)
         button.setTitleColor(.darkGray, for: .normal)
+        button.addTarget(self, action: #selector(joinButtonTapped), for: .touchUpInside)
         return button
     }()
     
     private lazy var createButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Create a game", for: .normal)
+        button.setTitle("Create a room", for: .normal)
         button.titleLabel?.font = .preferredFont(forTextStyle: .title1)
         button.setTitleColor(.darkGray, for: .normal)
         return button
@@ -43,5 +44,21 @@ final class MenuViewController: UIViewController {
             make.centerX.equalToSuperview()
             make.top.equalTo(joinButton.snp.bottom).offset(8)
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.isHidden = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.navigationBar.isHidden = false
+    }
+    
+    @objc
+    private func joinButtonTapped() {
+        let joinRoomVC = JoinRoomViewController()
+        navigationController?.pushViewController(joinRoomVC, animated: true)
     }
 }

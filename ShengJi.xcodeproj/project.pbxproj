@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -12,6 +12,7 @@
 		ECCACB9224C247270077CD89 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ECCACB9124C247270077CD89 /* Preview Assets.xcassets */; };
 		ECCACB9524C247270077CD89 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ECCACB9324C247270077CD89 /* LaunchScreen.storyboard */; };
 		ECCACB9D24C248EF0077CD89 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCACB9C24C248EF0077CD89 /* MenuViewController.swift */; };
+		ECCACB9F24C4D4F00077CD89 /* JoinRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCACB9E24C4D4F00077CD89 /* JoinRoomViewController.swift */; };
 		F2ACBAC8C88F57D0A4CB4A1B /* Pods_ShengJi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A2411FE280B73A920C93D27 /* Pods_ShengJi.framework */; };
 /* End PBXBuildFile section */
 
@@ -26,6 +27,7 @@
 		ECCACB9424C247270077CD89 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		ECCACB9624C247270077CD89 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		ECCACB9C24C248EF0077CD89 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
+		ECCACB9E24C4D4F00077CD89 /* JoinRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinRoomViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -46,7 +48,6 @@
 				287F0557ED6CCA52A7C01E06 /* Pods-ShengJi.debug.xcconfig */,
 				0B994224B80E1AF25B92DD92 /* Pods-ShengJi.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -81,6 +82,7 @@
 			children = (
 				ECCACB8824C247250077CD89 /* AppDelegate.swift */,
 				ECCACB9C24C248EF0077CD89 /* MenuViewController.swift */,
+				ECCACB9E24C4D4F00077CD89 /* JoinRoomViewController.swift */,
 				ECCACB8E24C247270077CD89 /* Assets.xcassets */,
 				ECCACB9324C247270077CD89 /* LaunchScreen.storyboard */,
 				ECCACB9624C247270077CD89 /* Info.plist */,
@@ -214,6 +216,7 @@
 			files = (
 				ECCACB8924C247250077CD89 /* AppDelegate.swift in Sources */,
 				ECCACB9D24C248EF0077CD89 /* MenuViewController.swift in Sources */,
+				ECCACB9F24C4D4F00077CD89 /* JoinRoomViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
