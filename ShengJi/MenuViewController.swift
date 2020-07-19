@@ -25,6 +25,7 @@ final class MenuViewController: UIViewController {
         button.setTitle("Create a room", for: .normal)
         button.titleLabel?.font = .preferredFont(forTextStyle: .title1)
         button.setTitleColor(.darkGray, for: .normal)
+        button.addTarget(self, action: #selector(createButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -60,5 +61,11 @@ final class MenuViewController: UIViewController {
     private func joinButtonTapped() {
         let joinRoomVC = JoinRoomViewController()
         navigationController?.pushViewController(joinRoomVC, animated: true)
+    }
+    
+    @objc
+    private func createButtonTapped() {
+        let lobbyVC = LobbyViewController(roomCode: "TEST")
+        navigationController?.pushViewController(lobbyVC, animated: true)
     }
 }
