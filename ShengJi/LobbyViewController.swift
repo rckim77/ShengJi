@@ -21,6 +21,16 @@ final class LobbyViewController: UIViewController {
         return label
     }()
     
+    private lazy var roomCodeTextView: UITextView = {
+        let textView = UITextView()
+        textView.isEditable = false
+        textView.isScrollEnabled = false
+        textView.backgroundColor = UIColor.lightGray.withAlphaComponent(0.5)
+        textView.addRoundedCorners(radius: 8)
+        textView.font = .preferredFont(forTextStyle: .title1)
+        return textView
+    }()
+    
     private lazy var usersJoinedLabel: UILabel = {
         let label = UILabel()
         label.font = .preferredFont(forTextStyle: .title2)
@@ -31,28 +41,38 @@ final class LobbyViewController: UIViewController {
     
     private lazy var startButton: UIButton = {
         let button = UIButton(type: .system)
+        button.setTitle("Waiting for players...", for: .disabled)
         button.setTitle("Start game", for: .normal)
         button.setTitleColor(.darkGray, for: .normal)
         button.titleLabel?.font = .preferredFont(forTextStyle: .title1)
         button.addTarget(self, action: #selector(startButtonTapped), for: .touchUpInside)
-        // ENABLED FOR TESTING
-//        button.isEnabled = false
+        button.isEnabled = false
         return button
     }()
     
     private let roomCode: String
     private let pusher: Pusher
     private var channel: PusherChannel?
+    private var users = [String]()
+    private var usersJoinedText: String {
+        var text = "Users joined:"
+        for user in users {
+            text += "\n \(user)"
+        }
+        return text
+    }
     private var codeCancellable: AnyCancellable?
     
     init?(roomCode: String) {
         self.roomCode = roomCode
-        // Pusher setup
+
+        // Pusher config
         guard let pusherKey = AppDelegate.getAPIKeys()?.pusher else {
             return nil
         }
         let options = PusherClientOptions(host: .cluster("us2"))
         pusher = Pusher(key: pusherKey, options: options)
+        
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -65,6 +85,7 @@ final class LobbyViewController: UIViewController {
 
         view.backgroundColor = .white
         view.addSubview(roomCodeLabel)
+        view.addSubview(roomCodeTextView)
         view.addSubview(usersJoinedLabel)
         view.addSubview(startButton)
         
@@ -73,8 +94,13 @@ final class LobbyViewController: UIViewController {
             make.leading.trailing.equalToSuperview().inset(16)
         }
         
+        roomCodeTextView.snp.makeConstraints { make in
+            make.top.equalTo(roomCodeLabel.snp.bottom).offset(8)
+            make.centerX.equalTo(roomCodeLabel.snp.centerX)
+        }
+        
         usersJoinedLabel.snp.makeConstraints { make in
-            make.top.equalTo(roomCodeLabel.snp.bottom).offset(16)
+            make.top.equalTo(roomCodeTextView.snp.bottom).offset(16)
             make.leading.trailing.equalToSuperview().inset(16)
         }
         
@@ -84,7 +110,8 @@ final class LobbyViewController: UIViewController {
         }
         
         setupPusher()
-        roomCodeLabel.text = "You are the host for room code \(roomCode)."
+        roomCodeLabel.text = "You are now the host. Have your friends join by sending them the code below."
+        roomCodeTextView.text = roomCode
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -100,6 +127,17 @@ final class LobbyViewController: UIViewController {
             if let data = event.data {
                 print(data)
             }
+        })
+        let _ = channel?.bind(eventName: "user-join", eventCallback: { event in
+            guard let data = event.data?.data(using: .utf8),
+                let json = try? JSONDecoder().decode(JoinEvent.self, from: data) else {
+                    print("join event json ERROR")
+                    return
+            }
+            print("user join event json: \(json)")
+            self.users.append(json.username)
+            self.usersJoinedLabel.text = self.usersJoinedText
+            self.startButton.isEnabled = self.users.count == 3
         })
         pusher.connect()
     }

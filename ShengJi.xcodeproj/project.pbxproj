@@ -17,6 +17,7 @@
 		ECCACBA324C69A070077CD89 /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCACBA224C69A070077CD89 /* LoadingViewController.swift */; };
 		ECCACBA524C69B710077CD89 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCACBA424C69B710077CD89 /* Extensions.swift */; };
 		ECCACBAA24C6A4770077CD89 /* apiKeys.plist in Resources */ = {isa = PBXBuildFile; fileRef = ECCACBA924C6A4770077CD89 /* apiKeys.plist */; };
+		ECCACBAC24C6B08D0077CD89 /* JoinEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCACBAB24C6B08D0077CD89 /* JoinEvent.swift */; };
 		F2ACBAC8C88F57D0A4CB4A1B /* Pods_ShengJi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A2411FE280B73A920C93D27 /* Pods_ShengJi.framework */; };
 /* End PBXBuildFile section */
 
@@ -36,6 +37,7 @@
 		ECCACBA224C69A070077CD89 /* LoadingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
 		ECCACBA424C69B710077CD89 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		ECCACBA924C6A4770077CD89 /* apiKeys.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = apiKeys.plist; sourceTree = "<group>"; };
+		ECCACBAB24C6B08D0077CD89 /* JoinEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinEvent.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +96,7 @@
 				ECCACB9E24C4D4F00077CD89 /* JoinRoomViewController.swift */,
 				ECCACBA224C69A070077CD89 /* LoadingViewController.swift */,
 				ECCACBA424C69B710077CD89 /* Extensions.swift */,
+				ECCACBAD24C6B0A20077CD89 /* Models */,
 				ECCACBA924C6A4770077CD89 /* apiKeys.plist */,
 				ECCACB8E24C247270077CD89 /* Assets.xcassets */,
 				ECCACB9324C247270077CD89 /* LaunchScreen.storyboard */,
@@ -109,6 +112,14 @@
 				ECCACB9124C247270077CD89 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		ECCACBAD24C6B0A20077CD89 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				ECCACBAB24C6B08D0077CD89 /* JoinEvent.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -232,6 +243,7 @@
 				ECCACB9D24C248EF0077CD89 /* MenuViewController.swift in Sources */,
 				ECCACBA324C69A070077CD89 /* LoadingViewController.swift in Sources */,
 				ECCACB9F24C4D4F00077CD89 /* JoinRoomViewController.swift in Sources */,
+				ECCACBAC24C6B08D0077CD89 /* JoinEvent.swift in Sources */,
 				ECCACBA124C4F9A20077CD89 /* LobbyViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
