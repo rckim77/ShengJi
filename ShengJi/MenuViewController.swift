@@ -8,6 +8,7 @@
 
 import UIKit
 import SnapKit
+import Combine
 
 final class MenuViewController: UIViewController {
     
@@ -28,6 +29,8 @@ final class MenuViewController: UIViewController {
         button.addTarget(self, action: #selector(createButtonTapped), for: .touchUpInside)
         return button
     }()
+    
+    private var codeCancellable: AnyCancellable?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,7 +68,16 @@ final class MenuViewController: UIViewController {
     
     @objc
     private func createButtonTapped() {
-        let lobbyVC = LobbyViewController(roomCode: "TEST")
-        navigationController?.pushViewController(lobbyVC, animated: true)
+        let url = URL(string: "https://fast-garden-35127.herokuapp.com/create_code")!
+        codeCancellable = URLSession.shared.dataTaskPublisher(for: url)
+            .map { $0.data }
+            .decode(type: Int.self, decoder: JSONDecoder())
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completion in
+                print(completion)
+            }, receiveValue: { [weak self] code in
+                let lobbyVC = LobbyViewController(roomCode: "\(code)")
+                self?.navigationController?.pushViewController(lobbyVC, animated: true)
+            })
     }
 }
