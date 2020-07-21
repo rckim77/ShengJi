@@ -15,10 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        guard let menuVC = MenuViewController(keys: AppDelegate.getAPIKeys()) else {
-            return false
-        }
-        let navigationVC = UINavigationController(rootViewController: menuVC)
+        let navigationVC = UINavigationController(rootViewController: MenuViewController())
         window?.rootViewController = navigationVC
         return true
     }

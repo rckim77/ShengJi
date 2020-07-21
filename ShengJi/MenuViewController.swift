@@ -9,9 +9,8 @@
 import UIKit
 import SnapKit
 import Combine
-import PusherSwift
 
-final class MenuViewController: UIViewController, PusherDelegate {
+final class MenuViewController: UIViewController {
     
     private lazy var joinButton: UIButton = {
         let button = UIButton(type: .system)
@@ -32,29 +31,6 @@ final class MenuViewController: UIViewController, PusherDelegate {
     }()
     
     private var codeCancellable: AnyCancellable?
-    private let pusher: Pusher
-    
-    init?(keys: APIKeys?) {
-        // Pusher setup
-        guard let pusherKey = keys?.pusher else {
-            return nil
-        }
-        let options = PusherClientOptions(host: .cluster("us2"))
-        pusher = Pusher(key: pusherKey, options: options)
-        super.init(nibName: nil, bundle: nil)
-        
-        pusher.delegate = self
-        let channel = pusher.subscribe("my-channel")
-        let _ = channel.bind(eventName: "my-event", eventCallback: { event in
-            if let data = event.data {
-                print(data)
-            }
-        })
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,8 +48,6 @@ final class MenuViewController: UIViewController, PusherDelegate {
             make.centerX.equalToSuperview()
             make.top.equalTo(joinButton.snp.bottom).offset(8)
         }
-        
-        pusher.connect()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -84,7 +58,6 @@ final class MenuViewController: UIViewController, PusherDelegate {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.navigationBar.isHidden = false
-        pusher.disconnect()
     }
     
     @objc
@@ -98,7 +71,7 @@ final class MenuViewController: UIViewController, PusherDelegate {
         let loadingVC = LoadingViewController()
         add(loadingVC)
         
-        guard let url = URL(string: "https://fast-garden-35127.herokuapp.com/create_code") else {
+        guard let url = URL(string: "https://fast-garden-35127.herokuapp.com/random_code") else {
             return
         }
         codeCancellable = URLSession.shared.dataTaskPublisher(for: url)
@@ -108,13 +81,10 @@ final class MenuViewController: UIViewController, PusherDelegate {
             .sink(receiveCompletion: { _ in
                 loadingVC.remove()
             }, receiveValue: { [weak self] code in
-//                let lobbyVC = LobbyViewController(roomCode: "\(code)")
-//                self?.navigationController?.pushViewController(lobbyVC, animated: true)
+                guard let lobbyVC = LobbyViewController(roomCode: "\(code)") else {
+                    return
+                }
+                self?.navigationController?.pushViewController(lobbyVC, animated: true)
             })
-    }
-    
-    /// Used for Pusher debugging
-    func debugLog(message: String) {
-        print("Pusher debug: \(message)")
     }
 }

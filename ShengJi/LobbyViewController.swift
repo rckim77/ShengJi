@@ -8,8 +8,10 @@
 
 import UIKit
 import SnapKit
+import Combine
+import PusherSwift
 
-class LobbyViewController: UIViewController {
+final class LobbyViewController: UIViewController {
     
     private lazy var roomCodeLabel: UILabel = {
         let label = UILabel()
@@ -33,14 +35,24 @@ class LobbyViewController: UIViewController {
         button.setTitleColor(.darkGray, for: .normal)
         button.titleLabel?.font = .preferredFont(forTextStyle: .title1)
         button.addTarget(self, action: #selector(startButtonTapped), for: .touchUpInside)
-        button.isEnabled = false
+        // ENABLED FOR TESTING
+//        button.isEnabled = false
         return button
     }()
     
     private let roomCode: String
+    private let pusher: Pusher
+    private var channel: PusherChannel?
+    private var codeCancellable: AnyCancellable?
     
-    init(roomCode: String) {
+    init?(roomCode: String) {
         self.roomCode = roomCode
+        // Pusher setup
+        guard let pusherKey = AppDelegate.getAPIKeys()?.pusher else {
+            return nil
+        }
+        let options = PusherClientOptions(host: .cluster("us2"))
+        pusher = Pusher(key: pusherKey, options: options)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -71,11 +83,36 @@ class LobbyViewController: UIViewController {
             make.centerX.equalToSuperview()
         }
         
+        setupPusher()
         roomCodeLabel.text = "You are the host for room code \(roomCode)."
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        pusher.disconnect()
+    }
+    
+    private func setupPusher() {
+        pusher.delegate = self
+        channel = pusher.subscribe(roomCode)
+        let _ = channel?.bind(eventName: "my-event", eventCallback: { event in
+            if let data = event.data {
+                print(data)
+            }
+        })
+        pusher.connect()
     }
     
     @objc
     private func startButtonTapped() {
-        
+
+    }
+}
+
+extension LobbyViewController: PusherDelegate {
+    /// Used for Pusher debugging
+    func debugLog(message: String) {
+        print("Pusher debug: \(message)")
     }
 }
