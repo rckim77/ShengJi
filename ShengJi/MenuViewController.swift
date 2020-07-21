@@ -68,13 +68,16 @@ final class MenuViewController: UIViewController {
     
     @objc
     private func createButtonTapped() {
+        let loadingVC = LoadingViewController()
+        add(loadingVC)
+        
         let url = URL(string: "https://fast-garden-35127.herokuapp.com/create_code")!
         codeCancellable = URLSession.shared.dataTaskPublisher(for: url)
             .map { $0.data }
             .decode(type: Int.self, decoder: JSONDecoder())
             .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { completion in
-                print(completion)
+            .sink(receiveCompletion: { _ in
+                loadingVC.remove()
             }, receiveValue: { [weak self] code in
                 let lobbyVC = LobbyViewController(roomCode: "\(code)")
                 self?.navigationController?.pushViewController(lobbyVC, animated: true)
