@@ -13,7 +13,7 @@
 		ECCACB9524C247270077CD89 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ECCACB9324C247270077CD89 /* LaunchScreen.storyboard */; };
 		ECCACB9D24C248EF0077CD89 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCACB9C24C248EF0077CD89 /* MenuViewController.swift */; };
 		ECCACB9F24C4D4F00077CD89 /* JoinRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCACB9E24C4D4F00077CD89 /* JoinRoomViewController.swift */; };
-		ECCACBA124C4F9A20077CD89 /* LobbyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCACBA024C4F9A20077CD89 /* LobbyViewController.swift */; };
+		ECCACBA124C4F9A20077CD89 /* HostLobbyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCACBA024C4F9A20077CD89 /* HostLobbyViewController.swift */; };
 		ECCACBA324C69A070077CD89 /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCACBA224C69A070077CD89 /* LoadingViewController.swift */; };
 		ECCACBA524C69B710077CD89 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCACBA424C69B710077CD89 /* Extensions.swift */; };
 		ECCACBAA24C6A4770077CD89 /* apiKeys.plist in Resources */ = {isa = PBXBuildFile; fileRef = ECCACBA924C6A4770077CD89 /* apiKeys.plist */; };
@@ -33,7 +33,7 @@
 		ECCACB9624C247270077CD89 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		ECCACB9C24C248EF0077CD89 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		ECCACB9E24C4D4F00077CD89 /* JoinRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinRoomViewController.swift; sourceTree = "<group>"; };
-		ECCACBA024C4F9A20077CD89 /* LobbyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LobbyViewController.swift; sourceTree = "<group>"; };
+		ECCACBA024C4F9A20077CD89 /* HostLobbyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostLobbyViewController.swift; sourceTree = "<group>"; };
 		ECCACBA224C69A070077CD89 /* LoadingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
 		ECCACBA424C69B710077CD89 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		ECCACBA924C6A4770077CD89 /* apiKeys.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = apiKeys.plist; sourceTree = "<group>"; };
@@ -92,7 +92,7 @@
 			children = (
 				ECCACB8824C247250077CD89 /* AppDelegate.swift */,
 				ECCACB9C24C248EF0077CD89 /* MenuViewController.swift */,
-				ECCACBA024C4F9A20077CD89 /* LobbyViewController.swift */,
+				ECCACBA024C4F9A20077CD89 /* HostLobbyViewController.swift */,
 				ECCACB9E24C4D4F00077CD89 /* JoinRoomViewController.swift */,
 				ECCACBA224C69A070077CD89 /* LoadingViewController.swift */,
 				ECCACBA424C69B710077CD89 /* Extensions.swift */,
@@ -244,7 +244,7 @@
 				ECCACBA324C69A070077CD89 /* LoadingViewController.swift in Sources */,
 				ECCACB9F24C4D4F00077CD89 /* JoinRoomViewController.swift in Sources */,
 				ECCACBAC24C6B08D0077CD89 /* JoinEvent.swift in Sources */,
-				ECCACBA124C4F9A20077CD89 /* LobbyViewController.swift in Sources */,
+				ECCACBA124C4F9A20077CD89 /* HostLobbyViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
