@@ -16,6 +16,7 @@
 		ECCACBA124C4F9A20077CD89 /* LobbyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCACBA024C4F9A20077CD89 /* LobbyViewController.swift */; };
 		ECCACBA324C69A070077CD89 /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCACBA224C69A070077CD89 /* LoadingViewController.swift */; };
 		ECCACBA524C69B710077CD89 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCACBA424C69B710077CD89 /* Extensions.swift */; };
+		ECCACBAA24C6A4770077CD89 /* apiKeys.plist in Resources */ = {isa = PBXBuildFile; fileRef = ECCACBA924C6A4770077CD89 /* apiKeys.plist */; };
 		F2ACBAC8C88F57D0A4CB4A1B /* Pods_ShengJi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A2411FE280B73A920C93D27 /* Pods_ShengJi.framework */; };
 /* End PBXBuildFile section */
 
@@ -34,6 +35,7 @@
 		ECCACBA024C4F9A20077CD89 /* LobbyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LobbyViewController.swift; sourceTree = "<group>"; };
 		ECCACBA224C69A070077CD89 /* LoadingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
 		ECCACBA424C69B710077CD89 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		ECCACBA924C6A4770077CD89 /* apiKeys.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = apiKeys.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,6 +94,7 @@
 				ECCACB9E24C4D4F00077CD89 /* JoinRoomViewController.swift */,
 				ECCACBA224C69A070077CD89 /* LoadingViewController.swift */,
 				ECCACBA424C69B710077CD89 /* Extensions.swift */,
+				ECCACBA924C6A4770077CD89 /* apiKeys.plist */,
 				ECCACB8E24C247270077CD89 /* Assets.xcassets */,
 				ECCACB9324C247270077CD89 /* LaunchScreen.storyboard */,
 				ECCACB9624C247270077CD89 /* Info.plist */,
@@ -169,6 +172,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				ECCACB9524C247270077CD89 /* LaunchScreen.storyboard in Resources */,
+				ECCACBAA24C6A4770077CD89 /* apiKeys.plist in Resources */,
 				ECCACB9224C247270077CD89 /* Preview Assets.xcassets in Resources */,
 				ECCACB8F24C247270077CD89 /* Assets.xcassets in Resources */,
 			);

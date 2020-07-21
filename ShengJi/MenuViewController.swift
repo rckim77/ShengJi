@@ -9,8 +9,9 @@
 import UIKit
 import SnapKit
 import Combine
+import PusherSwift
 
-final class MenuViewController: UIViewController {
+final class MenuViewController: UIViewController, PusherDelegate {
     
     private lazy var joinButton: UIButton = {
         let button = UIButton(type: .system)
@@ -31,6 +32,29 @@ final class MenuViewController: UIViewController {
     }()
     
     private var codeCancellable: AnyCancellable?
+    private let pusher: Pusher
+    
+    init?(keys: APIKeys?) {
+        // Pusher setup
+        guard let pusherKey = keys?.pusher else {
+            return nil
+        }
+        let options = PusherClientOptions(host: .cluster("us2"))
+        pusher = Pusher(key: pusherKey, options: options)
+        super.init(nibName: nil, bundle: nil)
+        
+        pusher.delegate = self
+        let channel = pusher.subscribe("my-channel")
+        let _ = channel.bind(eventName: "my-event", eventCallback: { event in
+            if let data = event.data {
+                print(data)
+            }
+        })
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,6 +72,8 @@ final class MenuViewController: UIViewController {
             make.centerX.equalToSuperview()
             make.top.equalTo(joinButton.snp.bottom).offset(8)
         }
+        
+        pusher.connect()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -58,6 +84,7 @@ final class MenuViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.navigationBar.isHidden = false
+        pusher.disconnect()
     }
     
     @objc
@@ -71,7 +98,9 @@ final class MenuViewController: UIViewController {
         let loadingVC = LoadingViewController()
         add(loadingVC)
         
-        let url = URL(string: "https://fast-garden-35127.herokuapp.com/create_code")!
+        guard let url = URL(string: "https://fast-garden-35127.herokuapp.com/create_code") else {
+            return
+        }
         codeCancellable = URLSession.shared.dataTaskPublisher(for: url)
             .map { $0.data }
             .decode(type: Int.self, decoder: JSONDecoder())
@@ -79,8 +108,13 @@ final class MenuViewController: UIViewController {
             .sink(receiveCompletion: { _ in
                 loadingVC.remove()
             }, receiveValue: { [weak self] code in
-                let lobbyVC = LobbyViewController(roomCode: "\(code)")
-                self?.navigationController?.pushViewController(lobbyVC, animated: true)
+//                let lobbyVC = LobbyViewController(roomCode: "\(code)")
+//                self?.navigationController?.pushViewController(lobbyVC, animated: true)
             })
+    }
+    
+    /// Used for Pusher debugging
+    func debugLog(message: String) {
+        print("Pusher debug: \(message)")
     }
 }
