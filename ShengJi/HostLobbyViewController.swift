@@ -95,7 +95,7 @@ final class HostLobbyViewController: UIViewController {
         }
         
         roomCodeTextView.snp.makeConstraints { make in
-            make.top.equalTo(roomCodeLabel.snp.bottom).offset(8)
+            make.top.equalTo(roomCodeLabel.snp.bottom).offset(16)
             make.centerX.equalTo(roomCodeLabel.snp.centerX)
         }
         
@@ -123,11 +123,6 @@ final class HostLobbyViewController: UIViewController {
     private func setupPusher() {
         pusher.delegate = self
         channel = pusher.subscribe(roomCode)
-        let _ = channel?.bind(eventName: "my-event", eventCallback: { event in
-            if let data = event.data {
-                print(data)
-            }
-        })
         let _ = channel?.bind(eventName: "user-join", eventCallback: { event in
             guard let data = event.data?.data(using: .utf8),
                 let json = try? JSONDecoder().decode(JoinEvent.self, from: data) else {

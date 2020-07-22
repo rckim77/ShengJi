@@ -18,6 +18,8 @@
 		ECCACBA524C69B710077CD89 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCACBA424C69B710077CD89 /* Extensions.swift */; };
 		ECCACBAA24C6A4770077CD89 /* apiKeys.plist in Resources */ = {isa = PBXBuildFile; fileRef = ECCACBA924C6A4770077CD89 /* apiKeys.plist */; };
 		ECCACBAC24C6B08D0077CD89 /* JoinEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCACBAB24C6B08D0077CD89 /* JoinEvent.swift */; };
+		ECCACBAF24C7C8700077CD89 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCACBAE24C7C8700077CD89 /* GameViewController.swift */; };
+		ECCACBB124C7EEE90077CD89 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCACBB024C7EEE90077CD89 /* NetworkError.swift */; };
 		F2ACBAC8C88F57D0A4CB4A1B /* Pods_ShengJi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A2411FE280B73A920C93D27 /* Pods_ShengJi.framework */; };
 /* End PBXBuildFile section */
 
@@ -38,6 +40,8 @@
 		ECCACBA424C69B710077CD89 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		ECCACBA924C6A4770077CD89 /* apiKeys.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = apiKeys.plist; sourceTree = "<group>"; };
 		ECCACBAB24C6B08D0077CD89 /* JoinEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinEvent.swift; sourceTree = "<group>"; };
+		ECCACBAE24C7C8700077CD89 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
+		ECCACBB024C7EEE90077CD89 /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +98,7 @@
 				ECCACB9C24C248EF0077CD89 /* MenuViewController.swift */,
 				ECCACBA024C4F9A20077CD89 /* HostLobbyViewController.swift */,
 				ECCACB9E24C4D4F00077CD89 /* JoinRoomViewController.swift */,
+				ECCACBAE24C7C8700077CD89 /* GameViewController.swift */,
 				ECCACBA224C69A070077CD89 /* LoadingViewController.swift */,
 				ECCACBA424C69B710077CD89 /* Extensions.swift */,
 				ECCACBAD24C6B0A20077CD89 /* Models */,
@@ -118,6 +123,7 @@
 			isa = PBXGroup;
 			children = (
 				ECCACBAB24C6B08D0077CD89 /* JoinEvent.swift */,
+				ECCACBB024C7EEE90077CD89 /* NetworkError.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -242,7 +248,9 @@
 				ECCACBA524C69B710077CD89 /* Extensions.swift in Sources */,
 				ECCACB9D24C248EF0077CD89 /* MenuViewController.swift in Sources */,
 				ECCACBA324C69A070077CD89 /* LoadingViewController.swift in Sources */,
+				ECCACBAF24C7C8700077CD89 /* GameViewController.swift in Sources */,
 				ECCACB9F24C4D4F00077CD89 /* JoinRoomViewController.swift in Sources */,
+				ECCACBB124C7EEE90077CD89 /* NetworkError.swift in Sources */,
 				ECCACBAC24C6B08D0077CD89 /* JoinEvent.swift in Sources */,
 				ECCACBA124C4F9A20077CD89 /* HostLobbyViewController.swift in Sources */,
 			);

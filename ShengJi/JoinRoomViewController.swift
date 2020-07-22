@@ -8,6 +8,8 @@
 
 import UIKit
 import SnapKit
+import Combine
+import PusherSwift
 
 final class JoinRoomViewController: UIViewController {
     
@@ -33,6 +35,8 @@ final class JoinRoomViewController: UIViewController {
         button.addTarget(self, action: #selector(joinButtonTapped), for: .touchUpInside)
         return button
     }()
+    
+    private var joinCancellable: AnyCancellable?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,6 +65,40 @@ final class JoinRoomViewController: UIViewController {
     
     @objc
     private func joinButtonTapped() {
+        let loadingVC = LoadingViewController()
+        add(loadingVC)
         
+        guard let code = codeField.text,
+            let username = usernameField.text,
+            let url = URL(string: "https://fast-garden-35127.herokuapp.com/join") else {
+            return
+        }
+
+        var urlRequest = URLRequest(url: url)
+        urlRequest.httpMethod = "POST"
+        let json: [String: Any] = ["code": code, "username": username]
+        let joinJSON = try? JSONSerialization.data(withJSONObject: json, options: .fragmentsAllowed)
+        urlRequest.httpBody = joinJSON
+        urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        joinCancellable = URLSession.shared.dataTaskPublisher(for: urlRequest)
+            .tryMap { data, response in
+                guard let httpResponse = response as? HTTPURLResponse else {
+                    throw NetworkError.invalidResponse
+                }
+                if httpResponse.statusCode == 404 {
+                    throw NetworkError.notFound
+                }
+                return data
+            }
+            .decode(type: String.self, decoder: JSONDecoder())
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { [weak self] response in
+                loadingVC.remove()
+                guard let gameVC = GameViewController(roomCode: code) else {
+                    return
+                }
+                self?.navigationController?.pushViewController(gameVC, animated: true)
+            }, receiveValue: { _ in })
     }
 }
