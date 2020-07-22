@@ -20,6 +20,7 @@
 		ECCACBAC24C6B08D0077CD89 /* JoinEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCACBAB24C6B08D0077CD89 /* JoinEvent.swift */; };
 		ECCACBAF24C7C8700077CD89 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCACBAE24C7C8700077CD89 /* GameViewController.swift */; };
 		ECCACBB124C7EEE90077CD89 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCACBB024C7EEE90077CD89 /* NetworkError.swift */; };
+		ECCACBB324C8F0730077CD89 /* JoinResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCACBB224C8F0730077CD89 /* JoinResponse.swift */; };
 		F2ACBAC8C88F57D0A4CB4A1B /* Pods_ShengJi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A2411FE280B73A920C93D27 /* Pods_ShengJi.framework */; };
 /* End PBXBuildFile section */
 
@@ -42,6 +43,7 @@
 		ECCACBAB24C6B08D0077CD89 /* JoinEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinEvent.swift; sourceTree = "<group>"; };
 		ECCACBAE24C7C8700077CD89 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		ECCACBB024C7EEE90077CD89 /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
+		ECCACBB224C8F0730077CD89 /* JoinResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinResponse.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -123,6 +125,7 @@
 			isa = PBXGroup;
 			children = (
 				ECCACBAB24C6B08D0077CD89 /* JoinEvent.swift */,
+				ECCACBB224C8F0730077CD89 /* JoinResponse.swift */,
 				ECCACBB024C7EEE90077CD89 /* NetworkError.swift */,
 			);
 			path = Models;
@@ -244,6 +247,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ECCACBB324C8F0730077CD89 /* JoinResponse.swift in Sources */,
 				ECCACB8924C247250077CD89 /* AppDelegate.swift in Sources */,
 				ECCACBA524C69B710077CD89 /* Extensions.swift in Sources */,
 				ECCACB9D24C248EF0077CD89 /* MenuViewController.swift in Sources */,

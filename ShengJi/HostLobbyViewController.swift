@@ -18,6 +18,7 @@ final class HostLobbyViewController: UIViewController {
         label.font = .preferredFont(forTextStyle: .title2)
         label.numberOfLines = 0
         label.textAlignment = .center
+        label.textColor = .systemGray
         return label
     }()
     
@@ -25,7 +26,7 @@ final class HostLobbyViewController: UIViewController {
         let textView = UITextView()
         textView.isEditable = false
         textView.isScrollEnabled = false
-        textView.backgroundColor = UIColor.lightGray.withAlphaComponent(0.5)
+        textView.backgroundColor = .systemGray
         textView.addRoundedCorners(radius: 8)
         textView.font = .preferredFont(forTextStyle: .title1)
         return textView
@@ -36,6 +37,7 @@ final class HostLobbyViewController: UIViewController {
         label.font = .preferredFont(forTextStyle: .title2)
         label.numberOfLines = 0
         label.text = "Users joined:"
+        label.textColor = .systemGray
         return label
     }()
     
@@ -43,7 +45,7 @@ final class HostLobbyViewController: UIViewController {
         let button = UIButton(type: .system)
         button.setTitle("Waiting for players...", for: .disabled)
         button.setTitle("Start game", for: .normal)
-        button.setTitleColor(.darkGray, for: .normal)
+        button.setTitleColor(.systemGray, for: .normal)
         button.titleLabel?.font = .preferredFont(forTextStyle: .title1)
         button.addTarget(self, action: #selector(startButtonTapped), for: .touchUpInside)
         button.isEnabled = false
@@ -83,7 +85,7 @@ final class HostLobbyViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         view.addSubview(roomCodeLabel)
         view.addSubview(roomCodeTextView)
         view.addSubview(usersJoinedLabel)

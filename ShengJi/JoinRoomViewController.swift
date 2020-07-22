@@ -17,6 +17,8 @@ final class JoinRoomViewController: UIViewController {
         let textField = UITextField()
         textField.placeholder = "Enter code"
         textField.borderStyle = .roundedRect
+        textField.backgroundColor = .systemGray6
+        textField.textAlignment = .center
         return textField
     }()
     
@@ -24,6 +26,8 @@ final class JoinRoomViewController: UIViewController {
         let textField = UITextField()
         textField.placeholder = "Enter username"
         textField.borderStyle = .roundedRect
+        textField.backgroundColor = .systemGray6
+        textField.textAlignment = .center
         return textField
     }()
     
@@ -31,7 +35,7 @@ final class JoinRoomViewController: UIViewController {
         let button = UIButton(type: .system)
         button.setTitle("Join", for: .normal)
         button.titleLabel?.font = .preferredFont(forTextStyle: .title1)
-        button.setTitleColor(.darkGray, for: .normal)
+        button.setTitleColor(.systemGray, for: .normal)
         button.addTarget(self, action: #selector(joinButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -40,39 +44,46 @@ final class JoinRoomViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        view.backgroundColor = .white
      
+        view.backgroundColor = .systemBackground
         view.addSubview(codeField)
         view.addSubview(usernameField)
         view.addSubview(joinButton)
         
         codeField.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview().offset(-80)
+            make.centerY.equalToSuperview().offset(-90)
+            make.width.equalTo(usernameField.snp.width)
+            make.height.equalTo(48)
         }
         
         usernameField.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(codeField.snp.bottom).offset(16)
+            make.height.equalTo(48)
         }
         
         joinButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalTo(usernameField.snp.bottom).offset(32)
+            make.top.equalTo(usernameField.snp.bottom).offset(28)
         }
     }
     
     @objc
     private func joinButtonTapped() {
-        let loadingVC = LoadingViewController()
-        add(loadingVC)
-        
         guard let code = codeField.text,
             let username = usernameField.text,
-            let url = URL(string: "https://fast-garden-35127.herokuapp.com/join") else {
+            let url = URL(string: "https://fast-garden-35127.herokuapp.com/join"),
+            !code.isEmpty && !username.isEmpty else {
+                let invalidValuesAlert = UIAlertController(title: "Please enter a valid code and username.", message: nil, preferredStyle: .alert)
+                let confirmAction = UIAlertAction(title: "Got it", style: .cancel, handler: nil)
+                invalidValuesAlert.addAction(confirmAction)
+            present(invalidValuesAlert, animated: true, completion: nil)
             return
         }
+        
+        let loadingVC = LoadingViewController()
+        add(loadingVC)
 
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = "POST"
@@ -91,14 +102,25 @@ final class JoinRoomViewController: UIViewController {
                 }
                 return data
             }
-            .decode(type: String.self, decoder: JSONDecoder())
+            .decode(type: JoinResponse.self, decoder: JSONDecoder())
             .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { [weak self] response in
+            .sink(receiveCompletion: { [weak self] completion in
                 loadingVC.remove()
-                guard let gameVC = GameViewController(roomCode: code) else {
+                if case Subscribers.Completion.failure(_) = completion {
+                    let errorAlert = UIAlertController(title: "Oops, that didn't work. 😦", message: "Try confirming the code is valid and the username you chose is unique.", preferredStyle: .alert)
+                        let confirmAction = UIAlertAction(title: "Got it", style: .cancel, handler: nil)
+                        errorAlert.addAction(confirmAction)
+                    self?.present(errorAlert, animated: true, completion: nil)
+                }
+            }, receiveValue: { [weak self] joinResponse in
+                guard let gameVC = GameViewController(roomCode: joinResponse.code) else {
+                    let errorAlert = UIAlertController(title: "Oops, that didn't work. 😦", message: "Looks like there's a backend issue.", preferredStyle: .alert)
+                        let confirmAction = UIAlertAction(title: "Got it", style: .cancel, handler: nil)
+                        errorAlert.addAction(confirmAction)
+                    self?.present(errorAlert, animated: true, completion: nil)
                     return
                 }
                 self?.navigationController?.pushViewController(gameVC, animated: true)
-            }, receiveValue: { _ in })
+            })
     }
 }

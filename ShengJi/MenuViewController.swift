@@ -16,7 +16,7 @@ final class MenuViewController: UIViewController {
         let button = UIButton(type: .system)
         button.setTitle("Join room", for: .normal)
         button.titleLabel?.font = .preferredFont(forTextStyle: .title1)
-        button.setTitleColor(.darkGray, for: .normal)
+        button.setTitleColor(.systemGray, for: .normal)
         button.addTarget(self, action: #selector(joinButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -25,7 +25,7 @@ final class MenuViewController: UIViewController {
         let button = UIButton(type: .system)
         button.setTitle("Create a room", for: .normal)
         button.titleLabel?.font = .preferredFont(forTextStyle: .title1)
-        button.setTitleColor(.darkGray, for: .normal)
+        button.setTitleColor(.systemGray, for: .normal)
         button.addTarget(self, action: #selector(createButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -34,8 +34,8 @@ final class MenuViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        view.backgroundColor = .white
+
+        view.backgroundColor = .systemBackground
         view.addSubview(joinButton)
         view.addSubview(createButton)
         
