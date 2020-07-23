@@ -10,4 +10,5 @@ import Foundation
 
 struct JoinResponse: Codable {
     let code: String
+    let host: String
 }

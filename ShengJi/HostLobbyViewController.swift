@@ -57,6 +57,9 @@ final class HostLobbyViewController: UIViewController {
     private var otherMembers: [PusherPresenceChannelMember] = [] {
         didSet {
             var text = "Users joined:"
+            if let hostUsername = channel?.myId {
+                text += "\n \(hostUsername) (me)"
+            }
             for member in otherMembers {
                 text += "\n \(member.userId)"
             }
@@ -110,7 +113,7 @@ final class HostLobbyViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
-        appDelegate.pusher?.unsubscribe(roomCode)
+        appDelegate.pusher?.unsubscribe("presence-\(roomCode)")
         appDelegate.pusher?.delegate = nil
     }
     
@@ -133,6 +136,10 @@ extension HostLobbyViewController: PusherDelegate {
     /// Used for Pusher debugging
     func debugLog(message: String) {
         print(message)
+    }
+    
+    func subscribedToChannel(name: String) {
+        otherMembers = []
     }
     
     func failedToSubscribeToChannel(name: String, response: URLResponse?, data: String?, error: NSError?) {

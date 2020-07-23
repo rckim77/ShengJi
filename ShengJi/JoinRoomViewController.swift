@@ -32,7 +32,6 @@ final class JoinRoomViewController: UIViewController {
     }()
     
     private let loadingVC = LoadingViewController()
-    private var channel: PusherPresenceChannel?
     private var joinCancellable: AnyCancellable?
     
     override func viewDidLoad() {
@@ -88,8 +87,9 @@ final class JoinRoomViewController: UIViewController {
                     self?.displayErrorAlert(for: "presence-\(code)")
                 }
             }, receiveValue: { [weak self] response in
-                print("successfully joined valid channel that is already occupied")
-                self?.channel = self?.appDelegate.pusher?.subscribeToPresenceChannel(channelName: "presence-\(code)")
+                self?.loadingVC.remove()
+                let playerLobbbyVC = PlayerLobbyViewController(channelName: response.code, hostUsername: response.host)
+                self?.navigationController?.pushViewController(playerLobbbyVC, animated: true)
             })
     }
     
@@ -105,15 +105,6 @@ final class JoinRoomViewController: UIViewController {
 }
 
 extension JoinRoomViewController: PusherDelegate {
-    func subscribedToChannel(name: String) {
-        loadingVC.remove()
-        guard let channel = channel else {
-            return
-        }
-        let playerLobbyVC = PlayerLobbyViewController(channel: channel)
-        navigationController?.pushViewController(playerLobbyVC, animated: true)
-    }
-    
     func failedToSubscribeToChannel(name: String, response: URLResponse?, data: String?, error: NSError?) {
         loadingVC.remove()
         displayErrorAlert(for: name)

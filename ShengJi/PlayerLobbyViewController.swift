@@ -32,16 +32,22 @@ final class PlayerLobbyViewController: UIViewController {
 
     private var roomCode: String {
         let presencePrefix = "presence-"
-        let startingIndex = channel.name.index(channel.name.startIndex, offsetBy: presencePrefix.count)
-        return String(channel.name.suffix(from: startingIndex))
+        let startingIndex = channelName.index(channelName.startIndex, offsetBy: presencePrefix.count)
+        return String(channelName.suffix(from: startingIndex))
     }
-    private var username: String {
-        channel.me()?.userId ?? "unknown"
+    private let channelName: String
+    private var channel: PusherPresenceChannel?
+    private let hostUsername: String
+    private var playerUsername: String {
+        channel?.myId ?? "unknown"
     }
-    private let channel: PusherPresenceChannel
+    private var roomLabelText: String {
+        "You're in room \(roomCode). Your username is \(playerUsername). Please wait for \(hostUsername) to begin the game."
+    }
     
-    init(channel: PusherPresenceChannel) {
-        self.channel = channel
+    init(channelName: String, hostUsername: String) {
+        self.channelName = channelName
+        self.hostUsername = hostUsername
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -66,19 +72,33 @@ final class PlayerLobbyViewController: UIViewController {
             make.leading.trailing.equalToSuperview().inset(16)
         }
         
+        roomLabel.text = roomLabelText
         setupPusher()
-        
-        roomLabel.text = "You're currently in room \(roomCode). Your username is \(username). Please wait for the host to begin the game."
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         appDelegate.pusher?.delegate = nil
-        appDelegate.pusher?.unsubscribe(channel.name)
+        appDelegate.pusher?.unsubscribe(channelName)
     }
     
     private func setupPusher() {
         appDelegate.pusher?.delegate = self
+        channel = appDelegate.pusher?.subscribeToPresenceChannel(channelName: channelName, onMemberAdded: { _ in }, onMemberRemoved: { [weak self] member in
+            if member.userId == self?.hostUsername {
+                print("HOST HAS LEFT")
+                let hostLeftAlert = UIAlertController(title: "The host has left the room.", message: "Please try a new room.", preferredStyle: .alert)
+                let confirmAction = UIAlertAction(title: "Got it", style: .default) { _ in
+                    self?.navigationController?.popViewController(animated: true)
+                }
+                hostLeftAlert.addAction(confirmAction)
+                self?.present(hostLeftAlert, animated: true, completion: nil)
+            }
+        })
+        channel?.bind(eventName: "pusher:subscription_succeeded", callback: { [weak self] members in
+            self?.roomLabel.text = self?.roomLabelText
+            // access to other members in room
+        })
     }
 }
 extension PlayerLobbyViewController: PusherDelegate {
