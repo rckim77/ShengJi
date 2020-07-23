@@ -41,6 +41,15 @@ final class HostLobbyViewController: UIViewController {
         return label
     }()
     
+    private lazy var leaveButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Leave room", for: .normal)
+        button.setTitleColor(.systemBlue, for: .normal)
+        button.titleLabel?.font = .preferredFont(forTextStyle: .title3)
+        button.addTarget(self, action: #selector(leaveButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
     private lazy var startButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Waiting for players...", for: .disabled)
@@ -79,11 +88,13 @@ final class HostLobbyViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        navigationController?.setNavigationBarHidden(true, animated: true)
         view.backgroundColor = .systemBackground
         view.addSubview(roomCodeLabel)
         view.addSubview(roomCodeTextView)
         view.addSubview(usersJoinedLabel)
         view.addSubview(startButton)
+        view.addSubview(leaveButton)
         
         roomCodeLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(24)
@@ -101,7 +112,12 @@ final class HostLobbyViewController: UIViewController {
         }
         
         startButton.snp.makeConstraints { make in
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(24)
+            make.bottom.equalTo(leaveButton.snp.top).inset(0)
+            make.centerX.equalToSuperview()
+        }
+        
+        leaveButton.snp.makeConstraints { make in
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(16)
             make.centerX.equalToSuperview()
         }
         
@@ -129,6 +145,18 @@ final class HostLobbyViewController: UIViewController {
     @objc
     private func startButtonTapped() {
         
+    }
+    
+    @objc
+    private func leaveButtonTapped() {
+        let warningAlert = UIAlertController(title: "Are you sure?", message: "If you leave, all joined players will be kicked out.", preferredStyle: .alert)
+        let confirmAction = UIAlertAction(title: "Leave", style: .default) { _ in
+            self.navigationController?.popViewController(animated: true)
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        warningAlert.addAction(confirmAction)
+        warningAlert.addAction(cancelAction)
+        present(warningAlert, animated: true, completion: nil)
     }
 }
 
