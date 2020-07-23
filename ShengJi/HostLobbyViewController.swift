@@ -52,17 +52,17 @@ final class HostLobbyViewController: UIViewController {
         return button
     }()
     
-    private let roomCode: String
-    private var channel: PusherChannel?
-    private var users = [String]()
-    private var usersJoinedText: String {
-        var text = "Users joined:"
-        for user in users {
-            text += "\n \(user)"
+    private let roomCode: String // Note: this does not include the 'presence-' prefix
+    private var channel: PusherPresenceChannel?
+    private var otherMembers: [PusherPresenceChannelMember] = [] {
+        didSet {
+            var text = "Users joined:"
+            for member in otherMembers {
+                text += "\n \(member.userId)"
+            }
+            usersJoinedLabel.text = text
         }
-        return text
     }
-    private var codeCancellable: AnyCancellable?
     
     init(roomCode: String) {
         self.roomCode = roomCode
@@ -110,31 +110,22 @@ final class HostLobbyViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
-        appDelegate.pusher?.disconnect()
         appDelegate.pusher?.unsubscribe(roomCode)
         appDelegate.pusher?.delegate = nil
     }
     
     private func setupPusher() {
         appDelegate.pusher?.delegate = self
-        channel = appDelegate.pusher?.subscribe(roomCode)
-        appDelegate.pusher?.connect()
-        let _ = channel?.bind(eventName: "user-join", eventCallback: { event in
-            guard let data = event.data?.data(using: .utf8),
-                let json = try? JSONDecoder().decode(JoinEvent.self, from: data) else {
-                    print("join event json ERROR")
-                    return
-            }
-            print("user join event json: \(json)")
-            self.users.append(json.username)
-            self.usersJoinedLabel.text = self.usersJoinedText
-            self.startButton.isEnabled = self.users.count == 3
+        channel = appDelegate.pusher?.subscribeToPresenceChannel(channelName: "presence-\(roomCode)", onMemberAdded: { [weak self] member in
+            self?.otherMembers.append(member)
+        }, onMemberRemoved: { [weak self] member in
+            self?.otherMembers.removeAll(where: { $0.userId == member.userId })
         })
     }
     
     @objc
     private func startButtonTapped() {
-
+        
     }
 }
 
@@ -142,5 +133,15 @@ extension HostLobbyViewController: PusherDelegate {
     /// Used for Pusher debugging
     func debugLog(message: String) {
         print(message)
+    }
+    
+    func failedToSubscribeToChannel(name: String, response: URLResponse?, data: String?, error: NSError?) {
+        let presencePrefix = "presence-"
+        let startingIndex = name.index(name.startIndex, offsetBy: presencePrefix.count)
+        let roomCode = name.suffix(from: startingIndex)
+        let alertVC = UIAlertController(title: "Oops, that didn't work. 😦", message: "Unable to connect to room \(roomCode).", preferredStyle: .alert)
+        let confirmAction = UIAlertAction(title: "Got it", style: .cancel, handler: nil)
+        alertVC.addAction(confirmAction)
+        present(alertVC, animated: true, completion: nil)
     }
 }

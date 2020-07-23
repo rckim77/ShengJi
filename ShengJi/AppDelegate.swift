@@ -20,8 +20,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = navigationVC
         
         if let pusherKey = AppDelegate.getAPIKeys()?.pusher {
-            let options = PusherClientOptions(host: .cluster("us2"))
+            let authEndpoint = "https://fast-garden-35127.herokuapp.com/pusher/auth"
+            let options = PusherClientOptions(authMethod: .endpoint(authEndpoint: authEndpoint), host: .cluster("us2"))
             pusher = Pusher(key: pusherKey, options: options)
+            pusher?.connect()
         }
         
         return true

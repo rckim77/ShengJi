@@ -10,15 +10,6 @@ import UIKit
 import SnapKit
 import PusherSwift
 
-//final class AuthRequestBuilder: AuthRequestBuilderProtocol {
-//    func requestFor(socketID: String, channelName: String) -> URLRequest? {
-//        var request = URLRequest(url: URL(string: "https://fast-garden-35127.herokuapp.com/builder")!)
-//        request.httpMethod = "POST"
-//        request.httpBody = "socket_id=\(socketID)&channel_name=\(channelName)".data(using: .utf8)
-//        return request
-//    }
-//}
-
 final class PlayerLobbyViewController: UIViewController {
     
     private lazy var roomLabel: UILabel = {
@@ -26,14 +17,22 @@ final class PlayerLobbyViewController: UIViewController {
         label.font = .preferredFont(forTextStyle: .title2)
         label.numberOfLines = 0
         label.textAlignment = .center
+        label.textColor = .systemGray
         return label
     }()
+
+    private var roomCode: String {
+        let presencePrefix = "presence-"
+        let startingIndex = channel.name.index(channel.name.startIndex, offsetBy: presencePrefix.count)
+        return String(channel.name.suffix(from: startingIndex))
+    }
+    private var username: String {
+        channel.me()?.userId ?? "unknown"
+    }
+    private let channel: PusherPresenceChannel
     
-    private let roomCode: String
-    private var channel: PusherChannel?
-    
-    init(roomCode: String) {
-        self.roomCode = roomCode
+    init(channel: PusherPresenceChannel) {
+        self.channel = channel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -44,7 +43,7 @@ final class PlayerLobbyViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         view.addSubview(roomLabel)
         
         roomLabel.snp.makeConstraints { make in
@@ -54,21 +53,17 @@ final class PlayerLobbyViewController: UIViewController {
         
         setupPusher()
         
-        roomLabel.text = "You're currently in room \(roomCode). Please wait for the host to begin the game."
+        roomLabel.text = "You're currently in room \(roomCode). Your username is \(username). Please wait for the host to begin the game."
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-
-        appDelegate.pusher?.disconnect()
-        appDelegate.pusher?.unsubscribe(roomCode)
         appDelegate.pusher?.delegate = nil
+        appDelegate.pusher?.unsubscribe(channel.name)
     }
     
     private func setupPusher() {
         appDelegate.pusher?.delegate = self
-        channel = appDelegate.pusher?.subscribe(roomCode)
-        appDelegate.pusher?.connect()
     }
 }
 extension PlayerLobbyViewController: PusherDelegate {

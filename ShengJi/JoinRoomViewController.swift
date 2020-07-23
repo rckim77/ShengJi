@@ -15,16 +15,7 @@ final class JoinRoomViewController: UIViewController {
     
     private lazy var codeField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Enter code"
-        textField.borderStyle = .roundedRect
-        textField.backgroundColor = .systemGray6
-        textField.textAlignment = .center
-        return textField
-    }()
-    
-    private lazy var usernameField: UITextField = {
-        let textField = UITextField()
-        textField.placeholder = "Enter username"
+        textField.placeholder = "Enter code (e.g., 1234)"
         textField.borderStyle = .roundedRect
         textField.backgroundColor = .systemGray6
         textField.textAlignment = .center
@@ -40,6 +31,8 @@ final class JoinRoomViewController: UIViewController {
         return button
     }()
     
+    private let loadingVC = LoadingViewController()
+    private var channel: PusherPresenceChannel?
     private var joinCancellable: AnyCancellable?
     
     override func viewDidLoad() {
@@ -47,76 +40,63 @@ final class JoinRoomViewController: UIViewController {
      
         view.backgroundColor = .systemBackground
         view.addSubview(codeField)
-        view.addSubview(usernameField)
         view.addSubview(joinButton)
         
         codeField.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.centerY.equalToSuperview().offset(-90)
-            make.width.equalTo(usernameField.snp.width)
-            make.height.equalTo(48)
-        }
-        
-        usernameField.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalTo(codeField.snp.bottom).offset(16)
             make.height.equalTo(48)
         }
         
         joinButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalTo(usernameField.snp.bottom).offset(28)
+            make.top.equalTo(codeField.snp.bottom).offset(28)
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        appDelegate.pusher?.delegate = self
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        appDelegate.pusher?.delegate = nil
     }
     
     @objc
     private func joinButtonTapped() {
-        guard let code = codeField.text,
-            let username = usernameField.text,
-            let url = URL(string: "https://fast-garden-35127.herokuapp.com/join"),
-            !code.isEmpty && !username.isEmpty else {
-                let invalidValuesAlert = UIAlertController(title: "Please enter a valid code and username.", message: nil, preferredStyle: .alert)
-                let confirmAction = UIAlertAction(title: "Got it", style: .cancel, handler: nil)
-                invalidValuesAlert.addAction(confirmAction)
+        guard let code = codeField.text, !code.isEmpty else {
+            let invalidValuesAlert = UIAlertController(title: "Please enter a 4-digit code.", message: nil, preferredStyle: .alert)
+            let confirmAction = UIAlertAction(title: "Got it", style: .cancel, handler: nil)
+            invalidValuesAlert.addAction(confirmAction)
             present(invalidValuesAlert, animated: true, completion: nil)
             return
         }
-        
-        let loadingVC = LoadingViewController()
         add(loadingVC)
 
-        var urlRequest = URLRequest(url: url)
-        urlRequest.httpMethod = "POST"
-        let json: [String: Any] = ["code": code, "username": username]
-        let joinJSON = try? JSONSerialization.data(withJSONObject: json, options: .fragmentsAllowed)
-        urlRequest.httpBody = joinJSON
-        urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        channel = appDelegate.pusher?.subscribeToPresenceChannel(channelName: "presence-\(code)")
+    }
+}
 
-        joinCancellable = URLSession.shared.dataTaskPublisher(for: urlRequest)
-            .tryMap { data, response in
-                guard let httpResponse = response as? HTTPURLResponse else {
-                    throw NetworkError.invalidResponse
-                }
-                if httpResponse.statusCode == 404 {
-                    throw NetworkError.notFound
-                }
-                return data
-            }
-            .decode(type: JoinResponse.self, decoder: JSONDecoder())
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { [weak self] completion in
-                loadingVC.remove()
-                if case Subscribers.Completion.failure(_) = completion {
-                    let errorAlert = UIAlertController(title: "Oops, that didn't work. 😦",
-                                                       message: "Try confirming the code is valid and the username you chose is unique.",
-                                                       preferredStyle: .alert)
-                        let confirmAction = UIAlertAction(title: "Got it", style: .cancel, handler: nil)
-                        errorAlert.addAction(confirmAction)
-                    self?.present(errorAlert, animated: true, completion: nil)
-                }
-            }, receiveValue: { [weak self] joinResponse in
-                let gameVC = PlayerLobbyViewController(roomCode: joinResponse.code)
-                self?.navigationController?.pushViewController(gameVC, animated: true)
-            })
+extension JoinRoomViewController: PusherDelegate {
+    func subscribedToChannel(name: String) {
+        loadingVC.remove()
+        guard let channel = channel else {
+            return
+        }
+        let playerLobbyVC = PlayerLobbyViewController(channel: channel)
+        navigationController?.pushViewController(playerLobbyVC, animated: true)
+    }
+    
+    func failedToSubscribeToChannel(name: String, response: URLResponse?, data: String?, error: NSError?) {
+        loadingVC.remove()
+        let presencePrefix = "presence-"
+        let startingIndex = name.index(name.startIndex, offsetBy: presencePrefix.count)
+        let roomCode = name.suffix(from: startingIndex)
+        let alertVC = UIAlertController(title: "Oops, that didn't work. 😦", message: "Unable to connect to room \(roomCode).", preferredStyle: .alert)
+        let confirmAction = UIAlertAction(title: "Got it", style: .cancel, handler: nil)
+        alertVC.addAction(confirmAction)
+        present(alertVC, animated: true, completion: nil)
     }
 }
