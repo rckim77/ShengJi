@@ -65,7 +65,7 @@ final class HostLobbyViewController: UIViewController {
     private var channel: PusherPresenceChannel?
     private var otherMembers: [PusherPresenceChannelMember] = [] {
         didSet {
-            var text = "Users joined:"
+            var text = "Players currently joined:"
             if let hostUsername = channel?.myId {
                 text += "\n \(hostUsername) (me)"
             }
@@ -131,6 +131,7 @@ final class HostLobbyViewController: UIViewController {
 
         appDelegate.pusher?.unsubscribe("presence-\(roomCode)")
         appDelegate.pusher?.delegate = nil
+        navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
     private func setupPusher() {
@@ -150,7 +151,7 @@ final class HostLobbyViewController: UIViewController {
     @objc
     private func leaveButtonTapped() {
         let warningAlert = UIAlertController(title: "Are you sure?", message: "If you leave, all joined players will be kicked out.", preferredStyle: .alert)
-        let confirmAction = UIAlertAction(title: "Leave", style: .default) { _ in
+        let confirmAction = UIAlertAction(title: "Leave", style: .destructive) { _ in
             self.navigationController?.popViewController(animated: true)
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
