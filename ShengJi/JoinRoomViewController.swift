@@ -74,8 +74,33 @@ final class JoinRoomViewController: UIViewController {
             return
         }
         add(loadingVC)
-
-        channel = appDelegate.pusher?.subscribeToPresenceChannel(channelName: "presence-\(code)")
+        
+        guard let url = URL(string: "https://fast-garden-35127.herokuapp.com/join/presence-\(code)") else {
+            return
+        }
+        joinCancellable = URLSession.shared.dataTaskPublisher(for: url)
+            .map { $0.data }
+            .decode(type: JoinResponse.self, decoder: JSONDecoder())
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { [weak self] completion in
+                if case Subscribers.Completion.failure(_) = completion {
+                    self?.loadingVC.remove()
+                    self?.displayErrorAlert(for: "presence-\(code)")
+                }
+            }, receiveValue: { [weak self] response in
+                print("successfully joined valid channel that is already occupied")
+                self?.channel = self?.appDelegate.pusher?.subscribeToPresenceChannel(channelName: "presence-\(code)")
+            })
+    }
+    
+    private func displayErrorAlert(for channelName: String) {
+        let presencePrefix = "presence-"
+        let startingIndex = channelName.index(channelName.startIndex, offsetBy: presencePrefix.count)
+        let roomCode = channelName.suffix(from: startingIndex)
+        let alertVC = UIAlertController(title: "Oops, that didn't work. 😦", message: "Unable to connect to room \(roomCode).", preferredStyle: .alert)
+        let confirmAction = UIAlertAction(title: "Got it", style: .cancel, handler: nil)
+        alertVC.addAction(confirmAction)
+        present(alertVC, animated: true, completion: nil)
     }
 }
 
@@ -91,12 +116,6 @@ extension JoinRoomViewController: PusherDelegate {
     
     func failedToSubscribeToChannel(name: String, response: URLResponse?, data: String?, error: NSError?) {
         loadingVC.remove()
-        let presencePrefix = "presence-"
-        let startingIndex = name.index(name.startIndex, offsetBy: presencePrefix.count)
-        let roomCode = name.suffix(from: startingIndex)
-        let alertVC = UIAlertController(title: "Oops, that didn't work. 😦", message: "Unable to connect to room \(roomCode).", preferredStyle: .alert)
-        let confirmAction = UIAlertAction(title: "Got it", style: .cancel, handler: nil)
-        alertVC.addAction(confirmAction)
-        present(alertVC, animated: true, completion: nil)
+        displayErrorAlert(for: name)
     }
 }
