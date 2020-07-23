@@ -107,19 +107,15 @@ final class JoinRoomViewController: UIViewController {
             .sink(receiveCompletion: { [weak self] completion in
                 loadingVC.remove()
                 if case Subscribers.Completion.failure(_) = completion {
-                    let errorAlert = UIAlertController(title: "Oops, that didn't work. 😦", message: "Try confirming the code is valid and the username you chose is unique.", preferredStyle: .alert)
+                    let errorAlert = UIAlertController(title: "Oops, that didn't work. 😦",
+                                                       message: "Try confirming the code is valid and the username you chose is unique.",
+                                                       preferredStyle: .alert)
                         let confirmAction = UIAlertAction(title: "Got it", style: .cancel, handler: nil)
                         errorAlert.addAction(confirmAction)
                     self?.present(errorAlert, animated: true, completion: nil)
                 }
             }, receiveValue: { [weak self] joinResponse in
-                guard let gameVC = GameViewController(roomCode: joinResponse.code) else {
-                    let errorAlert = UIAlertController(title: "Oops, that didn't work. 😦", message: "Looks like there's a backend issue.", preferredStyle: .alert)
-                        let confirmAction = UIAlertAction(title: "Got it", style: .cancel, handler: nil)
-                        errorAlert.addAction(confirmAction)
-                    self?.present(errorAlert, animated: true, completion: nil)
-                    return
-                }
+                let gameVC = PlayerLobbyViewController(roomCode: joinResponse.code)
                 self?.navigationController?.pushViewController(gameVC, animated: true)
             })
     }

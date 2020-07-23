@@ -9,6 +9,11 @@
 import UIKit
 
 extension UIViewController {
+
+    var appDelegate: AppDelegate {
+        UIApplication.shared.delegate as! AppDelegate
+    }
+
     func add(_ childVC: UIViewController) {
         addChild(childVC)
         view.addSubview(childVC.view)

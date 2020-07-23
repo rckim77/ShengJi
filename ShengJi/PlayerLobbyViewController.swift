@@ -10,7 +10,16 @@ import UIKit
 import SnapKit
 import PusherSwift
 
-final class GameViewController: UIViewController {
+//final class AuthRequestBuilder: AuthRequestBuilderProtocol {
+//    func requestFor(socketID: String, channelName: String) -> URLRequest? {
+//        var request = URLRequest(url: URL(string: "https://fast-garden-35127.herokuapp.com/builder")!)
+//        request.httpMethod = "POST"
+//        request.httpBody = "socket_id=\(socketID)&channel_name=\(channelName)".data(using: .utf8)
+//        return request
+//    }
+//}
+
+final class PlayerLobbyViewController: UIViewController {
     
     private lazy var roomLabel: UILabel = {
         let label = UILabel()
@@ -21,21 +30,10 @@ final class GameViewController: UIViewController {
     }()
     
     private let roomCode: String
-    private let isHost: Bool
-    private let pusher: Pusher
     private var channel: PusherChannel?
     
-    init?(roomCode: String, isHost: Bool = false) {
+    init(roomCode: String) {
         self.roomCode = roomCode
-        self.isHost = isHost
-        
-        // Pusher config
-        guard let pusherKey = AppDelegate.getAPIKeys()?.pusher else {
-            return nil
-        }
-        let options = PusherClientOptions(host: .cluster("us2"))
-        pusher = Pusher(key: pusherKey, options: options)
-
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -62,16 +60,18 @@ final class GameViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
-        pusher.disconnect()
+        appDelegate.pusher?.disconnect()
+        appDelegate.pusher?.unsubscribe(roomCode)
+        appDelegate.pusher?.delegate = nil
     }
     
     private func setupPusher() {
-        pusher.delegate = self
-        channel = pusher.subscribe(roomCode)
-        pusher.connect()
+        appDelegate.pusher?.delegate = self
+        channel = appDelegate.pusher?.subscribe(roomCode)
+        appDelegate.pusher?.connect()
     }
 }
-extension GameViewController: PusherDelegate {
+extension PlayerLobbyViewController: PusherDelegate {
     /// Used for Pusher debugging
     func debugLog(message: String) {
         print("Pusher debug: \(message)")

@@ -13,10 +13,17 @@ import PusherSwift
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    var pusher: Pusher?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         let navigationVC = UINavigationController(rootViewController: MenuViewController())
         window?.rootViewController = navigationVC
+        
+        if let pusherKey = AppDelegate.getAPIKeys()?.pusher {
+            let options = PusherClientOptions(host: .cluster("us2"))
+            pusher = Pusher(key: pusherKey, options: options)
+        }
+        
         return true
     }
     

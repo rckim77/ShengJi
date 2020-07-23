@@ -53,7 +53,6 @@ final class HostLobbyViewController: UIViewController {
     }()
     
     private let roomCode: String
-    private let pusher: Pusher
     private var channel: PusherChannel?
     private var users = [String]()
     private var usersJoinedText: String {
@@ -65,16 +64,8 @@ final class HostLobbyViewController: UIViewController {
     }
     private var codeCancellable: AnyCancellable?
     
-    init?(roomCode: String) {
+    init(roomCode: String) {
         self.roomCode = roomCode
-
-        // Pusher config
-        guard let pusherKey = AppDelegate.getAPIKeys()?.pusher else {
-            return nil
-        }
-        let options = PusherClientOptions(host: .cluster("us2"))
-        pusher = Pusher(key: pusherKey, options: options)
-        
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -119,12 +110,15 @@ final class HostLobbyViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
-        pusher.disconnect()
+        appDelegate.pusher?.disconnect()
+        appDelegate.pusher?.unsubscribe(roomCode)
+        appDelegate.pusher?.delegate = nil
     }
     
     private func setupPusher() {
-        pusher.delegate = self
-        channel = pusher.subscribe(roomCode)
+        appDelegate.pusher?.delegate = self
+        channel = appDelegate.pusher?.subscribe(roomCode)
+        appDelegate.pusher?.connect()
         let _ = channel?.bind(eventName: "user-join", eventCallback: { event in
             guard let data = event.data?.data(using: .utf8),
                 let json = try? JSONDecoder().decode(JoinEvent.self, from: data) else {
@@ -136,7 +130,6 @@ final class HostLobbyViewController: UIViewController {
             self.usersJoinedLabel.text = self.usersJoinedText
             self.startButton.isEnabled = self.users.count == 3
         })
-        pusher.connect()
     }
     
     @objc
@@ -148,6 +141,6 @@ final class HostLobbyViewController: UIViewController {
 extension HostLobbyViewController: PusherDelegate {
     /// Used for Pusher debugging
     func debugLog(message: String) {
-        print("Pusher debug: \(message)")
+        print(message)
     }
 }
