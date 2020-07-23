@@ -20,6 +20,15 @@ final class PlayerLobbyViewController: UIViewController {
         label.textColor = .systemGray
         return label
     }()
+    
+    private lazy var waitingLabel: UILabel = {
+        let label = UILabel()
+        label.font = .preferredFont(forTextStyle: .title2)
+        label.textAlignment = .center
+        label.textColor = .systemGray
+        label.text = "Waiting for host..."
+        return label
+    }()
 
     private var roomCode: String {
         let presencePrefix = "presence-"
@@ -45,9 +54,15 @@ final class PlayerLobbyViewController: UIViewController {
         
         view.backgroundColor = .systemBackground
         view.addSubview(roomLabel)
+        view.addSubview(waitingLabel)
         
         roomLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(24)
+            make.leading.trailing.equalToSuperview().inset(16)
+        }
+        
+        waitingLabel.snp.makeConstraints { make in
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(24)
             make.leading.trailing.equalToSuperview().inset(16)
         }
         
