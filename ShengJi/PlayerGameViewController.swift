@@ -12,38 +12,10 @@ import PusherSwift
 
 final class PlayerGameViewController: UIViewController {
     
-    private lazy var roomLabel: UILabel = {
-        let label = UILabel()
-        label.font = .preferredFont(forTextStyle: .title2)
-        label.numberOfLines = 0
-        label.textAlignment = .center
-        label.textColor = .systemGray
-        return label
-    }()
-    
-    private lazy var waitingLabel: UILabel = {
-        let label = UILabel()
-        label.font = .preferredFont(forTextStyle: .title2)
-        label.textAlignment = .center
-        label.textColor = .systemGray
-        label.text = "Waiting for host..."
-        return label
-    }()
-
-    private var roomCode: String {
-        let presencePrefix = "presence-"
-        let startingIndex = channelName.index(channelName.startIndex, offsetBy: presencePrefix.count)
-        return String(channelName.suffix(from: startingIndex))
-    }
+    private var lobbyView: PlayerLobbyView?
     private let channelName: String
     private var channel: PusherPresenceChannel?
     private let hostUsername: String
-    private var playerUsername: String {
-        channel?.myId ?? "unknown"
-    }
-    private var roomLabelText: String {
-        "You're in room \(roomCode). Your username is \(playerUsername). Please wait for \(hostUsername) to begin the game."
-    }
     
     init(channelName: String, hostUsername: String) {
         self.channelName = channelName
@@ -59,20 +31,6 @@ final class PlayerGameViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .systemBackground
-        view.addSubview(roomLabel)
-        view.addSubview(waitingLabel)
-        
-        roomLabel.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(24)
-            make.leading.trailing.equalToSuperview().inset(16)
-        }
-        
-        waitingLabel.snp.makeConstraints { make in
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(24)
-            make.leading.trailing.equalToSuperview().inset(16)
-        }
-        
-        roomLabel.text = roomLabelText
         setupPusher()
     }
     
@@ -97,8 +55,20 @@ final class PlayerGameViewController: UIViewController {
         })
         
         channel?.bind(eventName: "pusher:subscription_succeeded", callback: { [weak self] members in
-            self?.roomLabel.text = self?.roomLabelText
-            // access to other members in room
+            guard let strongSelf = self, let playerUsername = strongSelf.channel?.myId else {
+                return
+            }
+            
+            strongSelf.lobbyView = PlayerLobbyView(channelName: strongSelf.channelName,
+                                                   playerUsername: playerUsername,
+                                                   hostUsername: strongSelf.hostUsername)
+            guard let lobbyView = strongSelf.lobbyView else {
+                return
+            }
+            strongSelf.view.addSubview(lobbyView)
+            lobbyView.snp.makeConstraints { make in
+                make.edges.equalToSuperview()
+            }
         })
         
         channel?.bind(eventName: "start", callback: { _ in
