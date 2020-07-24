@@ -82,7 +82,7 @@ final class MenuViewController: UIViewController {
             .sink(receiveCompletion: { _ in
                 loadingVC.remove()
             }, receiveValue: { [weak self] code in
-                let lobbyVC = HostLobbyViewController(roomCode: "\(code)")
+                let lobbyVC = HostGameViewController(roomCode: "\(code)")
                 self?.navigationController?.pushViewController(lobbyVC, animated: true)
             })
     }
