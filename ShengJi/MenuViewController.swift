@@ -68,12 +68,13 @@ final class MenuViewController: UIViewController {
     
     @objc
     private func createButtonTapped() {
-        let loadingVC = LoadingViewController()
-        add(loadingVC)
-        
         guard let url = URL(string: "https://fast-garden-35127.herokuapp.com/random_code") else {
             return
         }
+
+        let loadingVC = LoadingViewController()
+        add(loadingVC)
+        
         codeCancellable = URLSession.shared.dataTaskPublisher(for: url)
             .map { $0.data }
             .decode(type: Int.self, decoder: JSONDecoder())

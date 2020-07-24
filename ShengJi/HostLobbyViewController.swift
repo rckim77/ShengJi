@@ -76,6 +76,7 @@ final class HostLobbyViewController: UIViewController {
             startButton.isEnabled = otherMembers.count == 3
         }
     }
+    private var startCancellable: AnyCancellable?
     
     init(roomCode: String) {
         self.roomCode = roomCode
@@ -146,9 +147,21 @@ final class HostLobbyViewController: UIViewController {
     
     @objc
     private func startButtonTapped() {
-        // make network call to indicate host has begun the game, for players bind to event name
-        let gameVC = GameViewController()
-        navigationController?.pushViewController(gameVC, animated: true)
+        guard let channelName = channel?.name,
+            let url = URL(string: "https://fast-garden-35127.herokuapp.com/start/\(channelName)") else {
+            return
+        }
+
+        let loadingVC = LoadingViewController()
+        add(loadingVC)
+        
+        startCancellable = URLSession.shared.dataTaskPublisher(for: url)
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { _ in
+                loadingVC.remove()
+            }, receiveValue: { _ in
+                print("started game and notified other users")
+            })
     }
     
     @objc

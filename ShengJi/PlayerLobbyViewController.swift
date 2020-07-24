@@ -95,9 +95,14 @@ final class PlayerLobbyViewController: UIViewController {
                 self?.present(hostLeftAlert, animated: true, completion: nil)
             }
         })
+        
         channel?.bind(eventName: "pusher:subscription_succeeded", callback: { [weak self] members in
             self?.roomLabel.text = self?.roomLabelText
             // access to other members in room
+        })
+        
+        channel?.bind(eventName: "start", callback: { _ in
+            print("HOST HAS STARTED GAME")
         })
     }
 }
