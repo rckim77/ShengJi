@@ -88,7 +88,7 @@ final class JoinRoomViewController: UIViewController {
                 }
             }, receiveValue: { [weak self] response in
                 self?.loadingVC.remove()
-                let playerLobbbyVC = PlayerLobbyViewController(channelName: response.code, hostUsername: response.host)
+                let playerLobbbyVC = PlayerGameViewController(channelName: response.code, hostUsername: response.host)
                 self?.navigationController?.pushViewController(playerLobbbyVC, animated: true)
             })
     }

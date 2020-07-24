@@ -1,5 +1,5 @@
 //
-//  GameViewController.swift
+//  PlayerGameViewController.swift
 //  ShengJi
 //
 //  Created by Ray Kim on 7/21/20.
@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import PusherSwift
 
-final class PlayerLobbyViewController: UIViewController {
+final class PlayerGameViewController: UIViewController {
     
     private lazy var roomLabel: UILabel = {
         let label = UILabel()
@@ -106,7 +106,7 @@ final class PlayerLobbyViewController: UIViewController {
         })
     }
 }
-extension PlayerLobbyViewController: PusherDelegate {
+extension PlayerGameViewController: PusherDelegate {
     /// Used for Pusher debugging
     func debugLog(message: String) {
         print("Pusher debug: \(message)")
