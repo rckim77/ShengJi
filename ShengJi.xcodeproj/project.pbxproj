@@ -101,11 +101,10 @@
 				ECCACB8824C247250077CD89 /* AppDelegate.swift */,
 				ECCACB9C24C248EF0077CD89 /* MenuViewController.swift */,
 				ECCACBA024C4F9A20077CD89 /* HostLobbyViewController.swift */,
-				ECCACBB624CA4FE20077CD89 /* GameViewController.swift */,
 				ECCACB9E24C4D4F00077CD89 /* JoinRoomViewController.swift */,
 				ECCACBAE24C7C8700077CD89 /* PlayerLobbyViewController.swift */,
-				ECCACBA224C69A070077CD89 /* LoadingViewController.swift */,
-				ECCACBA424C69B710077CD89 /* Extensions.swift */,
+				ECCACBB624CA4FE20077CD89 /* GameViewController.swift */,
+				ECCACBB824CA9CB00077CD89 /* Shared */,
 				ECCACBAD24C6B0A20077CD89 /* Models */,
 				ECCACBA924C6A4770077CD89 /* apiKeys.plist */,
 				ECCACB8E24C247270077CD89 /* Assets.xcassets */,
@@ -132,6 +131,15 @@
 				ECCACBB024C7EEE90077CD89 /* NetworkError.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		ECCACBB824CA9CB00077CD89 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				ECCACBA224C69A070077CD89 /* LoadingViewController.swift */,
+				ECCACBA424C69B710077CD89 /* Extensions.swift */,
+			);
+			path = Shared;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
