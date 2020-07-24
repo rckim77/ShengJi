@@ -21,6 +21,7 @@
 		ECCACBAF24C7C8700077CD89 /* PlayerLobbyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCACBAE24C7C8700077CD89 /* PlayerLobbyViewController.swift */; };
 		ECCACBB124C7EEE90077CD89 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCACBB024C7EEE90077CD89 /* NetworkError.swift */; };
 		ECCACBB324C8F0730077CD89 /* JoinResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCACBB224C8F0730077CD89 /* JoinResponse.swift */; };
+		ECCACBB724CA4FE20077CD89 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCACBB624CA4FE20077CD89 /* GameViewController.swift */; };
 		F2ACBAC8C88F57D0A4CB4A1B /* Pods_ShengJi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A2411FE280B73A920C93D27 /* Pods_ShengJi.framework */; };
 /* End PBXBuildFile section */
 
@@ -44,6 +45,7 @@
 		ECCACBAE24C7C8700077CD89 /* PlayerLobbyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerLobbyViewController.swift; sourceTree = "<group>"; };
 		ECCACBB024C7EEE90077CD89 /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 		ECCACBB224C8F0730077CD89 /* JoinResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinResponse.swift; sourceTree = "<group>"; };
+		ECCACBB624CA4FE20077CD89 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +101,7 @@
 				ECCACB8824C247250077CD89 /* AppDelegate.swift */,
 				ECCACB9C24C248EF0077CD89 /* MenuViewController.swift */,
 				ECCACBA024C4F9A20077CD89 /* HostLobbyViewController.swift */,
+				ECCACBB624CA4FE20077CD89 /* GameViewController.swift */,
 				ECCACB9E24C4D4F00077CD89 /* JoinRoomViewController.swift */,
 				ECCACBAE24C7C8700077CD89 /* PlayerLobbyViewController.swift */,
 				ECCACBA224C69A070077CD89 /* LoadingViewController.swift */,
@@ -256,6 +259,7 @@
 				ECCACB9F24C4D4F00077CD89 /* JoinRoomViewController.swift in Sources */,
 				ECCACBB124C7EEE90077CD89 /* NetworkError.swift in Sources */,
 				ECCACBAC24C6B08D0077CD89 /* JoinEvent.swift in Sources */,
+				ECCACBB724CA4FE20077CD89 /* GameViewController.swift in Sources */,
 				ECCACBA124C4F9A20077CD89 /* HostLobbyViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

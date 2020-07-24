@@ -73,6 +73,7 @@ final class HostLobbyViewController: UIViewController {
                 text += "\n \(member.userId)"
             }
             usersJoinedLabel.text = text
+            startButton.isEnabled = otherMembers.count == 3
         }
     }
     
@@ -145,7 +146,9 @@ final class HostLobbyViewController: UIViewController {
     
     @objc
     private func startButtonTapped() {
-        
+        // make network call to indicate host has begun the game, for players bind to event name
+        let gameVC = GameViewController()
+        navigationController?.pushViewController(gameVC, animated: true)
     }
     
     @objc
