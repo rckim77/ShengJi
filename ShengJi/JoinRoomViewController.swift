@@ -19,6 +19,7 @@ final class JoinRoomViewController: UIViewController {
         textField.borderStyle = .roundedRect
         textField.backgroundColor = .systemGray6
         textField.textAlignment = .center
+        textField.keyboardType = .numberPad
         return textField
     }()
     
@@ -51,6 +52,8 @@ final class JoinRoomViewController: UIViewController {
             make.centerX.equalToSuperview()
             make.top.equalTo(codeField.snp.bottom).offset(28)
         }
+        
+        codeField.becomeFirstResponder()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -82,12 +85,11 @@ final class JoinRoomViewController: UIViewController {
             .decode(type: JoinResponse.self, decoder: JSONDecoder())
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] completion in
+                self?.loadingVC.remove()
                 if case Subscribers.Completion.failure(_) = completion {
-                    self?.loadingVC.remove()
                     self?.displayErrorAlert(for: "presence-\(code)")
                 }
             }, receiveValue: { [weak self] response in
-                self?.loadingVC.remove()
                 let playerLobbbyVC = PlayerGameViewController(channelName: response.code, hostUsername: response.host)
                 self?.navigationController?.pushViewController(playerLobbbyVC, animated: true)
             })
