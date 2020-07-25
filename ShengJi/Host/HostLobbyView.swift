@@ -12,6 +12,7 @@ import SnapKit
 protocol HostLobbyViewDelegate: class {
     func didTapLeaveButton()
     func didTapStartButton()
+    func didTapPairButton()
     func didDebugTap()
 }
 
@@ -50,12 +51,12 @@ final class HostLobbyView: UIView {
         return label
     }()
     
-    private lazy var leaveButton: UIButton = {
+    private lazy var pairButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Leave room", for: .normal)
+        button.setTitle("Pair", for: .normal)
         button.setTitleColor(.systemBlue, for: .normal)
         button.titleLabel?.font = .preferredFont(forTextStyle: .title3)
-        button.addTarget(self, action: #selector(leaveButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(pairButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -67,6 +68,15 @@ final class HostLobbyView: UIView {
         button.titleLabel?.font = .preferredFont(forTextStyle: .title1)
         button.addTarget(self, action: #selector(startButtonTapped), for: .touchUpInside)
         button.isEnabled = false
+        return button
+    }()
+    
+    private lazy var leaveButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Leave room", for: .normal)
+        button.setTitleColor(.systemBlue, for: .normal)
+        button.titleLabel?.font = .preferredFont(forTextStyle: .title3)
+        button.addTarget(self, action: #selector(leaveButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -114,6 +124,7 @@ final class HostLobbyView: UIView {
         addSubview(roomCodeLabel)
         addSubview(roomCodeTextView)
         addSubview(usersJoinedLabel)
+        addSubview(pairButton)
         addSubview(startButton)
         addSubview(leaveButton)
         
@@ -135,6 +146,11 @@ final class HostLobbyView: UIView {
         usersJoinedLabel.snp.makeConstraints { make in
             make.top.equalTo(roomCodeTextView.snp.bottom).offset(40)
             make.leading.trailing.equalToSuperview().inset(16)
+        }
+        
+        pairButton.snp.makeConstraints { make in
+            make.bottom.equalTo(startButton.snp.top).inset(-16)
+            make.centerX.equalToSuperview()
         }
         
         startButton.snp.makeConstraints { make in
@@ -178,6 +194,11 @@ final class HostLobbyView: UIView {
     @objc
     private func startButtonTapped() {
         delegate?.didTapStartButton()
+    }
+    
+    @objc
+    private func pairButtonTapped() {
+        delegate?.didTapPairButton()
     }
     
     @objc

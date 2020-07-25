@@ -17,6 +17,7 @@ final class HostGameViewController: UIViewController {
     private var gameStartView: GameStartView?
     /// Note: this does not include the 'presence-' prefix
     private let roomCode: String
+    private var hostUsername: String?
     private var channel: PusherPresenceChannel?
     private var startCancellable: AnyCancellable?
     
@@ -72,6 +73,7 @@ extension HostGameViewController: PusherDelegate {
         guard let username = channel?.myId else {
             return
         }
+        hostUsername = username
         lobbyView = HostLobbyView(roomCode: roomCode, username: username, delegate: self)
         guard let lobbyView = lobbyView else {
             return
@@ -98,6 +100,28 @@ extension HostGameViewController: HostLobbyViewDelegate {
     func didDebugTap() {
         let debugVC = DebugViewController(delegate: self)
         present(debugVC, animated: true, completion: nil)
+    }
+    
+    func didTapPairButton() {
+        let pairAlert = UIAlertController(title: "Who would you like to pair?", message: nil, preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        pairAlert.addAction(cancelAction)
+        pairAlert.addTextField { textField in
+            textField.placeholder = "Enter a username"
+            textField.text = self.hostUsername
+        }
+        pairAlert.addTextField { textField in
+            textField.placeholder = "Enter a username"
+        }
+        let pairAction = UIAlertAction(title: "Pair", style: .default) { action in
+            guard let firstUsername = pairAlert.textFields?.first?.text,
+                let secondUsername = pairAlert.textFields?[1].text else {
+                    return
+            }
+            print("\(firstUsername) paired with \(secondUsername)")
+        }
+        pairAlert.addAction(pairAction)
+        present(pairAlert, animated: true, completion: nil)
     }
     
     func didTapStartButton() {
