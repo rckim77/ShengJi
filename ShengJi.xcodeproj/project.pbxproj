@@ -108,7 +108,6 @@
 				ECCACB9C24C248EF0077CD89 /* MenuViewController.swift */,
 				ECCACBC124CBEFE90077CD89 /* Host */,
 				ECCACBC224CBEFF00077CD89 /* Player */,
-				ECCACBBF24CBEB420077CD89 /* DebugViewController.swift */,
 				ECCACBBD24CBE40C0077CD89 /* GameStartView.swift */,
 				ECCACBB824CA9CB00077CD89 /* Shared */,
 				ECCACBAD24C6B0A20077CD89 /* Models */,
@@ -153,6 +152,7 @@
 			children = (
 				ECCACBA024C4F9A20077CD89 /* HostGameViewController.swift */,
 				ECCACBB924CAA3680077CD89 /* HostLobbyView.swift */,
+				ECCACBBF24CBEB420077CD89 /* DebugViewController.swift */,
 			);
 			path = Host;
 			sourceTree = "<group>";
