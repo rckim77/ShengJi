@@ -16,6 +16,10 @@ protocol HostLobbyViewDelegate: class {
 
 final class HostLobbyView: UIView {
     
+    enum LobbyState {
+        case uninitialized, loading, loaded
+    }
+    
     private lazy var roomCodeLabel: UILabel = {
         let label = UILabel()
         label.font = .preferredFont(forTextStyle: .title2)
@@ -69,10 +73,26 @@ final class HostLobbyView: UIView {
         didSet {
             var text = "Players currently joined:\n\(username) (me)"
             for username in otherUsernames {
-                text += "\n \(username)"
+                text += "\n\(username)"
             }
             usersJoinedLabel.text = text
             startButton.isEnabled = otherUsernames.count == 3
+        }
+    }
+    
+    private var lobbyState: LobbyState = .uninitialized {
+        didSet {
+            switch lobbyState {
+            case .loading:
+                startButton.isEnabled = false
+                startButton.setTitle("Starting game...", for: .disabled)
+            case .loaded:
+                startButton.isEnabled = false
+                startButton.setTitle("Game has started", for: .disabled)
+            case .uninitialized:
+                startButton.setTitle("Waiting for players...", for: .disabled)
+                startButton.setTitle("Start game", for: .normal)
+            }
         }
     }
     
@@ -134,6 +154,10 @@ final class HostLobbyView: UIView {
     
     func clearUsernames() {
         otherUsernames = []
+    }
+    
+    func configure(_ state: LobbyState) {
+        lobbyState = state
     }
     
     @objc

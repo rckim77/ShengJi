@@ -89,13 +89,12 @@ extension HostGameViewController: HostLobbyViewDelegate {
             return
         }
 
-        let loadingVC = LoadingViewController()
-        add(loadingVC)
+        lobbyView?.configure(.loading)
         
         startCancellable = URLSession.shared.dataTaskPublisher(for: url)
             .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { _ in
-                loadingVC.remove()
+            .sink(receiveCompletion: { [weak self] _ in
+                self?.lobbyView?.configure(.loaded)
             }, receiveValue: { _ in
                 print("started game and notified other users")
             })
