@@ -77,7 +77,7 @@ final class HostLobbyView: UIView {
                 text += "\n\(username)"
             }
             usersJoinedLabel.text = text
-            startButton.isEnabled = otherUsernames.count == 3
+            startButton.isEnabled = otherUsernames.count == 1
         }
     }
     

@@ -9,10 +9,6 @@
 import UIKit
 
 extension UIViewController {
-    
-    enum ParticipantType {
-        case host, player
-    }
 
     var appDelegate: AppDelegate {
         UIApplication.shared.delegate as! AppDelegate

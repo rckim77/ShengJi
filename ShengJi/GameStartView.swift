@@ -25,18 +25,29 @@ final class GameStartView: UIView {
     private lazy var drawDeckLabel: UILabel = {
         let label = UILabel()
         label.text = "🂠"
-        label.font = .systemFont(ofSize: 100)
+        label.font = .systemFont(ofSize: 108)
         return label
     }()
     
+    private lazy var drawDeckButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Draw", for: .normal)
+        button.titleLabel?.font = .preferredFont(forTextStyle: .title3)
+        button.addTarget(self, action: #selector(drawDeckButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    private let participantType: ParticipantType
     private weak var delegate: GameStartViewDelegate?
     
-    init(delegate: GameStartViewDelegate) {
+    init(as participantType: ParticipantType, delegate: GameStartViewDelegate) {
+        self.participantType = participantType
         self.delegate = delegate
         super.init(frame: .zero)
         
         addSubview(leaveButton)
         addSubview(drawDeckLabel)
+        addSubview(drawDeckButton)
         
         leaveButton.snp.makeConstraints { make in
             make.top.equalTo(safeAreaLayoutGuide.snp.top).inset(16)
@@ -44,8 +55,16 @@ final class GameStartView: UIView {
         }
         
         drawDeckLabel.snp.makeConstraints { make in
-            make.centerX.centerY.equalToSuperview()
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview().offset(-30)
         }
+        
+        drawDeckButton.snp.makeConstraints { make in
+            make.top.equalTo(drawDeckLabel.snp.bottom).offset(8)
+            make.centerX.equalToSuperview()
+        }
+        
+        leaveButton.isHidden = participantType == .player
     }
     
     required init?(coder: NSCoder) {
@@ -55,5 +74,10 @@ final class GameStartView: UIView {
     @objc
     private func leaveButtonTapped() {
         self.delegate?.gameStartViewDidTapLeaveButton()
+    }
+    
+    @objc
+    private func drawDeckButtonTapped() {
+        
     }
 }

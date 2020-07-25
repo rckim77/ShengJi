@@ -13,6 +13,7 @@ import PusherSwift
 final class PlayerGameViewController: UIViewController {
     
     private var lobbyView: PlayerLobbyView?
+    private var gameStartView: GameStartView?
     private let channelName: String
     private var channel: PusherPresenceChannel?
     private let hostUsername: String
@@ -80,9 +81,19 @@ final class PlayerGameViewController: UIViewController {
         
         channel?.bind(eventName: "start", callback: { [weak self] _ in
             self?.lobbyView?.isHidden = true
-            self?.navigationController?.setNavigationBarHidden(true, animated: true)
-            
+            self?.startGame()
         })
+    }
+    
+    private func startGame() {
+        gameStartView = GameStartView(as: .player, delegate: self)
+        guard let gameStartView = gameStartView else {
+            return
+        }
+        view.addSubview(gameStartView)
+        gameStartView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
     }
 }
 
@@ -96,5 +107,10 @@ extension PlayerGameViewController: PusherDelegate {
 extension PlayerGameViewController: PlayerLobbyViewDelegate {
     func playerLobbyViewDidTapLeave() {
         showLeaveWarningAlert(as: .player)
+    }
+}
+
+extension PlayerGameViewController: GameStartViewDelegate {
+    func gameStartViewDidTapLeaveButton() { // for host only
     }
 }

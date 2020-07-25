@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EC2A224C24CBFA0F007920D4 /* ParticipantType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2A224B24CBFA0F007920D4 /* ParticipantType.swift */; };
 		ECCACB8924C247250077CD89 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCACB8824C247250077CD89 /* AppDelegate.swift */; };
 		ECCACB8F24C247270077CD89 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ECCACB8E24C247270077CD89 /* Assets.xcassets */; };
 		ECCACB9224C247270077CD89 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ECCACB9124C247270077CD89 /* Preview Assets.xcassets */; };
@@ -32,6 +33,7 @@
 		0B994224B80E1AF25B92DD92 /* Pods-ShengJi.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShengJi.release.xcconfig"; path = "Target Support Files/Pods-ShengJi/Pods-ShengJi.release.xcconfig"; sourceTree = "<group>"; };
 		287F0557ED6CCA52A7C01E06 /* Pods-ShengJi.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShengJi.debug.xcconfig"; path = "Target Support Files/Pods-ShengJi/Pods-ShengJi.debug.xcconfig"; sourceTree = "<group>"; };
 		6A2411FE280B73A920C93D27 /* Pods_ShengJi.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ShengJi.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		EC2A224B24CBFA0F007920D4 /* ParticipantType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantType.swift; sourceTree = "<group>"; };
 		ECCACB8524C247250077CD89 /* ShengJi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShengJi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ECCACB8824C247250077CD89 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ECCACB8E24C247270077CD89 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -142,6 +144,7 @@
 			isa = PBXGroup;
 			children = (
 				ECCACBA224C69A070077CD89 /* LoadingViewController.swift */,
+				EC2A224B24CBFA0F007920D4 /* ParticipantType.swift */,
 				ECCACBA424C69B710077CD89 /* Extensions.swift */,
 			);
 			path = Shared;
@@ -290,6 +293,7 @@
 				ECCACBBC24CAA8600077CD89 /* PlayerLobbyView.swift in Sources */,
 				ECCACB9D24C248EF0077CD89 /* MenuViewController.swift in Sources */,
 				ECCACBA324C69A070077CD89 /* LoadingViewController.swift in Sources */,
+				EC2A224C24CBFA0F007920D4 /* ParticipantType.swift in Sources */,
 				ECCACBAF24C7C8700077CD89 /* PlayerGameViewController.swift in Sources */,
 				ECCACBC024CBEB420077CD89 /* DebugViewController.swift in Sources */,
 				ECCACB9F24C4D4F00077CD89 /* JoinRoomViewController.swift in Sources */,

@@ -56,7 +56,7 @@ final class HostGameViewController: UIViewController {
     }
     
     private func startGame() {
-        gameStartView = GameStartView(delegate: self)
+        gameStartView = GameStartView(as: .host, delegate: self)
         guard let gameStartView = gameStartView else {
             return
         }
