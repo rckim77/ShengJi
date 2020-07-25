@@ -17,9 +17,16 @@ final class GameStartView: UIView {
     
     private lazy var leaveButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Leave", for: .normal)
+        button.setTitle("End game", for: .normal)
         button.addTarget(self, action: #selector(leaveButtonTapped), for: .touchUpInside)
         return button
+    }()
+    
+    private lazy var drawDeckLabel: UILabel = {
+        let label = UILabel()
+        label.text = "🂠"
+        label.font = .systemFont(ofSize: 100)
+        return label
     }()
     
     private weak var delegate: GameStartViewDelegate?
@@ -29,10 +36,15 @@ final class GameStartView: UIView {
         super.init(frame: .zero)
         
         addSubview(leaveButton)
+        addSubview(drawDeckLabel)
         
         leaveButton.snp.makeConstraints { make in
-            make.top.equalTo(safeAreaLayoutGuide.snp.top).offset(24)
-            make.leading.equalToSuperview().inset(24)
+            make.top.equalTo(safeAreaLayoutGuide.snp.top).inset(16)
+            make.leading.equalToSuperview().inset(16)
+        }
+        
+        drawDeckLabel.snp.makeConstraints { make in
+            make.centerX.centerY.equalToSuperview()
         }
     }
     
