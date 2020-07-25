@@ -106,13 +106,10 @@
 			children = (
 				ECCACB8824C247250077CD89 /* AppDelegate.swift */,
 				ECCACB9C24C248EF0077CD89 /* MenuViewController.swift */,
-				ECCACBA024C4F9A20077CD89 /* HostGameViewController.swift */,
-				ECCACBB924CAA3680077CD89 /* HostLobbyView.swift */,
+				ECCACBC124CBEFE90077CD89 /* Host */,
+				ECCACBC224CBEFF00077CD89 /* Player */,
 				ECCACBBF24CBEB420077CD89 /* DebugViewController.swift */,
 				ECCACBBD24CBE40C0077CD89 /* GameStartView.swift */,
-				ECCACB9E24C4D4F00077CD89 /* JoinRoomViewController.swift */,
-				ECCACBAE24C7C8700077CD89 /* PlayerGameViewController.swift */,
-				ECCACBBB24CAA8600077CD89 /* PlayerLobbyView.swift */,
 				ECCACBB824CA9CB00077CD89 /* Shared */,
 				ECCACBAD24C6B0A20077CD89 /* Models */,
 				ECCACBA924C6A4770077CD89 /* apiKeys.plist */,
@@ -149,6 +146,25 @@
 				ECCACBA424C69B710077CD89 /* Extensions.swift */,
 			);
 			path = Shared;
+			sourceTree = "<group>";
+		};
+		ECCACBC124CBEFE90077CD89 /* Host */ = {
+			isa = PBXGroup;
+			children = (
+				ECCACBA024C4F9A20077CD89 /* HostGameViewController.swift */,
+				ECCACBB924CAA3680077CD89 /* HostLobbyView.swift */,
+			);
+			path = Host;
+			sourceTree = "<group>";
+		};
+		ECCACBC224CBEFF00077CD89 /* Player */ = {
+			isa = PBXGroup;
+			children = (
+				ECCACB9E24C4D4F00077CD89 /* JoinRoomViewController.swift */,
+				ECCACBAE24C7C8700077CD89 /* PlayerGameViewController.swift */,
+				ECCACBBB24CAA8600077CD89 /* PlayerLobbyView.swift */,
+			);
+			path = Player;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
