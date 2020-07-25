@@ -12,6 +12,7 @@ import SnapKit
 protocol HostLobbyViewDelegate: class {
     func didTapLeaveButton()
     func didTapStartButton()
+    func didDebugTap()
 }
 
 final class HostLobbyView: UIView {
@@ -82,17 +83,21 @@ final class HostLobbyView: UIView {
     
     private var lobbyState: LobbyState = .uninitialized {
         didSet {
+            var disabledCopy = ""
+            
             switch lobbyState {
             case .loading:
                 startButton.isEnabled = false
-                startButton.setTitle("Starting game...", for: .disabled)
+                disabledCopy = "Starting game..."
             case .loaded:
                 startButton.isEnabled = false
-                startButton.setTitle("Game has started", for: .disabled)
+                disabledCopy = "Game has started"
             case .uninitialized:
-                startButton.setTitle("Waiting for players...", for: .disabled)
+                disabledCopy = "Waiting for players..."
                 startButton.setTitle("Start game", for: .normal)
             }
+            
+            startButton.setTitle(disabledCopy, for: .disabled)
         }
     }
     
@@ -111,6 +116,11 @@ final class HostLobbyView: UIView {
         addSubview(usersJoinedLabel)
         addSubview(startButton)
         addSubview(leaveButton)
+        
+        let debugTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(debugTapped))
+        debugTapGestureRecognizer.numberOfTapsRequired = 2
+        debugTapGestureRecognizer.numberOfTouchesRequired = 2
+        addGestureRecognizer(debugTapGestureRecognizer)
         
         roomCodeLabel.snp.makeConstraints { make in
             make.top.equalTo(safeAreaLayoutGuide.snp.top).inset(32)
@@ -168,5 +178,11 @@ final class HostLobbyView: UIView {
     @objc
     private func startButtonTapped() {
         delegate?.didTapStartButton()
+    }
+    
+    @objc
+    private func debugTapped() {
+        // TODO: For release version, do not call delegate.
+        delegate?.didDebugTap()
     }
 }

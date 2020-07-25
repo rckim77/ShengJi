@@ -106,6 +106,11 @@ extension HostGameViewController: PusherDelegate {
 }
 
 extension HostGameViewController: HostLobbyViewDelegate {
+    func didDebugTap() {
+        let debugVC = DebugViewController(delegate: self)
+        present(debugVC, animated: true, completion: nil)
+    }
+    
     func didTapStartButton() {
         guard let channelName = channel?.name,
             let url = URL(string: "https://fast-garden-35127.herokuapp.com/start/\(channelName)") else {
@@ -127,6 +132,12 @@ extension HostGameViewController: HostLobbyViewDelegate {
     
     func didTapLeaveButton() {
         showLeaveWarningModal()
+    }
+}
+
+extension HostGameViewController: DebugViewControllerDelegate {
+    func debugViewControllerDidAddPlayer() {
+        
     }
 }
 
