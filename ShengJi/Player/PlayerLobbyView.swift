@@ -19,9 +19,35 @@ final class PlayerLobbyView: UIView {
         let label = UILabel()
         label.font = .preferredFont(forTextStyle: .title2)
         label.numberOfLines = 0
-        label.textAlignment = .center
-        label.textColor = .systemGray
-        label.text = "You're in room \(roomCode). Your username is \(playerUsername). Please wait for \(hostUsername) to begin the game."
+        label.textColor = .systemBlue
+        label.text = "Room: \(roomCode)"
+        return label
+    }()
+    
+    private lazy var usernameLabel: UILabel = {
+        let label = UILabel()
+        label.font = .preferredFont(forTextStyle: .title2)
+        label.numberOfLines = 0
+        label.textColor = .systemBlue
+        label.text = "Your username: \(playerUsername)"
+        return label
+    }()
+    
+    private lazy var hostUsernameLabel: UILabel = {
+        let label = UILabel()
+        label.font = .preferredFont(forTextStyle: .title2)
+        label.numberOfLines = 0
+        label.textColor = .systemBlue
+        label.text = "Host: \(hostUsername)"
+        return label
+    }()
+    
+    private lazy var pairUsernameLabel: UILabel = {
+        let label = UILabel()
+        label.font = .preferredFont(forTextStyle: .title2)
+        label.numberOfLines = 0
+        label.textColor = .systemBlue
+        label.text = "Your pair: Waiting for host..."
         return label
     }()
     
@@ -64,12 +90,33 @@ final class PlayerLobbyView: UIView {
         super.init(frame: .zero)
         
         addSubview(roomLabel)
+        addSubview(usernameLabel)
+        addSubview(hostUsernameLabel)
+        addSubview(pairUsernameLabel)
         addSubview(waitingLabel)
         addSubview(leaveButton)
         
         roomLabel.snp.makeConstraints { make in
             make.top.equalTo(safeAreaLayoutGuide.snp.top).inset(32)
             make.leading.trailing.equalToSuperview().inset(16)
+        }
+        
+        usernameLabel.snp.makeConstraints { make in
+            make.top.equalTo(roomLabel.snp.bottom).offset(8)
+            make.leading.equalTo(roomLabel.snp.leading)
+            make.trailing.equalTo(roomLabel.snp.trailing)
+        }
+        
+        hostUsernameLabel.snp.makeConstraints { make in
+            make.top.equalTo(usernameLabel.snp.bottom).offset(8)
+            make.leading.equalTo(roomLabel.snp.leading)
+            make.trailing.equalTo(roomLabel.snp.trailing)
+        }
+        
+        pairUsernameLabel.snp.makeConstraints { make in
+            make.top.equalTo(hostUsernameLabel.snp.bottom).offset(8)
+            make.leading.equalTo(roomLabel.snp.leading)
+            make.trailing.equalTo(roomLabel.snp.trailing)
         }
         
         waitingLabel.snp.makeConstraints { make in
