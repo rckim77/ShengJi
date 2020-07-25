@@ -30,6 +30,16 @@ final class MenuViewController: UIViewController {
         return button
     }()
     
+    private lazy var versionLabel: UILabel = {
+        let label = UILabel()
+        label.font = .preferredFont(forTextStyle: .caption1)
+        if let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String,
+            let bundleVersion = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
+            label.text = "Version \(appVersion) (\(bundleVersion))"
+        }
+        return label
+    }()
+    
     private var codeCancellable: AnyCancellable?
     
     override func viewDidLoad() {
@@ -38,6 +48,7 @@ final class MenuViewController: UIViewController {
         view.backgroundColor = .systemBackground
         view.addSubview(joinButton)
         view.addSubview(createButton)
+        view.addSubview(versionLabel)
         
         joinButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
@@ -47,6 +58,11 @@ final class MenuViewController: UIViewController {
         createButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(joinButton.snp.bottom).offset(8)
+        }
+        
+        versionLabel.snp.makeConstraints { make in
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(4)
+            make.centerX.equalToSuperview()
         }
     }
     
