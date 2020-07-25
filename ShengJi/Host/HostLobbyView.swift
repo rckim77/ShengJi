@@ -38,6 +38,7 @@ final class HostLobbyView: UIView {
         textView.isScrollEnabled = false
         textView.backgroundColor = .systemGray
         textView.addRoundedCorners(radius: 8)
+        textView.textContainerInset = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
         textView.font = .preferredFont(forTextStyle: .title1)
         return textView
     }()
@@ -51,12 +52,36 @@ final class HostLobbyView: UIView {
         return label
     }()
     
+    private lazy var actionsStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.spacing = 16
+        return stackView
+    }()
+    
     private lazy var pairButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Pair", for: .normal)
         button.setTitleColor(.systemBlue, for: .normal)
         button.titleLabel?.font = .preferredFont(forTextStyle: .title3)
+        button.addRoundedCorners(radius: 8)
+        button.layer.borderWidth = 1
+        button.layer.borderColor = UIColor.systemBlue.cgColor
+        button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
         button.addTarget(self, action: #selector(pairButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var leaveButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Leave room", for: .normal)
+        button.setTitleColor(.systemBlue, for: .normal)
+        button.titleLabel?.font = .preferredFont(forTextStyle: .title3)
+        button.addRoundedCorners(radius: 8)
+        button.layer.borderWidth = 1
+        button.layer.borderColor = UIColor.systemBlue.cgColor
+        button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
+        button.addTarget(self, action: #selector(leaveButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -68,15 +93,6 @@ final class HostLobbyView: UIView {
         button.titleLabel?.font = .preferredFont(forTextStyle: .title1)
         button.addTarget(self, action: #selector(startButtonTapped), for: .touchUpInside)
         button.isEnabled = false
-        return button
-    }()
-    
-    private lazy var leaveButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Leave room", for: .normal)
-        button.setTitleColor(.systemBlue, for: .normal)
-        button.titleLabel?.font = .preferredFont(forTextStyle: .title3)
-        button.addTarget(self, action: #selector(leaveButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -124,9 +140,10 @@ final class HostLobbyView: UIView {
         addSubview(roomCodeLabel)
         addSubview(roomCodeTextView)
         addSubview(usersJoinedLabel)
-        addSubview(pairButton)
+        addSubview(actionsStackView)
+        actionsStackView.addArrangedSubview(pairButton)
+        actionsStackView.addArrangedSubview(leaveButton)
         addSubview(startButton)
-        addSubview(leaveButton)
         
         let debugTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(debugTapped))
         debugTapGestureRecognizer.numberOfTapsRequired = 2
@@ -148,18 +165,13 @@ final class HostLobbyView: UIView {
             make.leading.trailing.equalToSuperview().inset(16)
         }
         
-        pairButton.snp.makeConstraints { make in
+        actionsStackView.snp.makeConstraints { make in
             make.bottom.equalTo(startButton.snp.top).inset(-16)
             make.centerX.equalToSuperview()
         }
         
         startButton.snp.makeConstraints { make in
-            make.bottom.equalTo(leaveButton.snp.top).inset(-16)
-            make.centerX.equalToSuperview()
-        }
-        
-        leaveButton.snp.makeConstraints { make in
-            make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).inset(16)
+            make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).inset(24)
             make.centerX.equalToSuperview()
         }
         

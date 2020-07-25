@@ -113,9 +113,11 @@ extension HostGameViewController: HostLobbyViewDelegate {
         pairAlert.addTextField { textField in
             textField.placeholder = "Enter a username"
         }
-        let pairAction = UIAlertAction(title: "Pair", style: .default) { action in
+        let pairAction = UIAlertAction(title: "Pair", style: .default) { _ in
             guard let firstUsername = pairAlert.textFields?.first?.text,
-                let secondUsername = pairAlert.textFields?[1].text else {
+                let secondUsername = pairAlert.textFields?[1].text,
+                !firstUsername.isEmpty && !secondUsername.isEmpty else {
+                    print("neither text field can be empty")
                     return
             }
             print("\(firstUsername) paired with \(secondUsername)")
