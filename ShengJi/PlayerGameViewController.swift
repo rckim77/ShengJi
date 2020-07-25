@@ -72,8 +72,9 @@ final class PlayerGameViewController: UIViewController {
         })
         
         channel?.bind(eventName: "start", callback: { [weak self] _ in
-            print("HOST HAS STARTED GAME")
             self?.lobbyView?.isHidden = true
+            self?.navigationController?.setNavigationBarHidden(true, animated: true)
+            
         })
     }
 }

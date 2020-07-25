@@ -14,6 +14,7 @@ import PusherSwift
 final class HostGameViewController: UIViewController {
     
     private var lobbyView: HostLobbyView?
+    private var gameStartView: GameStartView?
     /// Note: this does not include the 'presence-' prefix
     private let roomCode: String
     private var channel: PusherPresenceChannel?
@@ -52,6 +53,28 @@ final class HostGameViewController: UIViewController {
         }, onMemberRemoved: { [weak self] member in
             self?.lobbyView?.removeUsername(member.userId)
         })
+    }
+    
+    private func startGame() {
+        gameStartView = GameStartView(delegate: self)
+        guard let gameStartView = gameStartView else {
+            return
+        }
+        view.addSubview(gameStartView)
+        gameStartView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+    }
+    
+    private func showLeaveWarningModal() {
+        let warningAlert = UIAlertController(title: "Are you sure?", message: "If you leave, all currently joined players will be kicked out.", preferredStyle: .alert)
+        let confirmAction = UIAlertAction(title: "Leave", style: .destructive) { _ in
+            self.navigationController?.popViewController(animated: true)
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        warningAlert.addAction(confirmAction)
+        warningAlert.addAction(cancelAction)
+        present(warningAlert, animated: true, completion: nil)
     }
 }
 
@@ -95,19 +118,20 @@ extension HostGameViewController: HostLobbyViewDelegate {
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] _ in
                 self?.lobbyView?.configure(.loaded)
+                self?.lobbyView?.isHidden = true
+                self?.startGame()
             }, receiveValue: { _ in
                 print("started game and notified other users")
             })
     }
     
     func didTapLeaveButton() {
-        let warningAlert = UIAlertController(title: "Are you sure?", message: "If you leave, all currently joined players will be kicked out.", preferredStyle: .alert)
-        let confirmAction = UIAlertAction(title: "Leave", style: .destructive) { _ in
-            self.navigationController?.popViewController(animated: true)
-        }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        warningAlert.addAction(confirmAction)
-        warningAlert.addAction(cancelAction)
-        present(warningAlert, animated: true, completion: nil)
+        showLeaveWarningModal()
+    }
+}
+
+extension HostGameViewController: GameStartViewDelegate {
+    func gameStartViewDidTapLeaveButton() {
+        showLeaveWarningModal()
     }
 }
