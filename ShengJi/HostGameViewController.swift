@@ -102,7 +102,7 @@ extension HostGameViewController: HostLobbyViewDelegate {
     }
     
     func didTapLeaveButton() {
-        let warningAlert = UIAlertController(title: "Are you sure?", message: "If you leave, all joined players will be kicked out.", preferredStyle: .alert)
+        let warningAlert = UIAlertController(title: "Are you sure?", message: "If you leave, all currently joined players will be kicked out.", preferredStyle: .alert)
         let confirmAction = UIAlertAction(title: "Leave", style: .destructive) { _ in
             self.navigationController?.popViewController(animated: true)
         }

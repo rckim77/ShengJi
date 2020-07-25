@@ -93,22 +93,22 @@ final class HostLobbyView: UIView {
         addSubview(leaveButton)
         
         roomCodeLabel.snp.makeConstraints { make in
-            make.top.equalTo(safeAreaLayoutGuide.snp.top).offset(24)
+            make.top.equalTo(safeAreaLayoutGuide.snp.top).inset(32)
             make.leading.trailing.equalToSuperview().inset(16)
         }
         
         roomCodeTextView.snp.makeConstraints { make in
-            make.top.equalTo(roomCodeLabel.snp.bottom).offset(16)
+            make.top.equalTo(roomCodeLabel.snp.bottom).offset(36)
             make.centerX.equalTo(roomCodeLabel.snp.centerX)
         }
         
         usersJoinedLabel.snp.makeConstraints { make in
-            make.top.equalTo(roomCodeTextView.snp.bottom).offset(16)
+            make.top.equalTo(roomCodeTextView.snp.bottom).offset(40)
             make.leading.trailing.equalToSuperview().inset(16)
         }
         
         startButton.snp.makeConstraints { make in
-            make.bottom.equalTo(leaveButton.snp.top).inset(0)
+            make.bottom.equalTo(leaveButton.snp.top).inset(-16)
             make.centerX.equalToSuperview()
         }
         
