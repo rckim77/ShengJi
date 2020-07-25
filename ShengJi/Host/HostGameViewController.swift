@@ -65,17 +65,6 @@ final class HostGameViewController: UIViewController {
             make.edges.equalToSuperview()
         }
     }
-    
-    private func showLeaveWarningModal() {
-        let warningAlert = UIAlertController(title: "Are you sure?", message: "If you leave, all currently joined players will be kicked out.", preferredStyle: .alert)
-        let confirmAction = UIAlertAction(title: "Leave", style: .destructive) { _ in
-            self.navigationController?.popViewController(animated: true)
-        }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        warningAlert.addAction(confirmAction)
-        warningAlert.addAction(cancelAction)
-        present(warningAlert, animated: true, completion: nil)
-    }
 }
 
 extension HostGameViewController: PusherDelegate {
@@ -131,7 +120,7 @@ extension HostGameViewController: HostLobbyViewDelegate {
     }
     
     func didTapLeaveButton() {
-        showLeaveWarningModal()
+        showLeaveWarningAlert(as: .host)
     }
 }
 
@@ -143,6 +132,6 @@ extension HostGameViewController: DebugViewControllerDelegate {
 
 extension HostGameViewController: GameStartViewDelegate {
     func gameStartViewDidTapLeaveButton() {
-        showLeaveWarningModal()
+        showLeaveWarningAlert(as: .host)
     }
 }

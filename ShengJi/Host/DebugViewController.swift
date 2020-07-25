@@ -69,6 +69,6 @@ final class DebugViewController: UIViewController {
     
     @objc
     private func addPlayerButtonTapped() {
-        
+        delegate?.debugViewControllerDidAddPlayer()
     }
 }

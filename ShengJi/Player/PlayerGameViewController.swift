@@ -34,8 +34,14 @@ final class PlayerGameViewController: UIViewController {
         setupPusher()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: true)
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: true)
         appDelegate.pusher?.delegate = nil
         appDelegate.pusher?.unsubscribe(channelName)
     }
@@ -61,7 +67,8 @@ final class PlayerGameViewController: UIViewController {
             
             strongSelf.lobbyView = PlayerLobbyView(channelName: strongSelf.channelName,
                                                    playerUsername: playerUsername,
-                                                   hostUsername: strongSelf.hostUsername)
+                                                   hostUsername: strongSelf.hostUsername,
+                                                   delegate: strongSelf)
             guard let lobbyView = strongSelf.lobbyView else {
                 return
             }
@@ -78,9 +85,16 @@ final class PlayerGameViewController: UIViewController {
         })
     }
 }
+
 extension PlayerGameViewController: PusherDelegate {
     /// Used for Pusher debugging
     func debugLog(message: String) {
         print("Pusher debug: \(message)")
+    }
+}
+
+extension PlayerGameViewController: PlayerLobbyViewDelegate {
+    func playerLobbyViewDidTapLeave() {
+        showLeaveWarningAlert(as: .player)
     }
 }

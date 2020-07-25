@@ -9,6 +9,10 @@
 import UIKit
 
 extension UIViewController {
+    
+    enum ParticipantType {
+        case host, player
+    }
 
     var appDelegate: AppDelegate {
         UIApplication.shared.delegate as! AppDelegate
@@ -27,6 +31,28 @@ extension UIViewController {
         willMove(toParent: nil)
         removeFromParent()
         view.removeFromSuperview()
+    }
+    
+    func showLeaveWarningAlert(as participant: ParticipantType) {
+
+        let message: String
+        switch participant {
+        case .host:
+            message = "If you leave, all currently joined players will be kicked out."
+        case .player:
+            message = "If you leave, you will be disconnected from the room."
+        }
+        
+        let warningAlert = UIAlertController(title: "Are you sure?", message: message, preferredStyle: .alert)
+        let confirmAction = UIAlertAction(title: "Leave", style: .destructive) { _ in
+            self.navigationController?.popViewController(animated: true)
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        warningAlert.addAction(confirmAction)
+        warningAlert.addAction(cancelAction)
+        
+        present(warningAlert, animated: true, completion: nil)
     }
 }
 
