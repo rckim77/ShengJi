@@ -56,6 +56,18 @@ final class HostGameViewController: UIViewController {
         })
     }
     
+    private func setupLobby(username: String) {
+        lobbyView = HostLobbyView(roomCode: roomCode, username: username, delegate: self)
+        guard let lobbyView = lobbyView else {
+            return
+        }
+        view.addSubview(lobbyView)
+        lobbyView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        lobbyView.clearUsernames()
+    }
+    
     private func startGame() {
         gameStartView = GameStartView(as: .host, delegate: self)
         guard let gameStartView = gameStartView else {
@@ -74,15 +86,7 @@ extension HostGameViewController: PusherDelegate {
             return
         }
         hostUsername = username
-        lobbyView = HostLobbyView(roomCode: roomCode, username: username, delegate: self)
-        guard let lobbyView = lobbyView else {
-            return
-        }
-        view.addSubview(lobbyView)
-        lobbyView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-        lobbyView.clearUsernames()
+        setupLobby(username: username)
     }
     
     func failedToSubscribeToChannel(name: String, response: URLResponse?, data: String?, error: NSError?) {
