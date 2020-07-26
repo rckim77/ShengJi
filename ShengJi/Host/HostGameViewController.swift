@@ -19,7 +19,13 @@ final class HostGameViewController: UIViewController {
     private let roomCode: String
     private var hostUsername: String?
     private var channel: PusherPresenceChannel?
+    
+    // MARK: - AnyCancellable methods
+    
     private var startCancellable: AnyCancellable?
+    private var pairCancellable: AnyCancellable?
+    
+    // MARK: - Init methods
     
     init(roomCode: String) {
         self.roomCode = roomCode
@@ -29,6 +35,8 @@ final class HostGameViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: - View lifecycle methods
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,12 +55,22 @@ final class HostGameViewController: UIViewController {
         navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
+    // MARK: - Setup methods
+    
     private func setupPusher() {
         appDelegate.pusher?.delegate = self
         channel = appDelegate.pusher?.subscribeToPresenceChannel(channelName: "presence-\(roomCode)", onMemberAdded: { [weak self] member in
             self?.lobbyView?.addUsername(member.userId)
         }, onMemberRemoved: { [weak self] member in
             self?.lobbyView?.removeUsername(member.userId)
+        })
+        
+        channel?.bind(eventName: "pair", eventCallback: { [weak self] pairEventData in
+            guard let data = pairEventData.data?.data(using: .utf8),
+                let pairEvent = try? JSONDecoder().decode(PairEvent.self, from: data) else {
+                    return
+            }
+            print("BINDING PAIR SUCCEEDED: \(pairEvent.pair)")
         })
     }
     
@@ -77,6 +95,19 @@ final class HostGameViewController: UIViewController {
         gameStartView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+    }
+    
+    private func pair(_ username: String, with otherUsername: String) {
+        guard let url = URL(string: "https://fast-garden-35127.herokuapp.com/pair/presence-\(roomCode)/\(username)/\(otherUsername)") else {
+            return
+        }
+        pairCancellable = URLSession.shared.dataTaskPublisher(for: url)
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { _ in
+                // todo: display error alert if pairing failed
+            }, receiveValue: { _ in
+                print("CANCELLABLE PAIR SUCCEEDED")
+            })
     }
 }
 
@@ -124,7 +155,7 @@ extension HostGameViewController: HostLobbyViewDelegate {
                     print("neither text field can be empty")
                     return
             }
-            print("\(firstUsername) paired with \(secondUsername)")
+            self.pair(firstUsername, with: secondUsername)
         }
         pairAlert.addAction(pairAction)
         present(pairAlert, animated: true, completion: nil)

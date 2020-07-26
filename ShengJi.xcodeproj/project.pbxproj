@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		EC2A224C24CBFA0F007920D4 /* ParticipantType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2A224B24CBFA0F007920D4 /* ParticipantType.swift */; };
+		EC2A224E24CE1761007920D4 /* PairEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2A224D24CE1761007920D4 /* PairEvent.swift */; };
 		ECCACB8924C247250077CD89 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCACB8824C247250077CD89 /* AppDelegate.swift */; };
 		ECCACB8F24C247270077CD89 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ECCACB8E24C247270077CD89 /* Assets.xcassets */; };
 		ECCACB9224C247270077CD89 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ECCACB9124C247270077CD89 /* Preview Assets.xcassets */; };
@@ -18,7 +19,6 @@
 		ECCACBA324C69A070077CD89 /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCACBA224C69A070077CD89 /* LoadingViewController.swift */; };
 		ECCACBA524C69B710077CD89 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCACBA424C69B710077CD89 /* Extensions.swift */; };
 		ECCACBAA24C6A4770077CD89 /* apiKeys.plist in Resources */ = {isa = PBXBuildFile; fileRef = ECCACBA924C6A4770077CD89 /* apiKeys.plist */; };
-		ECCACBAC24C6B08D0077CD89 /* JoinEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCACBAB24C6B08D0077CD89 /* JoinEvent.swift */; };
 		ECCACBAF24C7C8700077CD89 /* PlayerGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCACBAE24C7C8700077CD89 /* PlayerGameViewController.swift */; };
 		ECCACBB124C7EEE90077CD89 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCACBB024C7EEE90077CD89 /* NetworkError.swift */; };
 		ECCACBB324C8F0730077CD89 /* JoinResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCACBB224C8F0730077CD89 /* JoinResponse.swift */; };
@@ -34,6 +34,7 @@
 		287F0557ED6CCA52A7C01E06 /* Pods-ShengJi.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShengJi.debug.xcconfig"; path = "Target Support Files/Pods-ShengJi/Pods-ShengJi.debug.xcconfig"; sourceTree = "<group>"; };
 		6A2411FE280B73A920C93D27 /* Pods_ShengJi.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ShengJi.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC2A224B24CBFA0F007920D4 /* ParticipantType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantType.swift; sourceTree = "<group>"; };
+		EC2A224D24CE1761007920D4 /* PairEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairEvent.swift; sourceTree = "<group>"; };
 		ECCACB8524C247250077CD89 /* ShengJi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShengJi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ECCACB8824C247250077CD89 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ECCACB8E24C247270077CD89 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -46,7 +47,6 @@
 		ECCACBA224C69A070077CD89 /* LoadingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
 		ECCACBA424C69B710077CD89 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		ECCACBA924C6A4770077CD89 /* apiKeys.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = apiKeys.plist; sourceTree = "<group>"; };
-		ECCACBAB24C6B08D0077CD89 /* JoinEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinEvent.swift; sourceTree = "<group>"; };
 		ECCACBAE24C7C8700077CD89 /* PlayerGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerGameViewController.swift; sourceTree = "<group>"; };
 		ECCACBB024C7EEE90077CD89 /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 		ECCACBB224C8F0730077CD89 /* JoinResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinResponse.swift; sourceTree = "<group>"; };
@@ -133,7 +133,7 @@
 		ECCACBAD24C6B0A20077CD89 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				ECCACBAB24C6B08D0077CD89 /* JoinEvent.swift */,
+				EC2A224D24CE1761007920D4 /* PairEvent.swift */,
 				ECCACBB224C8F0730077CD89 /* JoinResponse.swift */,
 				ECCACBB024C7EEE90077CD89 /* NetworkError.swift */,
 			);
@@ -294,12 +294,12 @@
 				ECCACB9D24C248EF0077CD89 /* MenuViewController.swift in Sources */,
 				ECCACBA324C69A070077CD89 /* LoadingViewController.swift in Sources */,
 				EC2A224C24CBFA0F007920D4 /* ParticipantType.swift in Sources */,
+				EC2A224E24CE1761007920D4 /* PairEvent.swift in Sources */,
 				ECCACBAF24C7C8700077CD89 /* PlayerGameViewController.swift in Sources */,
 				ECCACBC024CBEB420077CD89 /* DebugViewController.swift in Sources */,
 				ECCACB9F24C4D4F00077CD89 /* JoinRoomViewController.swift in Sources */,
 				ECCACBB124C7EEE90077CD89 /* NetworkError.swift in Sources */,
 				ECCACBBE24CBE40C0077CD89 /* GameStartView.swift in Sources */,
-				ECCACBAC24C6B08D0077CD89 /* JoinEvent.swift in Sources */,
 				ECCACBA124C4F9A20077CD89 /* HostGameViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

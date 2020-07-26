@@ -83,6 +83,14 @@ final class PlayerGameViewController: UIViewController {
             self?.lobbyView?.isHidden = true
             self?.startGame()
         })
+        
+        channel?.bind(eventName: "pair", eventCallback: { [weak self] pairEventData in
+            guard let data = pairEventData.data?.data(using: .utf8),
+                let pairEvent = try? JSONDecoder().decode(PairEvent.self, from: data) else {
+                    return
+            }
+            print("BINDING PAIR SUCCEEDED: \(pairEvent.pair)")
+        })
     }
     
     private func startGame() {
