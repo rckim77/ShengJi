@@ -139,7 +139,7 @@ final class PlayerLobbyView: UIView {
         delegate?.playerLobbyViewDidTapLeave()
     }
     
-    func updatePair(_ usernames: [String]) {
+    func pair(_ usernames: [String]) {
         guard let pairUsername = usernames.first(where: { $0 != playerUsername }) else {
             return
         }

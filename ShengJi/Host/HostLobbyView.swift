@@ -43,6 +43,15 @@ final class HostLobbyView: UIView {
         return textView
     }()
     
+    private lazy var pairLabel: UILabel = {
+        let label = UILabel()
+        label.font = .preferredFont(forTextStyle: .title2)
+        label.numberOfLines = 0
+        label.text = "Your pair: Waiting to pair..."
+        label.textColor = .systemGray
+        return label
+    }()
+    
     private lazy var usersJoinedLabel: UILabel = {
         let label = UILabel()
         label.font = .preferredFont(forTextStyle: .title2)
@@ -139,6 +148,7 @@ final class HostLobbyView: UIView {
         
         addSubview(roomCodeLabel)
         addSubview(roomCodeTextView)
+        addSubview(pairLabel)
         addSubview(usersJoinedLabel)
         addSubview(actionsStackView)
         actionsStackView.addArrangedSubview(pairButton)
@@ -160,9 +170,14 @@ final class HostLobbyView: UIView {
             make.centerX.equalTo(roomCodeLabel.snp.centerX)
         }
         
-        usersJoinedLabel.snp.makeConstraints { make in
+        pairLabel.snp.makeConstraints { make in
             make.top.equalTo(roomCodeTextView.snp.bottom).offset(40)
-            make.leading.trailing.equalToSuperview().inset(16)
+            make.leading.trailing.equalToSuperview().inset(20)
+        }
+        
+        usersJoinedLabel.snp.makeConstraints { make in
+            make.top.equalTo(pairLabel.snp.bottom).offset(16)
+            make.leading.trailing.equalToSuperview().inset(20)
         }
         
         actionsStackView.snp.makeConstraints { make in
@@ -196,6 +211,10 @@ final class HostLobbyView: UIView {
     
     func configure(_ state: LobbyState) {
         lobbyState = state
+    }
+    
+    func pair(_ username: String) {
+        pairLabel.text = "Your pair: \(username)"
     }
     
     @objc

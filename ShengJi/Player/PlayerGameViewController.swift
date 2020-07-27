@@ -89,7 +89,7 @@ final class PlayerGameViewController: UIViewController {
                 let pairEvent = try? JSONDecoder().decode(PairEvent.self, from: data) else {
                     return
             }
-            self?.lobbyView?.updatePair(pairEvent.pair)
+            self?.lobbyView?.pair(pairEvent.pair)
         })
     }
     

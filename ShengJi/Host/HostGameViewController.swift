@@ -66,11 +66,15 @@ final class HostGameViewController: UIViewController {
         })
         
         channel?.bind(eventName: "pair", eventCallback: { [weak self] pairEventData in
-            guard let data = pairEventData.data?.data(using: .utf8),
-                let pairEvent = try? JSONDecoder().decode(PairEvent.self, from: data) else {
+            guard let hostUsername = self?.hostUsername,
+                let data = pairEventData.data?.data(using: .utf8),
+                let pairEvent = try? JSONDecoder().decode(PairEvent.self, from: data),
+                let pairUsername = pairEvent.pair.first(where: { $0 != hostUsername }),
+                pairEvent.pair.contains(hostUsername) else {
                     return
             }
-            print("BINDING PAIR SUCCEEDED: \(pairEvent.pair)")
+            
+            self?.lobbyView?.pair(pairUsername)
         })
     }
     
@@ -105,9 +109,7 @@ final class HostGameViewController: UIViewController {
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { _ in
                 // todo: display error alert if pairing failed
-            }, receiveValue: { _ in
-                print("CANCELLABLE PAIR SUCCEEDED")
-            })
+            }, receiveValue: { _ in })
     }
 }
 
