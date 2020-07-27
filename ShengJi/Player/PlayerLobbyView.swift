@@ -138,4 +138,11 @@ final class PlayerLobbyView: UIView {
     private func leaveButtonTapped() {
         delegate?.playerLobbyViewDidTapLeave()
     }
+    
+    func updatePair(_ usernames: [String]) {
+        guard let pairUsername = usernames.first(where: { $0 != playerUsername }) else {
+            return
+        }
+        pairUsernameLabel.text = "Your pair: \(pairUsername)"
+    }
 }
