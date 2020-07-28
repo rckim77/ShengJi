@@ -74,9 +74,7 @@ final class HostLobbyView: UIView {
         button.setTitleColor(.systemGray, for: .disabled)
         button.setTitleColor(.systemBlue, for: .normal)
         button.titleLabel?.font = .preferredFont(forTextStyle: .title3)
-        button.addRoundedCorners(radius: 8)
-        button.layer.borderWidth = 1
-        button.layer.borderColor = UIColor.systemGray.cgColor
+        button.addRoundedBorder(color: .systemGray)
         button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
         button.addTarget(self, action: #selector(pairButtonTapped), for: .touchUpInside)
         return button
@@ -87,9 +85,7 @@ final class HostLobbyView: UIView {
         button.setTitle("Leave room", for: .normal)
         button.setTitleColor(.systemBlue, for: .normal)
         button.titleLabel?.font = .preferredFont(forTextStyle: .title3)
-        button.addRoundedCorners(radius: 8)
-        button.layer.borderWidth = 1
-        button.layer.borderColor = UIColor.systemBlue.cgColor
+        button.addRoundedBorder(color: .systemBlue)
         button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
         button.addTarget(self, action: #selector(leaveButtonTapped), for: .touchUpInside)
         return button

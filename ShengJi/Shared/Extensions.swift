@@ -67,3 +67,11 @@ extension UIView {
         layer.masksToBounds = true
     }
 }
+
+extension UIButton {
+    func addRoundedBorder(radius: CGFloat = 8, width: CGFloat = 1, color: UIColor) {
+        addRoundedCorners(radius: radius)
+        layer.borderColor = color.cgColor
+        layer.borderWidth = width
+    }
+}

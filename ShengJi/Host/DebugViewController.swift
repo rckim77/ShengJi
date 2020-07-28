@@ -24,9 +24,8 @@ final class DebugViewController: UIViewController {
     private lazy var addPlayerButton: UIButton = {
         let button = UIButton(type: .system)
         button.titleLabel?.font = .preferredFont(forTextStyle: .title2)
-        button.backgroundColor = .secondarySystemBackground
-        button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
-        button.addRoundedCorners(radius: 8)
+        button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
+        button.addRoundedBorder(color: .systemBlue)
         button.setTitle("Add player", for: .normal)
         button.addTarget(self, action: #selector(addPlayerButtonTapped), for: .touchUpInside)
         return button
@@ -58,7 +57,6 @@ final class DebugViewController: UIViewController {
         addPlayerButton.snp.makeConstraints { make in
             make.top.equalTo(closeButton).inset(48)
             make.centerX.equalToSuperview()
-            make.height.equalTo(48)
         }
     }
     
