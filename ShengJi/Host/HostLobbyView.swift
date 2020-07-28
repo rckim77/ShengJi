@@ -124,10 +124,7 @@ final class HostLobbyView: UIView {
         didSet {
             var text = "Pairs:"
             for pair in pairs {
-                let modifiedPair = pair.map {
-                    $0 == username ? $0 : $0 + " (me)"
-                }
-                text += "\n- \(modifiedPair[0]) and \(modifiedPair[1])"
+                text += "\n- \(pair[0]) and \(pair[1])"
             }
             pairsLabel.text = text
             if pairs.count > 0 {
