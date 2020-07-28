@@ -66,15 +66,11 @@ final class HostGameViewController: UIViewController {
         })
         
         channel?.bind(eventName: "pair", eventCallback: { [weak self] pairEventData in
-            guard let hostUsername = self?.hostUsername,
-                let data = pairEventData.data?.data(using: .utf8),
-                let pairEvent = try? JSONDecoder().decode(PairEvent.self, from: data),
-                let pairUsername = pairEvent.pair.first(where: { $0 != hostUsername }),
-                pairEvent.pair.contains(hostUsername) else {
+            guard let data = pairEventData.data?.data(using: .utf8),
+                let pairEvent = try? JSONDecoder().decode(PairEvent.self, from: data) else {
                     return
             }
-            
-            self?.lobbyView?.pair(pairUsername)
+            self?.lobbyView?.pair(pairEvent.pair)
         })
     }
     

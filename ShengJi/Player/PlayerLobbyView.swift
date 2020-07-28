@@ -140,7 +140,8 @@ final class PlayerLobbyView: UIView {
     }
     
     func pair(_ usernames: [String]) {
-        guard let pairUsername = usernames.first(where: { $0 != playerUsername }) else {
+        guard let pairUsername = usernames.first(where: { $0 != playerUsername }),
+            usernames.contains(playerUsername) else {
             return
         }
         pairUsernameLabel.text = "Your pair: \(pairUsername)"

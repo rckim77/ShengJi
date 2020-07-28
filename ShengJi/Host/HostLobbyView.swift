@@ -43,20 +43,20 @@ final class HostLobbyView: UIView {
         return textView
     }()
     
-    private lazy var pairLabel: UILabel = {
-        let label = UILabel()
-        label.font = .preferredFont(forTextStyle: .title2)
-        label.numberOfLines = 0
-        label.text = "Your pair: Waiting to pair..."
-        label.textColor = .systemGray
-        return label
-    }()
-    
     private lazy var usersJoinedLabel: UILabel = {
         let label = UILabel()
         label.font = .preferredFont(forTextStyle: .title2)
         label.numberOfLines = 0
         label.text = "Users joined:"
+        label.textColor = .systemGray
+        return label
+    }()
+    
+    private lazy var pairsLabel: UILabel = {
+        let label = UILabel()
+        label.font = .preferredFont(forTextStyle: .title2)
+        label.numberOfLines = 0
+        label.text = "Pairs: Waiting to pair..."
         label.textColor = .systemGray
         return label
     }()
@@ -112,7 +112,21 @@ final class HostLobbyView: UIView {
                 text += "\n\(username)"
             }
             usersJoinedLabel.text = text
-            startButton.isEnabled = otherUsernames.count == 1
+            startButton.isEnabled = otherUsernames.count == 3
+        }
+    }
+    
+    private var pairs: [[String]] = [] {
+        didSet {
+            var text = "Pairs:"
+            for pair in pairs {
+                let modifiedPair = pair.map {
+                    $0 == username ? $0 : $0 + " (me)"
+                }
+                text += "\n- \(modifiedPair[0]) and \(modifiedPair[1])"
+            }
+            pairsLabel.text = text
+            startButton.isEnabled = pairs.count == 2
         }
     }
     
@@ -148,8 +162,8 @@ final class HostLobbyView: UIView {
         
         addSubview(roomCodeLabel)
         addSubview(roomCodeTextView)
-        addSubview(pairLabel)
         addSubview(usersJoinedLabel)
+        addSubview(pairsLabel)
         addSubview(actionsStackView)
         actionsStackView.addArrangedSubview(pairButton)
         actionsStackView.addArrangedSubview(leaveButton)
@@ -170,13 +184,13 @@ final class HostLobbyView: UIView {
             make.centerX.equalTo(roomCodeLabel.snp.centerX)
         }
         
-        pairLabel.snp.makeConstraints { make in
+        usersJoinedLabel.snp.makeConstraints { make in
             make.top.equalTo(roomCodeTextView.snp.bottom).offset(40)
             make.leading.trailing.equalToSuperview().inset(20)
         }
         
-        usersJoinedLabel.snp.makeConstraints { make in
-            make.top.equalTo(pairLabel.snp.bottom).offset(16)
+        pairsLabel.snp.makeConstraints { make in
+            make.top.equalTo(usersJoinedLabel.snp.bottom).offset(24)
             make.leading.trailing.equalToSuperview().inset(20)
         }
         
@@ -186,7 +200,7 @@ final class HostLobbyView: UIView {
         }
         
         startButton.snp.makeConstraints { make in
-            make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).inset(24)
+            make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).inset(16)
             make.centerX.equalToSuperview()
         }
         
@@ -213,8 +227,8 @@ final class HostLobbyView: UIView {
         lobbyState = state
     }
     
-    func pair(_ username: String) {
-        pairLabel.text = "Your pair: \(username)"
+    func pair(_ usernames: [String]) {
+        pairs.append(usernames)
     }
     
     @objc
