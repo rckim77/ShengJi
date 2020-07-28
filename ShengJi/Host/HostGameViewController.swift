@@ -179,9 +179,7 @@ extension HostGameViewController: HostLobbyViewDelegate {
                 self?.lobbyView?.configure(.loaded)
                 self?.lobbyView?.isHidden = true
                 self?.startGame()
-            }, receiveValue: { _ in
-                print("started game and notified other users")
-            })
+            }, receiveValue: { _ in })
     }
     
     func didTapLeaveButton() {

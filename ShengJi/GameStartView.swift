@@ -25,7 +25,7 @@ final class GameStartView: UIView {
     private lazy var drawDeckLabel: UILabel = {
         let label = UILabel()
         label.text = "🂠"
-        label.font = .systemFont(ofSize: 108)
+        label.font = .systemFont(ofSize: 124)
         return label
     }()
     
@@ -96,12 +96,12 @@ final class GameStartView: UIView {
         }
         
         drawDeckButton.snp.makeConstraints { make in
-            make.top.equalTo(drawDeckLabel.snp.bottom).offset(8)
+            make.top.equalTo(drawDeckLabel.snp.bottom).offset(6)
             make.centerX.equalToSuperview()
         }
         
         bottomPlayerLabel.snp.makeConstraints { make in
-            make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).inset(68)
+            make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).inset(92)
             make.centerX.equalToSuperview()
         }
         
@@ -111,7 +111,7 @@ final class GameStartView: UIView {
         }
         
         topPlayerLabel.snp.makeConstraints { make in
-            make.top.equalTo(safeAreaLayoutGuide.snp.top).inset(68)
+            make.top.equalTo(safeAreaLayoutGuide.snp.top).inset(72)
             make.centerX.equalToSuperview()
         }
         
@@ -129,7 +129,7 @@ final class GameStartView: UIView {
     }
     
     private func setupPlayerPositions() {
-        bottomPlayerLabel.text = "me"
+        bottomPlayerLabel.text = "\(username) (me)"
         for pair in pairs {
             if let pairUsername = pair.first(where: { $0 != username }), pair.contains(username) {
                 topPlayerLabel.text = "\(pairUsername)"
