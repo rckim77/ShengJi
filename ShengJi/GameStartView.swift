@@ -17,7 +17,7 @@ final class GameStartView: UIView {
     
     private lazy var leaveButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("End game", for: .normal)
+        button.setTitle("End", for: .normal)
         button.addTarget(self, action: #selector(leaveButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -40,28 +40,28 @@ final class GameStartView: UIView {
     private lazy var bottomPlayerLabel: UILabel = {
         let label = UILabel()
         label.textColor = .systemGray
-        label.font = .preferredFont(forTextStyle: .title3)
+        label.font = .preferredFont(forTextStyle: .body)
         return label
     }()
     
     private lazy var leftPlayerLabel: UILabel = {
         let label = UILabel()
         label.textColor = .systemGray
-        label.font = .preferredFont(forTextStyle: .title3)
+        label.font = .preferredFont(forTextStyle: .body)
         return label
     }()
     
     private lazy var topPlayerLabel: UILabel = {
         let label = UILabel()
         label.textColor = .systemGray
-        label.font = .preferredFont(forTextStyle: .title3)
+        label.font = .preferredFont(forTextStyle: .body)
         return label
     }()
     
     private lazy var rightPlayerLabel: UILabel = {
         let label = UILabel()
         label.textColor = .systemGray
-        label.font = .preferredFont(forTextStyle: .title3)
+        label.font = .preferredFont(forTextStyle: .body)
         return label
     }()
     
@@ -86,7 +86,7 @@ final class GameStartView: UIView {
         addSubview(rightPlayerLabel)
         
         leaveButton.snp.makeConstraints { make in
-            make.top.equalTo(safeAreaLayoutGuide.snp.top).inset(16)
+            make.top.equalTo(safeAreaLayoutGuide.snp.top).inset(12)
             make.leading.equalToSuperview().inset(16)
         }
         
@@ -101,23 +101,23 @@ final class GameStartView: UIView {
         }
         
         bottomPlayerLabel.snp.makeConstraints { make in
-            make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).inset(50)
+            make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).inset(68)
             make.centerX.equalToSuperview()
         }
         
         leftPlayerLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(8)
-            make.centerY.equalToSuperview().offset(-68)
+            make.centerY.equalToSuperview().offset(-80)
         }
         
         topPlayerLabel.snp.makeConstraints { make in
-            make.top.equalTo(safeAreaLayoutGuide.snp.top).inset(50)
+            make.top.equalTo(safeAreaLayoutGuide.snp.top).inset(68)
             make.centerX.equalToSuperview()
         }
         
         rightPlayerLabel.snp.makeConstraints { make in
             make.trailing.equalToSuperview().inset(8)
-            make.centerY.equalToSuperview().offset(68)
+            make.centerY.equalToSuperview().offset(80)
         }
         
         leaveButton.isHidden = participantType == .player

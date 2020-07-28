@@ -71,11 +71,12 @@ final class HostLobbyView: UIView {
     private lazy var pairButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Pair", for: .normal)
+        button.setTitleColor(.systemGray, for: .disabled)
         button.setTitleColor(.systemBlue, for: .normal)
         button.titleLabel?.font = .preferredFont(forTextStyle: .title3)
         button.addRoundedCorners(radius: 8)
         button.layer.borderWidth = 1
-        button.layer.borderColor = UIColor.systemBlue.cgColor
+        button.layer.borderColor = UIColor.systemGray.cgColor
         button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
         button.addTarget(self, action: #selector(pairButtonTapped), for: .touchUpInside)
         return button
@@ -112,7 +113,10 @@ final class HostLobbyView: UIView {
                 text += "\n\(username)"
             }
             usersJoinedLabel.text = text
-            startButton.isEnabled = otherUsernames.count == 2
+            startButton.isEnabled = otherUsernames.count == 1 && pairs.count == 1
+            pairButton.isEnabled = otherUsernames.count == 1
+            let pairButtonColor = otherUsernames.count == 1 ? UIColor.systemBlue.cgColor : UIColor.systemGray.cgColor
+            pairButton.layer.borderColor = pairButtonColor
         }
     }
     
@@ -126,7 +130,7 @@ final class HostLobbyView: UIView {
                 text += "\n- \(modifiedPair[0]) and \(modifiedPair[1])"
             }
             pairsLabel.text = text
-            startButton.isEnabled = pairs.count == 1
+            startButton.isEnabled = otherUsernames.count == 1 && pairs.count == 1
         }
     }
     
