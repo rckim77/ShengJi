@@ -113,9 +113,9 @@ final class HostLobbyView: UIView {
                 text += "\n\(username)"
             }
             usersJoinedLabel.text = text
-            startButton.isEnabled = otherUsernames.count == 1 && pairs.count == 1
-            pairButton.isEnabled = otherUsernames.count == 1
-            let pairButtonColor = otherUsernames.count == 1 ? UIColor.systemBlue.cgColor : UIColor.systemGray.cgColor
+            startButton.isEnabled = otherUsernames.count == 3 && pairs.count == 2
+            pairButton.isEnabled = otherUsernames.count > 0
+            let pairButtonColor = otherUsernames.count > 0 ? UIColor.systemBlue.cgColor : UIColor.systemGray.cgColor
             pairButton.layer.borderColor = pairButtonColor
         }
     }
@@ -130,7 +130,7 @@ final class HostLobbyView: UIView {
                 text += "\n- \(modifiedPair[0]) and \(modifiedPair[1])"
             }
             pairsLabel.text = text
-            startButton.isEnabled = otherUsernames.count == 1 && pairs.count == 1
+            startButton.isEnabled = otherUsernames.count == 3 && pairs.count == 2 // TESTING
         }
     }
     

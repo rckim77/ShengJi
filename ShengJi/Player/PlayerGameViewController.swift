@@ -97,12 +97,12 @@ final class PlayerGameViewController: UIViewController {
     }
     
     private func startGame() {
-        guard let username = channel?.myId, pairs.count == 1 else {
+        guard let username = channel?.myId, pairs.count == 2 else {
             return
         }
-        var mockPairs = pairs
-        mockPairs.append(["usernameMock1", "usernameMock2"])
-        gameStartView = GameStartView(as: .player, username: username, pairs: mockPairs, delegate: self)
+//        var mockPairs = pairs
+//        mockPairs.append(["usernameMock1", "usernameMock2"])
+        gameStartView = GameStartView(as: .player, hostUsername: hostUsername, username: username, pairs: pairs, delegate: self)
         guard let gameStartView = gameStartView else {
             return
         }

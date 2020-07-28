@@ -95,9 +95,7 @@ final class HostGameViewController: UIViewController {
             return
         }
         
-        var mockPairs = pairs
-        mockPairs.append(["usernameMock1", "usernameMock2"])
-        gameStartView = GameStartView(as: .host, username: hostUsername, pairs: mockPairs, delegate: self)
+        gameStartView = GameStartView(as: .host, hostUsername: hostUsername, username: hostUsername, pairs: pairs, delegate: self)
         guard let gameStartView = gameStartView else {
             return
         }
