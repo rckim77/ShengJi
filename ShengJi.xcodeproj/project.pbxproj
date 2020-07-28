@@ -110,7 +110,6 @@
 				ECCACB9C24C248EF0077CD89 /* MenuViewController.swift */,
 				ECCACBC124CBEFE90077CD89 /* Host */,
 				ECCACBC224CBEFF00077CD89 /* Player */,
-				ECCACBBD24CBE40C0077CD89 /* GameStartView.swift */,
 				ECCACBB824CA9CB00077CD89 /* Shared */,
 				ECCACBAD24C6B0A20077CD89 /* Models */,
 				ECCACBA924C6A4770077CD89 /* apiKeys.plist */,
@@ -143,6 +142,7 @@
 		ECCACBB824CA9CB00077CD89 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				ECCACBBD24CBE40C0077CD89 /* GameStartView.swift */,
 				ECCACBA224C69A070077CD89 /* LoadingViewController.swift */,
 				EC2A224B24CBFA0F007920D4 /* ParticipantType.swift */,
 				ECCACBA424C69B710077CD89 /* Extensions.swift */,
