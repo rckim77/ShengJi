@@ -30,7 +30,6 @@ extension UIViewController {
     }
     
     func showLeaveWarningAlert(as participant: ParticipantType) {
-
         let message: String
         switch participant {
         case .host:
@@ -49,6 +48,16 @@ extension UIViewController {
         warningAlert.addAction(cancelAction)
         
         present(warningAlert, animated: true, completion: nil)
+    }
+    
+    func showPlayerLeftAlert() {
+        let playerLeftAlert = UIAlertController(title: "Uh oh, a player left 😦", message: "Unfortunately, the game is now over.", preferredStyle: .alert)
+        let confirmAction = UIAlertAction(title: "Got it", style: .default) { _ in
+            self.navigationController?.popViewController(animated: true)
+        }
+        
+        playerLeftAlert.addAction(confirmAction)
+        present(playerLeftAlert, animated: true, completion: nil)
     }
 }
 

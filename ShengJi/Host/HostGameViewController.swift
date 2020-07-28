@@ -62,14 +62,8 @@ final class HostGameViewController: UIViewController {
         channel = appDelegate.pusher?.subscribeToPresenceChannel(channelName: "presence-\(roomCode)", onMemberAdded: { [weak self] member in
             self?.lobbyView?.addUsername(member.userId)
         }, onMemberRemoved: { [weak self] member in
-            if self?.lobbyView?.isHidden == true {
-                let playerLeftAlert = UIAlertController(title: "Uh oh, a player left 😦", message: "Unfortunately, the game is now over.", preferredStyle: .alert)
-                let confirmAction = UIAlertAction(title: "Got it", style: .default) { _ in
-                    self?.navigationController?.popViewController(animated: true)
-                }
-                
-                playerLeftAlert.addAction(confirmAction)
-                self?.present(playerLeftAlert, animated: true, completion: nil)
+            if self?.lobbyView?.isHidden == true { // proxy for game has started
+                self?.showPlayerLeftAlert()
             } else {
                 self?.lobbyView?.removeUsername(member.userId)
             }

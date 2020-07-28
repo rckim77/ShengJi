@@ -58,6 +58,8 @@ final class PlayerGameViewController: UIViewController {
                 }
                 hostLeftAlert.addAction(confirmAction)
                 self?.present(hostLeftAlert, animated: true, completion: nil)
+            } else if self?.lobbyView?.isHidden == true {
+                self?.showPlayerLeftAlert()
             }
         })
         
