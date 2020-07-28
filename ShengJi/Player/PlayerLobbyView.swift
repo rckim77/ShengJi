@@ -97,8 +97,8 @@ final class PlayerLobbyView: UIView {
         addSubview(leaveButton)
         
         roomLabel.snp.makeConstraints { make in
-            make.top.equalTo(safeAreaLayoutGuide.snp.top).inset(32)
-            make.leading.trailing.equalToSuperview().inset(16)
+            make.top.equalTo(safeAreaLayoutGuide.snp.top).inset(36)
+            make.leading.trailing.equalToSuperview().inset(24)
         }
         
         usernameLabel.snp.makeConstraints { make in

@@ -18,8 +18,11 @@ protocol HostLobbyViewDelegate: class {
 
 final class HostLobbyView: UIView {
     
-    enum LobbyState {
-        case uninitialized, loading, loaded
+    enum PairState {
+        case noPlayers
+        case noPairs
+        case insufficientPairs // at least one pair
+        case sufficientPairs // two pairs
     }
     
     private lazy var roomCodeLabel: UILabel = {
@@ -109,10 +112,11 @@ final class HostLobbyView: UIView {
                 text += "\n\(username)"
             }
             usersJoinedLabel.text = text
-            startButton.isEnabled = otherUsernames.count == 3 && pairs.count == 2
-            pairButton.isEnabled = otherUsernames.count > 0
-            let pairButtonColor = otherUsernames.count > 0 ? UIColor.systemBlue.cgColor : UIColor.systemGray.cgColor
-            pairButton.layer.borderColor = pairButtonColor
+            if otherUsernames.count > 0 {
+                pairState = pairs.count == 2 ? .sufficientPairs : .insufficientPairs
+            } else {
+                pairState = .noPlayers
+            }
         }
     }
     
@@ -126,27 +130,43 @@ final class HostLobbyView: UIView {
                 text += "\n- \(modifiedPair[0]) and \(modifiedPair[1])"
             }
             pairsLabel.text = text
-            startButton.isEnabled = otherUsernames.count == 3 && pairs.count == 2 // TESTING
+            if pairs.count > 0 {
+                pairState = otherUsernames.count == 3 && pairs.count == 2 ? .sufficientPairs : .insufficientPairs
+            } else {
+                pairState = .noPairs
+            }
         }
     }
     
-    private var lobbyState: LobbyState = .uninitialized {
+    private var pairState: PairState = .noPlayers {
         didSet {
-            var disabledCopy = ""
-            
-            switch lobbyState {
-            case .loading:
+            switch pairState {
+            case .noPlayers:
                 startButton.isEnabled = false
-                disabledCopy = "Starting game..."
-            case .loaded:
+                pairButton.isHidden = true
+                pairButton.layer.borderColor = UIColor.systemGray.cgColor
+                startButton.setTitle("Waiting for players to join...", for: .disabled)
+                pairsLabel.isHidden = true
+            case .noPairs:
                 startButton.isEnabled = false
-                disabledCopy = "Game has started"
-            case .uninitialized:
-                disabledCopy = "Waiting for players..."
+                pairButton.isHidden = false
+                pairButton.layer.borderColor = UIColor.systemBlue.cgColor
+                startButton.setTitle("Please pair players", for: .disabled)
+                pairsLabel.isHidden = false
+                pairsLabel.text = "Pairs: Please pair players..."
+            case .insufficientPairs:
+                startButton.isEnabled = false
+                pairButton.isHidden = false
+                pairButton.layer.borderColor = UIColor.systemBlue.cgColor
+                startButton.setTitle("Please pair players", for: .disabled)
+                pairsLabel.isHidden = false
+            case .sufficientPairs:
+                startButton.isEnabled = true
+                pairButton.isHidden = false
+                pairButton.layer.borderColor = UIColor.systemBlue.cgColor
+                pairsLabel.isHidden = false
                 startButton.setTitle("Start game", for: .normal)
             }
-            
-            startButton.setTitle(disabledCopy, for: .disabled)
         }
     }
     
@@ -221,10 +241,6 @@ final class HostLobbyView: UIView {
     
     func clearUsernames() {
         otherUsernames = []
-    }
-    
-    func configure(_ state: LobbyState) {
-        lobbyState = state
     }
     
     func pair(_ usernames: [String]) {

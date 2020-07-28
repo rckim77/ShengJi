@@ -172,13 +172,10 @@ extension HostGameViewController: HostLobbyViewDelegate {
             let url = URL(string: "https://fast-garden-35127.herokuapp.com/start/\(channelName)") else {
             return
         }
-
-        lobbyView?.configure(.loading)
         
         startCancellable = URLSession.shared.dataTaskPublisher(for: url)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] _ in
-                self?.lobbyView?.configure(.loaded)
                 self?.lobbyView?.isHidden = true
                 self?.startGame()
             }, receiveValue: { _ in })
