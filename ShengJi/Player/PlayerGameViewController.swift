@@ -17,6 +17,7 @@ final class PlayerGameViewController: UIViewController {
     private let channelName: String
     private var channel: PusherPresenceChannel?
     private let hostUsername: String
+    private var pairs: [[String]] = []
     
     init(channelName: String, hostUsername: String) {
         self.channelName = channelName
@@ -51,7 +52,6 @@ final class PlayerGameViewController: UIViewController {
         appDelegate.pusher?.delegate = self
         channel = appDelegate.pusher?.subscribeToPresenceChannel(channelName: channelName, onMemberAdded: { _ in }, onMemberRemoved: { [weak self] member in
             if member.userId == self?.hostUsername {
-                print("HOST HAS LEFT")
                 let hostLeftAlert = UIAlertController(title: "The host has left the room.", message: "Please try a new room.", preferredStyle: .alert)
                 let confirmAction = UIAlertAction(title: "Got it", style: .default) { _ in
                     self?.navigationController?.popViewController(animated: true)
@@ -89,12 +89,18 @@ final class PlayerGameViewController: UIViewController {
                 let pairEvent = try? JSONDecoder().decode(PairEvent.self, from: data) else {
                     return
             }
+            self?.pairs.append(pairEvent.pair)
             self?.lobbyView?.pair(pairEvent.pair)
         })
     }
     
     private func startGame() {
-        gameStartView = GameStartView(as: .player, delegate: self)
+        guard let username = channel?.myId, pairs.count == 1 else {
+            return
+        }
+        var mockPairs = pairs
+        mockPairs.append(["usernameMock1", "usernameMock2"])
+        gameStartView = GameStartView(as: .player, username: username, pairs: mockPairs, delegate: self)
         guard let gameStartView = gameStartView else {
             return
         }

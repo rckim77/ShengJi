@@ -87,7 +87,13 @@ final class HostGameViewController: UIViewController {
     }
     
     private func startGame() {
-        gameStartView = GameStartView(as: .host, delegate: self)
+        guard let pairs = lobbyView?.pairs, let hostUsername = hostUsername else {
+            return
+        }
+        
+        var mockPairs = pairs
+        mockPairs.append(["usernameMock1", "usernameMock2"])
+        gameStartView = GameStartView(as: .host, username: hostUsername, pairs: mockPairs, delegate: self)
         guard let gameStartView = gameStartView else {
             return
         }
@@ -150,7 +156,7 @@ extension HostGameViewController: HostLobbyViewDelegate {
             guard let firstUsername = pairAlert.textFields?.first?.text,
                 let secondUsername = pairAlert.textFields?[1].text,
                 !firstUsername.isEmpty && !secondUsername.isEmpty else {
-                    print("neither text field can be empty")
+                    // neither field can be empty
                     return
             }
             self.pair(firstUsername, with: secondUsername)

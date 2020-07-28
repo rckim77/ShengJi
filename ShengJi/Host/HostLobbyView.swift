@@ -112,11 +112,11 @@ final class HostLobbyView: UIView {
                 text += "\n\(username)"
             }
             usersJoinedLabel.text = text
-            startButton.isEnabled = otherUsernames.count == 3
+            startButton.isEnabled = otherUsernames.count == 2
         }
     }
     
-    private var pairs: [[String]] = [] {
+    var pairs: [[String]] = [] {
         didSet {
             var text = "Pairs:"
             for pair in pairs {
@@ -126,7 +126,7 @@ final class HostLobbyView: UIView {
                 text += "\n- \(modifiedPair[0]) and \(modifiedPair[1])"
             }
             pairsLabel.text = text
-            startButton.isEnabled = pairs.count == 2
+            startButton.isEnabled = pairs.count == 1
         }
     }
     
