@@ -59,6 +59,15 @@ extension UIViewController {
         playerLeftAlert.addAction(confirmAction)
         present(playerLeftAlert, animated: true, completion: nil)
     }
+    
+    func showErrorAlert(message: String, completion: @escaping(() -> Void)) {
+        let alertVC = UIAlertController(title: "Oops, that didn't work. 😦", message: message, preferredStyle: .alert)
+        let confirmAction = UIAlertAction(title: "Got it", style: .cancel, handler: { _ in
+            completion()
+        })
+        alertVC.addAction(confirmAction)
+        present(alertVC, animated: true, completion: nil)
+    }
 }
 
 extension UIView {

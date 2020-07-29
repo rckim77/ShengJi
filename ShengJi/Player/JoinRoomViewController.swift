@@ -34,6 +34,7 @@ final class JoinRoomViewController: UIViewController {
     
     private let loadingVC = LoadingViewController()
     private var joinCancellable: AnyCancellable?
+    private var channel: PusherPresenceChannel?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,17 +70,16 @@ final class JoinRoomViewController: UIViewController {
     @objc
     private func joinButtonTapped() {
         guard let code = codeField.text, !code.isEmpty else {
-            let invalidValuesAlert = UIAlertController(title: "Please enter a 4-digit code.", message: nil, preferredStyle: .alert)
-            let confirmAction = UIAlertAction(title: "Got it", style: .cancel, handler: nil)
-            invalidValuesAlert.addAction(confirmAction)
-            present(invalidValuesAlert, animated: true, completion: nil)
+            displayEmptyTextFieldAlert()
             return
         }
-        add(loadingVC)
         
         guard let url = URL(string: "https://fast-garden-35127.herokuapp.com/join/presence-\(code)") else {
             return
         }
+        
+        add(loadingVC)
+
         joinCancellable = URLSession.shared.dataTaskPublisher(for: url)
             .map { $0.data }
             .decode(type: JoinResponse.self, decoder: JSONDecoder())
@@ -90,19 +90,55 @@ final class JoinRoomViewController: UIViewController {
                     self?.displayErrorAlert(for: "presence-\(code)")
                 }
             }, receiveValue: { [weak self] response in
-                let playerLobbbyVC = PlayerGameViewController(channelName: response.code, hostUsername: response.host)
-                self?.navigationController?.pushViewController(playerLobbbyVC, animated: true)
+                guard let strongSelf = self else {
+                    return
+                }
+                strongSelf.bindChannelOnSubscriptionSuccess(channelName: "presence-\(code)", hostUsername: response.host)
             })
+    }
+    
+    /// We do a test subscription to see if the user is allowed to join (e.g., cannot join if there's already 4 people).
+    /// If they are, then we navigate to the next screen and they'll re-subscribe. Otherwise, we remove the temporary
+    /// subscription.
+    private func bindChannelOnSubscriptionSuccess(channelName: String, hostUsername: String) {
+        channel = appDelegate.pusher?.subscribeToPresenceChannel(channelName: channelName)
+
+        channel?.bind(eventName: "pusher:subscription_succeeded", callback: { [weak self] _ in
+            if let members = self?.channel?.members, members.count > 4 {
+                self?.displayFullAlert(for: channelName)
+            } else {
+                self?.appDelegate.pusher?.unsubscribe(channelName)
+                self?.channel?.unbindAll()
+                let playerLobbbyVC = PlayerGameViewController(channelName: channelName, hostUsername: hostUsername)
+                self?.navigationController?.pushViewController(playerLobbbyVC, animated: true)
+            }
+        })
+    }
+    
+    private func displayEmptyTextFieldAlert() {
+        let invalidValuesAlert = UIAlertController(title: "Please enter a 4-digit code.", message: nil, preferredStyle: .alert)
+        let confirmAction = UIAlertAction(title: "Got it", style: .cancel, handler: nil)
+        invalidValuesAlert.addAction(confirmAction)
+        present(invalidValuesAlert, animated: true, completion: nil)
+    }
+    
+    private func displayFullAlert(for channelName: String) {
+        let presencePrefix = "presence-"
+        let startingIndex = channelName.index(channelName.startIndex, offsetBy: presencePrefix.count)
+        let roomCode = channelName.suffix(from: startingIndex)
+        let message = "Room \(roomCode) looks like it's already full. Try another room code."
+        showErrorAlert(message: message) { [weak self] in
+            self?.appDelegate.pusher?.unsubscribe(channelName)
+            self?.channel?.unbindAll()
+        }
     }
     
     private func displayErrorAlert(for channelName: String) {
         let presencePrefix = "presence-"
         let startingIndex = channelName.index(channelName.startIndex, offsetBy: presencePrefix.count)
         let roomCode = channelName.suffix(from: startingIndex)
-        let alertVC = UIAlertController(title: "Oops, that didn't work. 😦", message: "Unable to connect to room \(roomCode).", preferredStyle: .alert)
-        let confirmAction = UIAlertAction(title: "Got it", style: .cancel, handler: nil)
-        alertVC.addAction(confirmAction)
-        present(alertVC, animated: true, completion: nil)
+        let message = "We could not connect you to room \(roomCode). Try another code."
+        showErrorAlert(message: message, completion: {})
     }
 }
 

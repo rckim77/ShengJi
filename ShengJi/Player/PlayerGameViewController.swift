@@ -63,7 +63,7 @@ final class PlayerGameViewController: UIViewController {
             }
         })
         
-        channel?.bind(eventName: "pusher:subscription_succeeded", callback: { [weak self] members in
+        channel?.bind(eventName: "pusher:subscription_succeeded", callback: { [weak self] _ in
             guard let strongSelf = self, let playerUsername = strongSelf.channel?.myId else {
                 return
             }
