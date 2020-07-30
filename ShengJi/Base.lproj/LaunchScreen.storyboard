@@ -21,10 +21,18 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="升级" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Zp-tY-SWQ">
+                                <rect key="frame" x="172.5" y="476.5" width="69" height="41"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
+                            <constraint firstItem="7Zp-tY-SWQ" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="BtA-8z-ddD"/>
                             <constraint firstItem="O59-rz-Kbw" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="TDv-d7-qBg"/>
+                            <constraint firstItem="7Zp-tY-SWQ" firstAttribute="top" secondItem="O59-rz-Kbw" secondAttribute="bottom" constant="8" id="pox-xA-u6H"/>
                             <constraint firstItem="O59-rz-Kbw" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="w5H-cf-DSs"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>

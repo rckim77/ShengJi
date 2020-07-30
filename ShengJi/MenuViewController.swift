@@ -12,6 +12,14 @@ import Combine
 
 final class MenuViewController: UIViewController {
     
+    private lazy var titleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "升级"
+        label.textColor = .systemGray
+        label.font = .preferredFont(forTextStyle: .largeTitle)
+        return label
+    }()
+    
     private lazy var joinButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Join room", for: .normal)
@@ -46,9 +54,15 @@ final class MenuViewController: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = .systemBackground
+        view.addSubview(titleLabel)
         view.addSubview(joinButton)
         view.addSubview(createButton)
         view.addSubview(versionLabel)
+        
+        titleLabel.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            make.centerX.equalToSuperview()
+        }
         
         joinButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
