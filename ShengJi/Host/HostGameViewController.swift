@@ -95,12 +95,12 @@ final class HostGameViewController: UIViewController {
         lobbyView.clearUsernames()
     }
     
-    private func startGame() {
-        guard let pairs = lobbyView?.pairs, let hostUsername = hostUsername else {
+    private func startGame(playerTurnOrder: [String]) {
+        guard let hostUsername = hostUsername else {
             return
         }
         
-        gameStartView = GameStartView(as: .host, hostUsername: hostUsername, username: hostUsername, pairs: pairs, delegate: self)
+        gameStartView = GameStartView(as: .host, hostUsername: hostUsername, username: hostUsername, playerTurnOrder: playerTurnOrder, delegate: self)
         guard let gameStartView = gameStartView else {
             return
         }
@@ -197,16 +197,17 @@ extension HostGameViewController: HostLobbyViewDelegate {
                 }
                 return data
             })
+            .decode(type: StartResponse.self, decoder: JSONDecoder())
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] completion in
                 self?.loadingVC.remove()
                 if case Subscribers.Completion.failure(_) = completion {
                     self?.showErrorAlert(message: "Please check your pairs are correct.", completion: {})
-                } else {
-                    self?.lobbyView?.isHidden = true
-                    self?.startGame()
                 }
-            }, receiveValue: { _ in })
+            }, receiveValue: { [weak self] startResponse in
+                self?.lobbyView?.isHidden = true
+                self?.startGame(playerTurnOrder: startResponse.playerTurnOrder)
+            })
     }
     
     func didTapLeaveButton() {

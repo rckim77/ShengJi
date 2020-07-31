@@ -93,9 +93,14 @@ final class PlayerGameViewController: UIViewController {
             }
         })
         
-        channel?.bind(eventName: "start", callback: { [weak self] _ in
+        channel?.bind(eventName: "start", eventCallback: { [weak self] startEventData in
+            guard let data = startEventData.data?.data(using: .utf8),
+                let startEvent = try? JSONDecoder().decode(StartResponse.self, from: data) else {
+                    return
+            }
+
             self?.lobbyView?.isHidden = true
-            self?.startGame()
+            self?.startGame(playerTurnOrder: startEvent.playerTurnOrder)
         })
         
         channel?.bind(eventName: "pair", eventCallback: { [weak self] pairEventData in
@@ -108,13 +113,12 @@ final class PlayerGameViewController: UIViewController {
         })
     }
     
-    private func startGame() {
-        guard let username = username, pairs.count == 2 else {
+    private func startGame(playerTurnOrder: [String]) {
+        guard let username = username else {
             return
         }
-//        var mockPairs = pairs
-//        mockPairs.append(["usernameMock1", "usernameMock2"])
-        gameStartView = GameStartView(as: .player, hostUsername: hostUsername, username: username, pairs: pairs, delegate: self)
+
+        gameStartView = GameStartView(as: .player, hostUsername: hostUsername, username: username, playerTurnOrder: playerTurnOrder, delegate: self)
         guard let gameStartView = gameStartView else {
             return
         }

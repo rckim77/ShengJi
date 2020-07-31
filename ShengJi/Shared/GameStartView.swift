@@ -103,16 +103,16 @@ final class GameStartView: UIView {
     private let participantType: ParticipantType
     private let hostUsername: String
     private let username: String
-    private let pairs: [[String]]
+    private let playerTurnOrder: [String]
     private weak var delegate: GameStartViewDelegate?
     private var drawCancellable: AnyCancellable?
     
     /// For hosts, the hostUsername and username fields are equivalent.
-    init(as participantType: ParticipantType, hostUsername: String, username: String, pairs: [[String]], delegate: GameStartViewDelegate) {
+    init(as participantType: ParticipantType, hostUsername: String, username: String, playerTurnOrder: [String], delegate: GameStartViewDelegate) {
         self.participantType = participantType
         self.hostUsername = hostUsername
         self.username = username
-        self.pairs = pairs
+        self.playerTurnOrder = playerTurnOrder
         self.delegate = delegate
         super.init(frame: .zero)
         
@@ -191,25 +191,15 @@ final class GameStartView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    /// Use the host as the point of reference.
     private func setupPlayerPositions() {
-        guard let hostPair = pairs.first(where: { $0[0] == hostUsername || $0[1] == hostUsername }),
-            let hostIndex = hostPair.firstIndex(of: hostUsername),
-            let hostPairIndex = hostPair.firstIndex(where: { $0 != hostUsername }),
-            let playerPair = pairs.first(where: { $0[0] != hostUsername && $0[1] != hostUsername }) else {
-                return
-        }
-
-        let absolutePlayerPositions = [hostPair[hostIndex], playerPair[0], hostPair[hostPairIndex], playerPair[1]]
-        
-        guard let indexOffset = absolutePlayerPositions.firstIndex(of: username) else {
+        guard let indexOffset = playerTurnOrder.firstIndex(of: username) else {
             return
         }
         
-        bottomPlayerLabel.text = absolutePlayerPositions[indexOffset] + " (me)"
-        leftPlayerLabel.text = absolutePlayerPositions[(indexOffset + 1) % 4]
-        topPlayerLabel.text = absolutePlayerPositions[(indexOffset + 2) % 4]
-        rightPlayerLabel.text = absolutePlayerPositions[(indexOffset + 3) % 4]
+        bottomPlayerLabel.text = playerTurnOrder[indexOffset] + " (me)"
+        leftPlayerLabel.text = playerTurnOrder[(indexOffset + 1) % 4]
+        topPlayerLabel.text = playerTurnOrder[(indexOffset + 2) % 4]
+        rightPlayerLabel.text = playerTurnOrder[(indexOffset + 3) % 4]
     }
     
     @objc
