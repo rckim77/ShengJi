@@ -110,9 +110,17 @@ final class HostGameViewController: UIViewController {
             return
         }
         pairCancellable = URLSession.shared.dataTaskPublisher(for: url)
+            .tryMap({ data, response -> Data in
+                guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+                    throw APIError.genericError
+                }
+                return data
+            })
             .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { _ in
-                // todo: display error alert if pairing failed
+            .sink(receiveCompletion: { [weak self] completion in
+                if case Subscribers.Completion.failure(_) = completion {
+                    self?.showErrorAlert(message: "Could not pair those players. Please try another pair.", completion: {})
+                }
             }, receiveValue: { _ in })
     }
 }
@@ -144,7 +152,9 @@ extension HostGameViewController: HostLobbyViewDelegate {
     }
     
     func didTapPairButton() {
-        let pairAlert = UIAlertController(title: "Who would you like to pair?", message: nil, preferredStyle: .alert)
+        let pairAlert = UIAlertController(title: "Who would you like to pair?",
+                                          message: "Make sure you type in their usernames correctly.",
+                                          preferredStyle: .alert)
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         pairAlert.addAction(cancelAction)
         pairAlert.addTextField { textField in

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		EC2A224C24CBFA0F007920D4 /* ParticipantType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2A224B24CBFA0F007920D4 /* ParticipantType.swift */; };
 		EC2A224E24CE1761007920D4 /* PairEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2A224D24CE1761007920D4 /* PairEvent.swift */; };
+		EC2A225024D39C22007920D4 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2A224F24D39C22007920D4 /* APIError.swift */; };
 		ECCACB8924C247250077CD89 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCACB8824C247250077CD89 /* AppDelegate.swift */; };
 		ECCACB8F24C247270077CD89 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ECCACB8E24C247270077CD89 /* Assets.xcassets */; };
 		ECCACB9224C247270077CD89 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ECCACB9124C247270077CD89 /* Preview Assets.xcassets */; };
@@ -35,6 +36,7 @@
 		6A2411FE280B73A920C93D27 /* Pods_ShengJi.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ShengJi.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC2A224B24CBFA0F007920D4 /* ParticipantType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantType.swift; sourceTree = "<group>"; };
 		EC2A224D24CE1761007920D4 /* PairEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairEvent.swift; sourceTree = "<group>"; };
+		EC2A224F24D39C22007920D4 /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
 		ECCACB8524C247250077CD89 /* ShengJi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShengJi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ECCACB8824C247250077CD89 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ECCACB8E24C247270077CD89 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -146,6 +148,7 @@
 				ECCACBA224C69A070077CD89 /* LoadingViewController.swift */,
 				EC2A224B24CBFA0F007920D4 /* ParticipantType.swift */,
 				ECCACBA424C69B710077CD89 /* Extensions.swift */,
+				EC2A224F24D39C22007920D4 /* APIError.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -299,6 +302,7 @@
 				ECCACBC024CBEB420077CD89 /* DebugViewController.swift in Sources */,
 				ECCACB9F24C4D4F00077CD89 /* JoinRoomViewController.swift in Sources */,
 				ECCACBB124C7EEE90077CD89 /* NetworkError.swift in Sources */,
+				EC2A225024D39C22007920D4 /* APIError.swift in Sources */,
 				ECCACBBE24CBE40C0077CD89 /* GameStartView.swift in Sources */,
 				ECCACBA124C4F9A20077CD89 /* HostGameViewController.swift in Sources */,
 			);
