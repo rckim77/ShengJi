@@ -1,5 +1,5 @@
 //
-//  PairEvent.swift
+//  Events.swift
 //  ShengJi
 //
 //  Created by Ray Kim on 7/26/20.
@@ -10,4 +10,8 @@ import Foundation
 
 struct PairEvent: Codable {
     let pair: [String] // contains two usernames
+}
+
+struct DrawEvent: Codable {
+    let nextPlayerToDraw: String // username
 }

@@ -111,6 +111,14 @@ final class PlayerGameViewController: UIViewController {
             self?.pairs.append(pairEvent.pair)
             self?.lobbyView?.pair(pairEvent.pair)
         })
+        
+        channel?.bind(eventName: "draw", eventCallback: { drawEventData in
+            guard let data = drawEventData.data?.data(using: .utf8),
+                let drawEvent = try? JSONDecoder().decode(DrawEvent.self, from: data) else {
+                    return
+            }
+            print("DRAW: \(drawEvent)")
+        })
     }
     
     private func startGame(playerTurnOrder: [String]) {
@@ -151,6 +159,19 @@ extension PlayerGameViewController: GameStartViewDelegate {
             let url = URL(string: "https://fast-garden-35127.herokuapp.com/draw/\(channelName)/\(username)") else {
             return
         }
-//        drawCancellable = URLSession.shared.dataTaskPublisher(for: url)
+
+        drawCancellable = URLSession.shared.dataTaskPublisher(for: url)
+            .tryMap({ data, response -> Data in
+                guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+                    throw APIError.genericError
+                }
+                return data
+            })
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { [weak self] completion in
+                if case Subscribers.Completion.failure(_) = completion {
+                    self?.showErrorAlert(message: "Could not draw. Try again.", completion: {})
+                }
+            }, receiveValue: { _ in })
     }
 }
