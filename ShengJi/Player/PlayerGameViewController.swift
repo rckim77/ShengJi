@@ -9,6 +9,7 @@
 import UIKit
 import SnapKit
 import PusherSwift
+import Combine
 
 final class PlayerGameViewController: UIViewController {
     
@@ -18,6 +19,15 @@ final class PlayerGameViewController: UIViewController {
     private var channel: PusherPresenceChannel?
     private let hostUsername: String
     private var pairs: [[String]] = []
+    private var username: String? {
+        channel?.myId
+    }
+    
+    // MARK: - AnyCancellables
+    
+    private var drawCancellable: AnyCancellable?
+    
+    // MARK: - Init methods
     
     init(channelName: String, hostUsername: String) {
         self.channelName = channelName
@@ -28,6 +38,8 @@ final class PlayerGameViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: - View lifecycle methods
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,7 +76,7 @@ final class PlayerGameViewController: UIViewController {
         })
         
         channel?.bind(eventName: "pusher:subscription_succeeded", callback: { [weak self] _ in
-            guard let strongSelf = self, let playerUsername = strongSelf.channel?.myId else {
+            guard let strongSelf = self, let playerUsername = strongSelf.username else {
                 return
             }
             
@@ -97,7 +109,7 @@ final class PlayerGameViewController: UIViewController {
     }
     
     private func startGame() {
-        guard let username = channel?.myId, pairs.count == 2 else {
+        guard let username = username, pairs.count == 2 else {
             return
         }
 //        var mockPairs = pairs
@@ -128,5 +140,13 @@ extension PlayerGameViewController: PlayerLobbyViewDelegate {
 
 extension PlayerGameViewController: GameStartViewDelegate {
     func gameStartViewDidTapLeaveButton() { // for host only
+    }
+    
+    func gameStartViewDidTapDrawButton() {
+        guard let username = username,
+            let url = URL(string: "https://fast-garden-35127.herokuapp.com/draw/\(channelName)/\(username)") else {
+            return
+        }
+//        drawCancellable = URLSession.shared.dataTaskPublisher(for: url)
     }
 }

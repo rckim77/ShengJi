@@ -8,9 +8,12 @@
 
 import UIKit
 import SnapKit
+import Combine
 
 protocol GameStartViewDelegate: class {
+    /// Only used by host
     func gameStartViewDidTapLeaveButton()
+    func gameStartViewDidTapDrawButton()
 }
 
 final class GameStartView: UIView {
@@ -44,10 +47,26 @@ final class GameStartView: UIView {
         return label
     }()
     
+    private lazy var bottomPlayerTurnLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .systemGray
+        label.font = .preferredFont(forTextStyle: .body)
+        label.text = "Your turn"
+        return label
+    }()
+    
     private lazy var leftPlayerLabel: UILabel = {
         let label = UILabel()
         label.textColor = .systemGray
         label.font = .preferredFont(forTextStyle: .body)
+        return label
+    }()
+    
+    private lazy var leftPlayerTurnLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .systemGray
+        label.font = .preferredFont(forTextStyle: .body)
+        label.text = "Their turn"
         return label
     }()
     
@@ -58,10 +77,26 @@ final class GameStartView: UIView {
         return label
     }()
     
+    private lazy var topPlayerTurnLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .systemGray
+        label.font = .preferredFont(forTextStyle: .body)
+        label.text = "Their turn"
+        return label
+    }()
+    
     private lazy var rightPlayerLabel: UILabel = {
         let label = UILabel()
         label.textColor = .systemGray
         label.font = .preferredFont(forTextStyle: .body)
+        return label
+    }()
+    
+    private lazy var rightPlayerTurnLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .systemGray
+        label.font = .preferredFont(forTextStyle: .body)
+        label.text = "Their turn"
         return label
     }()
     
@@ -70,6 +105,7 @@ final class GameStartView: UIView {
     private let username: String
     private let pairs: [[String]]
     private weak var delegate: GameStartViewDelegate?
+    private var drawCancellable: AnyCancellable?
     
     /// For hosts, the hostUsername and username fields are equivalent.
     init(as participantType: ParticipantType, hostUsername: String, username: String, pairs: [[String]], delegate: GameStartViewDelegate) {
@@ -84,9 +120,13 @@ final class GameStartView: UIView {
         addSubview(drawDeckLabel)
         addSubview(drawDeckButton)
         addSubview(bottomPlayerLabel)
+        addSubview(bottomPlayerTurnLabel)
         addSubview(leftPlayerLabel)
+        addSubview(leftPlayerTurnLabel)
         addSubview(topPlayerLabel)
+        addSubview(topPlayerTurnLabel)
         addSubview(rightPlayerLabel)
+        addSubview(rightPlayerTurnLabel)
         
         leaveButton.snp.makeConstraints { make in
             make.top.equalTo(safeAreaLayoutGuide.snp.top).inset(12)
@@ -104,8 +144,13 @@ final class GameStartView: UIView {
         }
         
         bottomPlayerLabel.snp.makeConstraints { make in
-            make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).inset(92)
+            make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).inset(96)
             make.centerX.equalToSuperview()
+        }
+        
+        bottomPlayerTurnLabel.snp.makeConstraints { make in
+            make.top.equalTo(bottomPlayerLabel.snp.bottom).offset(4)
+            make.centerX.equalTo(bottomPlayerLabel.snp.centerX)
         }
         
         leftPlayerLabel.snp.makeConstraints { make in
@@ -113,14 +158,29 @@ final class GameStartView: UIView {
             make.centerY.equalToSuperview().offset(-80)
         }
         
+        leftPlayerTurnLabel.snp.makeConstraints { make in
+            make.top.equalTo(leftPlayerLabel.snp.bottom).offset(4)
+            make.centerX.equalTo(leftPlayerLabel.snp.centerX)
+        }
+        
         topPlayerLabel.snp.makeConstraints { make in
             make.top.equalTo(safeAreaLayoutGuide.snp.top).inset(72)
             make.centerX.equalToSuperview()
         }
         
+        topPlayerTurnLabel.snp.makeConstraints { make in
+            make.top.equalTo(topPlayerLabel.snp.bottom).offset(4)
+            make.centerX.equalTo(topPlayerLabel.snp.centerX)
+        }
+        
         rightPlayerLabel.snp.makeConstraints { make in
             make.trailing.equalToSuperview().inset(8)
             make.centerY.equalToSuperview().offset(80)
+        }
+        
+        rightPlayerTurnLabel.snp.makeConstraints { make in
+            make.top.equalTo(rightPlayerLabel.snp.bottom).offset(4)
+            make.centerX.equalTo(rightPlayerLabel.snp.centerX)
         }
         
         leaveButton.isHidden = participantType == .player
@@ -154,11 +214,11 @@ final class GameStartView: UIView {
     
     @objc
     private func leaveButtonTapped() {
-        self.delegate?.gameStartViewDidTapLeaveButton()
+        delegate?.gameStartViewDidTapLeaveButton()
     }
     
     @objc
     private func drawDeckButtonTapped() {
-        
+        delegate?.gameStartViewDidTapDrawButton()
     }
 }

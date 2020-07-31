@@ -17,13 +17,18 @@ final class HostGameViewController: UIViewController {
     private var gameStartView: GameStartView?
     /// Note: this does not include the 'presence-' prefix
     private let roomCode: String
+    private var presenceChannelName: String {
+        "presence-\(roomCode)"
+    }
     private var hostUsername: String?
     private var channel: PusherPresenceChannel?
+    private let loadingVC = LoadingViewController()
     
     // MARK: - AnyCancellable methods
     
     private var startCancellable: AnyCancellable?
     private var pairCancellable: AnyCancellable?
+    private var drawCancellable: AnyCancellable?
     
     // MARK: - Init methods
     
@@ -50,7 +55,7 @@ final class HostGameViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
-        appDelegate.pusher?.unsubscribe("presence-\(roomCode)")
+        appDelegate.pusher?.unsubscribe(presenceChannelName)
         appDelegate.pusher?.delegate = nil
         navigationController?.setNavigationBarHidden(false, animated: true)
     }
@@ -59,7 +64,7 @@ final class HostGameViewController: UIViewController {
     
     private func setupPusher() {
         appDelegate.pusher?.delegate = self
-        channel = appDelegate.pusher?.subscribeToPresenceChannel(channelName: "presence-\(roomCode)", onMemberAdded: { [weak self] member in
+        channel = appDelegate.pusher?.subscribeToPresenceChannel(channelName: presenceChannelName, onMemberAdded: { [weak self] member in
             self?.lobbyView?.addUsername(member.userId)
         }, onMemberRemoved: { [weak self] member in
             if self?.lobbyView?.isHidden == true { // proxy for game has started
@@ -106,7 +111,7 @@ final class HostGameViewController: UIViewController {
     }
     
     private func pair(_ username: String, with otherUsername: String) {
-        guard let url = URL(string: "https://fast-garden-35127.herokuapp.com/pair/presence-\(roomCode)/\(username)/\(otherUsername)") else {
+        guard let url = URL(string: "https://fast-garden-35127.herokuapp.com/pair/\(presenceChannelName)/\(username)/\(otherUsername)") else {
             return
         }
         pairCancellable = URLSession.shared.dataTaskPublisher(for: url)
@@ -183,11 +188,24 @@ extension HostGameViewController: HostLobbyViewDelegate {
             return
         }
         
+        add(loadingVC)
+        
         startCancellable = URLSession.shared.dataTaskPublisher(for: url)
+            .tryMap({ data, response -> Data in
+                guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+                    throw APIError.genericError
+                }
+                return data
+            })
             .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { [weak self] _ in
-                self?.lobbyView?.isHidden = true
-                self?.startGame()
+            .sink(receiveCompletion: { [weak self] completion in
+                self?.loadingVC.remove()
+                if case Subscribers.Completion.failure(_) = completion {
+                    self?.showErrorAlert(message: "Please check your pairs are correct.", completion: {})
+                } else {
+                    self?.lobbyView?.isHidden = true
+                    self?.startGame()
+                }
             }, receiveValue: { _ in })
     }
     
@@ -205,5 +223,14 @@ extension HostGameViewController: DebugViewControllerDelegate {
 extension HostGameViewController: GameStartViewDelegate {
     func gameStartViewDidTapLeaveButton() {
         showLeaveWarningAlert(as: .host)
+    }
+    
+    func gameStartViewDidTapDrawButton() {
+        guard let username = hostUsername,
+            let url = URL(string: "https://fast-garden-35127.herokuapp.com/draw/\(presenceChannelName)/\(username)") else {
+            return
+        }
+//        drawCancellable = URLSession.shared.dataTaskPublisher(for: url)
+        
     }
 }
