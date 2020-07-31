@@ -147,6 +147,7 @@ final class HostLobbyView: UIView {
             case .noPairs:
                 startButton.isEnabled = false
                 pairButton.isHidden = false
+                pairButton.isEnabled = true
                 pairButton.layer.borderColor = UIColor.systemBlue.cgColor
                 startButton.setTitle("Please pair players", for: .disabled)
                 pairsLabel.isHidden = false
@@ -154,13 +155,15 @@ final class HostLobbyView: UIView {
             case .insufficientPairs:
                 startButton.isEnabled = false
                 pairButton.isHidden = false
+                pairButton.isEnabled = true
                 pairButton.layer.borderColor = UIColor.systemBlue.cgColor
                 startButton.setTitle("Please pair players", for: .disabled)
                 pairsLabel.isHidden = false
             case .sufficientPairs:
                 startButton.isEnabled = true
                 pairButton.isHidden = false
-                pairButton.layer.borderColor = UIColor.systemBlue.cgColor
+                pairButton.isEnabled = false
+                pairButton.layer.borderColor = UIColor.systemGray.cgColor
                 pairsLabel.isHidden = false
                 startButton.setTitle("Start game", for: .normal)
             }
