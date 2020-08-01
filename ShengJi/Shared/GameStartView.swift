@@ -28,7 +28,7 @@ final class GameStartView: UIView {
     private lazy var drawDeckLabel: UILabel = {
         let label = UILabel()
         label.text = "🂠"
-        label.font = .systemFont(ofSize: 124)
+        label.font = .systemFont(ofSize: 128)
         return label
     }()
     
@@ -56,6 +56,13 @@ final class GameStartView: UIView {
         return label
     }()
     
+    private lazy var bottomPlayerHandLabel: UILabel = {
+        let label = UILabel()
+        label.font = .preferredFont(forTextStyle: .title1)
+        label.text = "0"
+        return label
+    }()
+    
     private lazy var leftPlayerLabel: UILabel = {
         let label = UILabel()
         label.textColor = .systemGray
@@ -69,6 +76,13 @@ final class GameStartView: UIView {
         label.font = .preferredFont(forTextStyle: .body)
         label.text = "Their turn"
         label.isHidden = true
+        return label
+    }()
+    
+    private lazy var leftPlayerHandLabel: UILabel = {
+        let label = UILabel()
+        label.font = .preferredFont(forTextStyle: .title1)
+        label.text = "0"
         return label
     }()
     
@@ -88,6 +102,13 @@ final class GameStartView: UIView {
         return label
     }()
     
+    private lazy var topPlayerHandLabel: UILabel = {
+        let label = UILabel()
+        label.font = .preferredFont(forTextStyle: .title1)
+        label.text = "0"
+        return label
+    }()
+    
     private lazy var rightPlayerLabel: UILabel = {
         let label = UILabel()
         label.textColor = .systemGray
@@ -101,6 +122,13 @@ final class GameStartView: UIView {
         label.font = .preferredFont(forTextStyle: .body)
         label.text = "Their turn"
         label.isHidden = true
+        return label
+    }()
+    
+    private lazy var rightPlayerHandLabel: UILabel = {
+        let label = UILabel()
+        label.font = .preferredFont(forTextStyle: .title1)
+        label.text = "0"
         return label
     }()
     
@@ -133,12 +161,16 @@ final class GameStartView: UIView {
         addSubview(drawDeckButton)
         addSubview(bottomPlayerLabel)
         addSubview(bottomPlayerTurnLabel)
+        addSubview(bottomPlayerHandLabel)
         addSubview(leftPlayerLabel)
         addSubview(leftPlayerTurnLabel)
+        addSubview(leftPlayerHandLabel)
         addSubview(topPlayerLabel)
         addSubview(topPlayerTurnLabel)
+        addSubview(topPlayerHandLabel)
         addSubview(rightPlayerLabel)
         addSubview(rightPlayerTurnLabel)
+        addSubview(rightPlayerHandLabel)
         
         leaveButton.snp.makeConstraints { make in
             make.top.equalTo(safeAreaLayoutGuide.snp.top).inset(12)
@@ -156,7 +188,7 @@ final class GameStartView: UIView {
         }
         
         bottomPlayerLabel.snp.makeConstraints { make in
-            make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).inset(96)
+            make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).inset(100)
             make.centerX.equalToSuperview()
         }
         
@@ -165,8 +197,13 @@ final class GameStartView: UIView {
             make.centerX.equalTo(bottomPlayerLabel.snp.centerX)
         }
         
+        bottomPlayerHandLabel.snp.makeConstraints { make in
+            make.top.equalTo(bottomPlayerTurnLabel.snp.bottom).offset(4)
+            make.centerX.equalTo(bottomPlayerTurnLabel.snp.centerX)
+        }
+        
         leftPlayerLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(8)
+            make.leading.equalToSuperview().inset(24)
             make.centerY.equalToSuperview().offset(-80)
         }
         
@@ -175,24 +212,39 @@ final class GameStartView: UIView {
             make.centerX.equalTo(leftPlayerLabel.snp.centerX)
         }
         
-        topPlayerLabel.snp.makeConstraints { make in
-            make.top.equalTo(safeAreaLayoutGuide.snp.top).inset(72)
+        leftPlayerHandLabel.snp.makeConstraints { make in
+            make.top.equalTo(leftPlayerTurnLabel.snp.bottom).offset(4)
+            make.centerX.equalTo(leftPlayerLabel.snp.centerX)
+        }
+        
+        topPlayerHandLabel.snp.makeConstraints { make in
+            make.top.equalTo(safeAreaLayoutGuide.snp.top).inset(12)
             make.centerX.equalToSuperview()
+        }
+        
+        topPlayerLabel.snp.makeConstraints { make in
+            make.top.equalTo(topPlayerHandLabel.snp.bottom).offset(4)
+            make.centerX.equalTo(topPlayerHandLabel.snp.centerX)
         }
         
         topPlayerTurnLabel.snp.makeConstraints { make in
             make.top.equalTo(topPlayerLabel.snp.bottom).offset(4)
-            make.centerX.equalTo(topPlayerLabel.snp.centerX)
+            make.centerX.equalTo(topPlayerHandLabel.snp.centerX)
+        }
+        
+        rightPlayerHandLabel.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().inset(24)
+            make.centerY.equalToSuperview()
         }
         
         rightPlayerLabel.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(8)
-            make.centerY.equalToSuperview().offset(80)
+            make.top.equalTo(rightPlayerHandLabel.snp.bottom).offset(8)
+            make.centerX.equalTo(rightPlayerHandLabel.snp.centerX)
         }
         
         rightPlayerTurnLabel.snp.makeConstraints { make in
             make.top.equalTo(rightPlayerLabel.snp.bottom).offset(4)
-            make.centerX.equalTo(rightPlayerLabel.snp.centerX)
+            make.centerX.equalTo(rightPlayerHandLabel.snp.centerX)
         }
         
         leaveButton.isHidden = participantType == .player
