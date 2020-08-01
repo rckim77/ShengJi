@@ -56,7 +56,11 @@ final class PlayerHandView: UIView {
     private let position: PlayerPosition
 
     var username: String? {
-        usernameLabel.text
+        guard let name = usernameLabel.text else {
+            return nil
+        }
+        // remove " (me)" part for bottom text
+        return position == .bottom ? name.components(separatedBy: " ").first : name
     }
     
     // MARK: - Init methods

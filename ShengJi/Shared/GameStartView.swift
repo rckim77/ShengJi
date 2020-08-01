@@ -109,7 +109,7 @@ final class GameStartView: UIView {
         }
         
         bottomPlayerView.snp.makeConstraints { make in
-            make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).inset(16)
+            make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).inset(40)
             make.centerX.equalToSuperview()
         }
         
