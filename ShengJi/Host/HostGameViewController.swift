@@ -172,12 +172,15 @@ extension HostGameViewController: HostLobbyViewDelegate {
                                           preferredStyle: .alert)
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         pairAlert.addAction(cancelAction)
+        let firstPredictedText = lobbyView?.currentlyUnpairedPlayers.count == 2 ? lobbyView?.currentlyUnpairedPlayers[0] : hostUsername
         pairAlert.addTextField { textField in
             textField.placeholder = "Enter a username"
-            textField.text = self.hostUsername
+            textField.text = firstPredictedText
         }
+        let secondPredictedText = lobbyView?.currentlyUnpairedPlayers.count == 2 ? lobbyView?.currentlyUnpairedPlayers[1] : nil
         pairAlert.addTextField { textField in
             textField.placeholder = "Enter a username"
+            textField.text = secondPredictedText
         }
         let pairAction = UIAlertAction(title: "Pair", style: .default) { _ in
             guard let firstUsername = pairAlert.textFields?.first?.text,
