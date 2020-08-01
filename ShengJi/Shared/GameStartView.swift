@@ -176,7 +176,7 @@ final class GameStartView: UIView {
         
         let views = [bottomPlayerView, leftPlayerView, topPlayerView, rightPlayerView].enumerated()
         for (index, view) in views {
-            view.updateHandLabel(text: "\(drawEvent.playerHandCounts[index])")
+            view.updateHandLabel(handCount: drawEvent.playerHandCounts[index])
         }
     }
 }

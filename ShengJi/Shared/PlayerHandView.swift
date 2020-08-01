@@ -45,6 +45,14 @@ final class PlayerHandView: UIView {
         return label
     }()
     
+    private lazy var handImageView: UIImageView = {
+        let config = UIImage.SymbolConfiguration(scale: .large)
+        let image = UIImage(systemName: "square.stack.3d.up.fill", withConfiguration: config)
+        let imageView = UIImageView(image: image)
+        imageView.tintColor = .label
+        return imageView
+    }()
+    
     private let position: PlayerPosition
 
     var username: String? {
@@ -60,14 +68,15 @@ final class PlayerHandView: UIView {
         addSubview(stackView)
         
         switch position {
-        case .bottom, .left, .right:
+        case .bottom:
             stackView.addArrangedSubview(usernameLabel)
             stackView.addArrangedSubview(turnLabel)
             stackView.addArrangedSubview(handLabel)
-        case .top:
-            stackView.addArrangedSubview(handLabel)
+        case .left, .right, .top:
             stackView.addArrangedSubview(usernameLabel)
             stackView.addArrangedSubview(turnLabel)
+            stackView.addArrangedSubview(handLabel)
+            stackView.addArrangedSubview(handImageView)
         }
         
         stackView.snp.makeConstraints { make in
@@ -75,6 +84,7 @@ final class PlayerHandView: UIView {
         }
 
         turnLabel.text = position == .bottom ? "Your turn" : "Their turn"
+        handImageView.isHidden = true
     }
     
     required init?(coder: NSCoder) {
@@ -89,7 +99,8 @@ final class PlayerHandView: UIView {
         turnLabel.isHidden = shouldHide
     }
     
-    func updateHandLabel(text: String) {
-        handLabel.text = text
+    func updateHandLabel(handCount: Int) {
+        handLabel.text = "\(handCount)"
+        handImageView.isHidden = handCount == 0
     }
 }
