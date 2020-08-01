@@ -109,7 +109,7 @@ final class GameStartView: UIView {
         }
         
         bottomPlayerView.snp.makeConstraints { make in
-            make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).inset(40)
+            make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).inset(4)
             make.centerX.equalToSuperview()
         }
         
@@ -176,7 +176,7 @@ final class GameStartView: UIView {
         
         let views = [bottomPlayerView, leftPlayerView, topPlayerView, rightPlayerView].enumerated()
         for (index, view) in views {
-            view.updateHandLabel(handCount: drawEvent.playerHandCounts[index])
+            view.updateHandUI(handCount: drawEvent.playerHandCounts[index])
         }
     }
 }

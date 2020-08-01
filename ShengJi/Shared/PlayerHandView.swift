@@ -38,7 +38,7 @@ final class PlayerHandView: UIView {
         return label
     }()
     
-    private lazy var handLabel: UILabel = { // todo: make into a card view
+    private lazy var handLabel: UILabel = {
         let label = UILabel()
         label.font = .preferredFont(forTextStyle: .title1)
         label.text = "0"
@@ -51,6 +51,11 @@ final class PlayerHandView: UIView {
         let imageView = UIImageView(image: image)
         imageView.tintColor = .label
         return imageView
+    }()
+    
+    private lazy var bottomHandDetailView: PlayerHandDetailView = {
+        let view = PlayerHandDetailView()
+        return view
     }()
     
     private let position: PlayerPosition
@@ -76,6 +81,7 @@ final class PlayerHandView: UIView {
             stackView.addArrangedSubview(usernameLabel)
             stackView.addArrangedSubview(turnLabel)
             stackView.addArrangedSubview(handLabel)
+            stackView.addArrangedSubview(bottomHandDetailView)
         case .left, .right, .top:
             stackView.addArrangedSubview(usernameLabel)
             stackView.addArrangedSubview(turnLabel)
@@ -103,8 +109,12 @@ final class PlayerHandView: UIView {
         turnLabel.isHidden = shouldHide
     }
     
-    func updateHandLabel(handCount: Int) {
+    func updateHandUI(handCount: Int) {
         handLabel.text = "\(handCount)"
         handImageView.isHidden = handCount == 0
+        if position == .bottom { // todo: add check for current drawer
+            let randomCard = "🂡"
+            bottomHandDetailView.addCard(randomCard)
+        }
     }
 }
