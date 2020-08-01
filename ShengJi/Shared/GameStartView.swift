@@ -52,6 +52,7 @@ final class GameStartView: UIView {
         label.textColor = .systemGray
         label.font = .preferredFont(forTextStyle: .body)
         label.text = "Your turn"
+        label.isHidden = true
         return label
     }()
     
@@ -67,6 +68,7 @@ final class GameStartView: UIView {
         label.textColor = .systemGray
         label.font = .preferredFont(forTextStyle: .body)
         label.text = "Their turn"
+        label.isHidden = true
         return label
     }()
     
@@ -82,6 +84,7 @@ final class GameStartView: UIView {
         label.textColor = .systemGray
         label.font = .preferredFont(forTextStyle: .body)
         label.text = "Their turn"
+        label.isHidden = true
         return label
     }()
     
@@ -97,6 +100,7 @@ final class GameStartView: UIView {
         label.textColor = .systemGray
         label.font = .preferredFont(forTextStyle: .body)
         label.text = "Their turn"
+        label.isHidden = true
         return label
     }()
     
@@ -104,8 +108,16 @@ final class GameStartView: UIView {
     private let hostUsername: String
     private let username: String
     private let playerTurnOrder: [String]
+    private var indexOffset: Int? {
+        playerTurnOrder.firstIndex(of: username)
+    }
     private weak var delegate: GameStartViewDelegate?
+    
+    // MARK: - AnyCancellables
+    
     private var drawCancellable: AnyCancellable?
+    
+    // MARK: - Init methods
     
     /// For hosts, the hostUsername and username fields are equivalent.
     init(as participantType: ParticipantType, hostUsername: String, username: String, playerTurnOrder: [String], delegate: GameStartViewDelegate) {
@@ -191,8 +203,10 @@ final class GameStartView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    /// In the beginning, the host is the one that draws first. Then, once the host draws,
+    /// the person to the host's left (clockwise) is up to draw.
     private func setupPlayerPositions() {
-        guard let indexOffset = playerTurnOrder.firstIndex(of: username) else {
+        guard let indexOffset = indexOffset else {
             return
         }
         
@@ -200,6 +214,8 @@ final class GameStartView: UIView {
         leftPlayerLabel.text = playerTurnOrder[(indexOffset + 1) % 4]
         topPlayerLabel.text = playerTurnOrder[(indexOffset + 2) % 4]
         rightPlayerLabel.text = playerTurnOrder[(indexOffset + 3) % 4]
+        
+        updateNextPlayerToDraw(hostUsername)
     }
     
     @objc
@@ -210,5 +226,21 @@ final class GameStartView: UIView {
     @objc
     private func drawDeckButtonTapped() {
         delegate?.gameStartViewDidTapDrawButton()
+    }
+    
+    func updateNextPlayerToDraw(_ nextUsername: String) {
+        if nextUsername == username  {
+            drawDeckButton.isHidden = false
+            bottomPlayerTurnLabel.isHidden = false
+            leftPlayerTurnLabel.isHidden = true
+            topPlayerTurnLabel.isHidden = true
+            rightPlayerTurnLabel.isHidden = true
+        } else {
+            drawDeckButton.isHidden = true
+            bottomPlayerTurnLabel.isHidden = nextUsername != bottomPlayerLabel.text
+            leftPlayerTurnLabel.isHidden = nextUsername != leftPlayerLabel.text
+            topPlayerTurnLabel.isHidden = nextUsername != topPlayerLabel.text
+            rightPlayerTurnLabel.isHidden = nextUsername != rightPlayerLabel.text
+        }
     }
 }

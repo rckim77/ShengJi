@@ -82,12 +82,12 @@ final class HostGameViewController: UIViewController {
             self?.lobbyView?.pair(pairEvent.pair)
         })
         
-        channel?.bind(eventName: "draw", eventCallback: { drawEventData in
+        channel?.bind(eventName: "draw", eventCallback: { [weak self] drawEventData in
             guard let data = drawEventData.data?.data(using: .utf8),
                 let drawEvent = try? JSONDecoder().decode(DrawEvent.self, from: data) else {
                     return
             }
-            print("DRAW: \(drawEvent)")
+            self?.gameStartView?.updateNextPlayerToDraw(drawEvent.nextPlayerToDraw)
         })
     }
     
