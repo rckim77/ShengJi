@@ -32,8 +32,11 @@ final class PlayerHandDetailView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func addCard(_ card: String) {
-        let cardView = CardView(text: card)
-        stackView.addArrangedSubview(cardView)
+    func updateCards(_ cards: [String]) {
+        stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        for card in cards {
+            let cardView = CardView(text: card)
+            stackView.addArrangedSubview(cardView)
+        }
     }
 }

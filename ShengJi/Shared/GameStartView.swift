@@ -150,7 +150,7 @@ final class GameStartView: UIView {
         topPlayerView.configure(username: playerTurnOrder[(indexOffset + 2) % 4])
         rightPlayerView.configure(username: playerTurnOrder[(indexOffset + 3) % 4])
         
-        let initialDrawEvent = DrawEvent(nextPlayerToDraw: hostUsername, playerHandCounts: [0, 0, 0, 0])
+        let initialDrawEvent = DrawEvent(nextPlayerToDraw: hostUsername, playerHands: [[], [], [], []])
         update(initialDrawEvent)
     }
     
@@ -172,13 +172,13 @@ final class GameStartView: UIView {
         topPlayerView.hideTurnLabel(nextUsername != topPlayerView.username)
         rightPlayerView.hideTurnLabel(nextUsername != rightPlayerView.username)
         
-        guard drawEvent.playerHandCounts.count == 4 else {
+        guard drawEvent.playerHands.count == 4 else {
             return
         }
         
         let views = [bottomPlayerView, leftPlayerView, topPlayerView, rightPlayerView].enumerated()
         for (index, view) in views {
-            view.updateHandUI(handCount: drawEvent.playerHandCounts[index])
+            view.updateHandUI(hand: drawEvent.playerHands[index])
         }
     }
 }

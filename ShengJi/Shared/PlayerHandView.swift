@@ -111,12 +111,11 @@ final class PlayerHandView: UIView {
         turnLabel.isHidden = shouldHide
     }
     
-    func updateHandUI(handCount: Int) {
-        handLabel.text = "\(handCount)"
-        handImageView.isHidden = handCount == 0
-        if position == .bottom { // todo: add check for current drawer
-            let randomCard = "🂡"
-            bottomHandDetailView.addCard(randomCard)
+    func updateHandUI(hand: [String]) {
+        handLabel.text = "\(hand.count)"
+        handImageView.isHidden = hand.count == 0
+        if position == .bottom {
+            bottomHandDetailView.updateCards(hand)
         }
     }
 }
