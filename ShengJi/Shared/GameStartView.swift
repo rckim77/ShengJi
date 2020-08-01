@@ -13,6 +13,7 @@ import Combine
 protocol GameStartViewDelegate: class {
     /// Only used by host
     func gameStartViewDidTapLeaveButton()
+    /// Used by both host and players
     func gameStartViewDidTapDrawButton()
 }
 
@@ -40,96 +41,24 @@ final class GameStartView: UIView {
         return button
     }()
     
-    private lazy var bottomPlayerLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .systemGray
-        label.font = .preferredFont(forTextStyle: .body)
-        return label
+    private lazy var bottomPlayerView: PlayerHandView = {
+        let view = PlayerHandView(position: .bottom)
+        return view
     }()
     
-    private lazy var bottomPlayerTurnLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .systemGray
-        label.font = .preferredFont(forTextStyle: .body)
-        label.text = "Your turn"
-        label.isHidden = true
-        return label
+    private lazy var leftPlayerView: PlayerHandView = {
+        let view = PlayerHandView(position: .left)
+        return view
     }()
     
-    private lazy var bottomPlayerHandLabel: UILabel = {
-        let label = UILabel()
-        label.font = .preferredFont(forTextStyle: .title1)
-        label.text = "0"
-        return label
+    private lazy var topPlayerView: PlayerHandView = {
+        let view = PlayerHandView(position: .top)
+        return view
     }()
     
-    private lazy var leftPlayerLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .systemGray
-        label.font = .preferredFont(forTextStyle: .body)
-        return label
-    }()
-    
-    private lazy var leftPlayerTurnLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .systemGray
-        label.font = .preferredFont(forTextStyle: .body)
-        label.text = "Their turn"
-        label.isHidden = true
-        return label
-    }()
-    
-    private lazy var leftPlayerHandLabel: UILabel = {
-        let label = UILabel()
-        label.font = .preferredFont(forTextStyle: .title1)
-        label.text = "0"
-        return label
-    }()
-    
-    private lazy var topPlayerLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .systemGray
-        label.font = .preferredFont(forTextStyle: .body)
-        return label
-    }()
-    
-    private lazy var topPlayerTurnLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .systemGray
-        label.font = .preferredFont(forTextStyle: .body)
-        label.text = "Their turn"
-        label.isHidden = true
-        return label
-    }()
-    
-    private lazy var topPlayerHandLabel: UILabel = {
-        let label = UILabel()
-        label.font = .preferredFont(forTextStyle: .title1)
-        label.text = "0"
-        return label
-    }()
-    
-    private lazy var rightPlayerLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .systemGray
-        label.font = .preferredFont(forTextStyle: .body)
-        return label
-    }()
-    
-    private lazy var rightPlayerTurnLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .systemGray
-        label.font = .preferredFont(forTextStyle: .body)
-        label.text = "Their turn"
-        label.isHidden = true
-        return label
-    }()
-    
-    private lazy var rightPlayerHandLabel: UILabel = {
-        let label = UILabel()
-        label.font = .preferredFont(forTextStyle: .title1)
-        label.text = "0"
-        return label
+    private lazy var rightPlayerView: PlayerHandView = {
+        let view = PlayerHandView(position: .right)
+        return view
     }()
     
     private let participantType: ParticipantType
@@ -159,18 +88,10 @@ final class GameStartView: UIView {
         addSubview(leaveButton)
         addSubview(drawDeckLabel)
         addSubview(drawDeckButton)
-        addSubview(bottomPlayerLabel)
-        addSubview(bottomPlayerTurnLabel)
-        addSubview(bottomPlayerHandLabel)
-        addSubview(leftPlayerLabel)
-        addSubview(leftPlayerTurnLabel)
-        addSubview(leftPlayerHandLabel)
-        addSubview(topPlayerLabel)
-        addSubview(topPlayerTurnLabel)
-        addSubview(topPlayerHandLabel)
-        addSubview(rightPlayerLabel)
-        addSubview(rightPlayerTurnLabel)
-        addSubview(rightPlayerHandLabel)
+        addSubview(bottomPlayerView)
+        addSubview(leftPlayerView)
+        addSubview(topPlayerView)
+        addSubview(rightPlayerView)
         
         leaveButton.snp.makeConstraints { make in
             make.top.equalTo(safeAreaLayoutGuide.snp.top).inset(12)
@@ -187,64 +108,24 @@ final class GameStartView: UIView {
             make.centerX.equalToSuperview()
         }
         
-        bottomPlayerLabel.snp.makeConstraints { make in
-            make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).inset(100)
+        bottomPlayerView.snp.makeConstraints { make in
+            make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).inset(16)
             make.centerX.equalToSuperview()
         }
         
-        bottomPlayerTurnLabel.snp.makeConstraints { make in
-            make.top.equalTo(bottomPlayerLabel.snp.bottom).offset(4)
-            make.centerX.equalTo(bottomPlayerLabel.snp.centerX)
-        }
-        
-        bottomPlayerHandLabel.snp.makeConstraints { make in
-            make.top.equalTo(bottomPlayerTurnLabel.snp.bottom).offset(4)
-            make.centerX.equalTo(bottomPlayerTurnLabel.snp.centerX)
-        }
-        
-        leftPlayerLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(24)
-            make.centerY.equalToSuperview().offset(-80)
-        }
-        
-        leftPlayerTurnLabel.snp.makeConstraints { make in
-            make.top.equalTo(leftPlayerLabel.snp.bottom).offset(4)
-            make.centerX.equalTo(leftPlayerLabel.snp.centerX)
-        }
-        
-        leftPlayerHandLabel.snp.makeConstraints { make in
-            make.top.equalTo(leftPlayerTurnLabel.snp.bottom).offset(4)
-            make.centerX.equalTo(leftPlayerLabel.snp.centerX)
-        }
-        
-        topPlayerHandLabel.snp.makeConstraints { make in
-            make.top.equalTo(safeAreaLayoutGuide.snp.top).inset(12)
-            make.centerX.equalToSuperview()
-        }
-        
-        topPlayerLabel.snp.makeConstraints { make in
-            make.top.equalTo(topPlayerHandLabel.snp.bottom).offset(4)
-            make.centerX.equalTo(topPlayerHandLabel.snp.centerX)
-        }
-        
-        topPlayerTurnLabel.snp.makeConstraints { make in
-            make.top.equalTo(topPlayerLabel.snp.bottom).offset(4)
-            make.centerX.equalTo(topPlayerHandLabel.snp.centerX)
-        }
-        
-        rightPlayerHandLabel.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(24)
+        leftPlayerView.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(8)
             make.centerY.equalToSuperview()
         }
         
-        rightPlayerLabel.snp.makeConstraints { make in
-            make.top.equalTo(rightPlayerHandLabel.snp.bottom).offset(8)
-            make.centerX.equalTo(rightPlayerHandLabel.snp.centerX)
+        topPlayerView.snp.makeConstraints { make in
+            make.top.equalTo(safeAreaLayoutGuide.snp.top).offset(8)
+            make.centerX.equalToSuperview()
         }
         
-        rightPlayerTurnLabel.snp.makeConstraints { make in
-            make.top.equalTo(rightPlayerLabel.snp.bottom).offset(4)
-            make.centerX.equalTo(rightPlayerHandLabel.snp.centerX)
+        rightPlayerView.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().inset(8)
+            make.centerY.equalToSuperview()
         }
         
         leaveButton.isHidden = participantType == .player
@@ -262,10 +143,10 @@ final class GameStartView: UIView {
             return
         }
         
-        bottomPlayerLabel.text = playerTurnOrder[indexOffset] + " (me)"
-        leftPlayerLabel.text = playerTurnOrder[(indexOffset + 1) % 4]
-        topPlayerLabel.text = playerTurnOrder[(indexOffset + 2) % 4]
-        rightPlayerLabel.text = playerTurnOrder[(indexOffset + 3) % 4]
+        bottomPlayerView.configure(username: playerTurnOrder[indexOffset] + " (me)")
+        leftPlayerView.configure(username: playerTurnOrder[(indexOffset + 1) % 4])
+        topPlayerView.configure(username: playerTurnOrder[(indexOffset + 2) % 4])
+        rightPlayerView.configure(username: playerTurnOrder[(indexOffset + 3) % 4])
         
         updateNextPlayerToDraw(hostUsername)
     }
@@ -281,18 +162,10 @@ final class GameStartView: UIView {
     }
     
     func updateNextPlayerToDraw(_ nextUsername: String) {
-        if nextUsername == username  {
-            drawDeckButton.isHidden = false
-            bottomPlayerTurnLabel.isHidden = false
-            leftPlayerTurnLabel.isHidden = true
-            topPlayerTurnLabel.isHidden = true
-            rightPlayerTurnLabel.isHidden = true
-        } else {
-            drawDeckButton.isHidden = true
-            bottomPlayerTurnLabel.isHidden = nextUsername != bottomPlayerLabel.text
-            leftPlayerTurnLabel.isHidden = nextUsername != leftPlayerLabel.text
-            topPlayerTurnLabel.isHidden = nextUsername != topPlayerLabel.text
-            rightPlayerTurnLabel.isHidden = nextUsername != rightPlayerLabel.text
-        }
+        drawDeckButton.isHidden = nextUsername != username
+        bottomPlayerView.hideTurnLabel(nextUsername != bottomPlayerView.username)
+        leftPlayerView.hideTurnLabel(nextUsername != leftPlayerView.username)
+        topPlayerView.hideTurnLabel(nextUsername != topPlayerView.username)
+        rightPlayerView.hideTurnLabel(nextUsername != rightPlayerView.username)
     }
 }
