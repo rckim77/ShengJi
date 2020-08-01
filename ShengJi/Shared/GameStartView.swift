@@ -29,7 +29,7 @@ final class GameStartView: UIView {
     private lazy var drawDeckLabel: UILabel = {
         let label = UILabel()
         label.text = "🂠"
-        label.font = .systemFont(ofSize: 128)
+        label.font = .systemFont(ofSize: 132)
         return label
     }()
     

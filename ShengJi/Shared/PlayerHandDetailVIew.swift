@@ -14,7 +14,7 @@ final class PlayerHandDetailView: UIView {
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
-        stackView.spacing = -24
+        stackView.spacing = -32
         return stackView
     }()
     
@@ -33,9 +33,7 @@ final class PlayerHandDetailView: UIView {
     }
     
     func addCard(_ card: String) {
-        let label = UILabel()
-        label.text = card
-        label.font = .systemFont(ofSize: 80)
-        stackView.addArrangedSubview(label)
+        let cardView = CardView(text: card)
+        stackView.addArrangedSubview(cardView)
     }
 }

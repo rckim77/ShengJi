@@ -74,6 +74,8 @@ final class PlayerHandView: UIView {
         self.position = position
         super.init(frame: .zero)
         
+        backgroundColor = .systemGroupedBackground
+        addRoundedCorners(radius: 8)
         addSubview(stackView)
         
         switch position {
@@ -90,7 +92,7 @@ final class PlayerHandView: UIView {
         }
         
         stackView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.edges.equalToSuperview().inset(12)
         }
 
         turnLabel.text = position == .bottom ? "Your turn" : "Their turn"
