@@ -9,12 +9,13 @@
 import UIKit
 import SnapKit
 
+/// Used as the hand view from the user's perspective (i.e., the bottom player) which displays the full card values.
 final class PlayerHandDetailView: UIView {
     
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
-        stackView.spacing = -32
+        stackView.spacing = -52
         return stackView
     }()
     

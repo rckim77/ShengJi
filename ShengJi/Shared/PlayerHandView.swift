@@ -84,15 +84,19 @@ final class PlayerHandView: UIView {
             stackView.addArrangedSubview(turnLabel)
             stackView.addArrangedSubview(handLabel)
             stackView.addArrangedSubview(bottomHandDetailView)
+            
+            stackView.snp.makeConstraints { make in
+                make.edges.equalToSuperview().inset(8)
+            }
         case .left, .right, .top:
             stackView.addArrangedSubview(usernameLabel)
             stackView.addArrangedSubview(turnLabel)
             stackView.addArrangedSubview(handLabel)
             stackView.addArrangedSubview(handImageView)
-        }
-        
-        stackView.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(12)
+            
+            stackView.snp.makeConstraints { make in
+                make.edges.equalToSuperview().inset(12)
+            }
         }
 
         turnLabel.text = position == .bottom ? "Your turn" : "Their turn"
