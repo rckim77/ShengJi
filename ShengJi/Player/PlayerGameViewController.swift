@@ -117,7 +117,7 @@ final class PlayerGameViewController: UIViewController {
                 let drawEvent = try? JSONDecoder().decode(DrawEvent.self, from: data) else {
                     return
             }
-            self?.gameStartView?.updateNextPlayerToDraw(drawEvent.nextPlayerToDraw)
+            self?.gameStartView?.update(drawEvent)
         })
     }
     

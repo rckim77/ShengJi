@@ -88,4 +88,8 @@ final class PlayerHandView: UIView {
     func hideTurnLabel(_ shouldHide: Bool) {
         turnLabel.isHidden = shouldHide
     }
+    
+    func updateHandLabel(text: String) {
+        handLabel.text = text
+    }
 }

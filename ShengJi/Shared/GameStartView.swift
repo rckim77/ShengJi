@@ -148,7 +148,8 @@ final class GameStartView: UIView {
         topPlayerView.configure(username: playerTurnOrder[(indexOffset + 2) % 4])
         rightPlayerView.configure(username: playerTurnOrder[(indexOffset + 3) % 4])
         
-        updateNextPlayerToDraw(hostUsername)
+        let initialDrawEvent = DrawEvent(nextPlayerToDraw: hostUsername, playerHandCounts: [0, 0, 0, 0])
+        update(initialDrawEvent)
     }
     
     @objc
@@ -161,11 +162,21 @@ final class GameStartView: UIView {
         delegate?.gameStartViewDidTapDrawButton()
     }
     
-    func updateNextPlayerToDraw(_ nextUsername: String) {
+    func update(_ drawEvent: DrawEvent) {
+        let nextUsername = drawEvent.nextPlayerToDraw
         drawDeckButton.isHidden = nextUsername != username
         bottomPlayerView.hideTurnLabel(nextUsername != bottomPlayerView.username)
         leftPlayerView.hideTurnLabel(nextUsername != leftPlayerView.username)
         topPlayerView.hideTurnLabel(nextUsername != topPlayerView.username)
         rightPlayerView.hideTurnLabel(nextUsername != rightPlayerView.username)
+        
+        guard drawEvent.playerHandCounts.count == 4 else {
+            return
+        }
+        
+        let views = [bottomPlayerView, leftPlayerView, topPlayerView, rightPlayerView].enumerated()
+        for (index, view) in views {
+            view.updateHandLabel(text: "\(drawEvent.playerHandCounts[index])")
+        }
     }
 }
