@@ -37,6 +37,8 @@ final class GameStartView: UIView {
         let button = UIButton(type: .system)
         button.setTitle("Draw", for: .normal)
         button.titleLabel?.font = .preferredFont(forTextStyle: .title3)
+        button.addRoundedBorder(color: .systemBlue)
+        button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
         button.addTarget(self, action: #selector(drawDeckButtonTapped), for: .touchUpInside)
         return button
     }()
