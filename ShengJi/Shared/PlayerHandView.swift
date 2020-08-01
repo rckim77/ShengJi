@@ -116,8 +116,9 @@ final class PlayerHandView: UIView {
     }
     
     func updateHandUI(hand: [String]) {
-        handLabel.text = "\(hand.count)"
         handImageView.isHidden = hand.count == 0
+        handLabel.text = "\(hand.count)"
+
         if position == .bottom {
             bottomHandDetailView.updateCards(hand)
         }

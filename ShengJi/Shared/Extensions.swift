@@ -84,3 +84,16 @@ extension UIButton {
         layer.borderWidth = width
     }
 }
+
+extension Array {
+    /// Cannot be shifted backwards more than the length of the array.
+    /// If the array was, say, [1, 2, 3] and you shifted backwards by
+    /// 1, the output would be [2, 3, 1].
+    func shiftedBackwards(_ places: Int) -> [Element] {
+        guard places < self.count else {
+            return []
+        }
+        let shiftedArray = places == 0 ? self : Array(self[places..<count] + self[0..<places])
+        return shiftedArray
+    }
+}

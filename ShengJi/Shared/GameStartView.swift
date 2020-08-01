@@ -172,13 +172,23 @@ final class GameStartView: UIView {
         topPlayerView.hideTurnLabel(nextUsername != topPlayerView.username)
         rightPlayerView.hideTurnLabel(nextUsername != rightPlayerView.username)
         
-        guard drawEvent.playerHands.count == 4 else {
+        // Update the UI for only the player that just drew
+        guard let nextPlayerIndex = playerTurnOrder.firstIndex(of: nextUsername), drawEvent.playerHands.count == 4 else {
             return
         }
         
-        let views = [bottomPlayerView, leftPlayerView, topPlayerView, rightPlayerView].enumerated()
-        for (index, view) in views {
-            view.updateHandUI(hand: drawEvent.playerHands[index])
+        let prevPlayerIndex = nextPlayerIndex == 0 ? 3 : nextPlayerIndex - 1
+        
+        viewContainingPreviousUsername(playerTurnOrder[prevPlayerIndex])?.updateHandUI(hand: drawEvent.playerHands[prevPlayerIndex])
+    }
+    
+    private func viewContainingPreviousUsername(_ username: String) -> PlayerHandView? {
+        var playerHandView: PlayerHandView?
+        [bottomPlayerView, leftPlayerView, topPlayerView, rightPlayerView].forEach { view in
+            if view.username == username {
+                playerHandView = view
+            }
         }
+        return playerHandView
     }
 }

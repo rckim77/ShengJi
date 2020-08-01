@@ -34,6 +34,9 @@ final class PlayerHandDetailView: UIView {
     }
     
     func updateCards(_ cards: [String]) {
+        guard cards.count != stackView.arrangedSubviews.count else {
+            return
+        }
         stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         for card in cards {
             let cardView = CardView(text: card)
