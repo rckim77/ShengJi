@@ -135,6 +135,15 @@ final class HostLobbyView: UIView {
         }
     }
     
+    var currentlyUnpairedPlayers: [String] {
+        let pairedPlayers = pairs.flatMap { $0 }
+        var unpairedPairs = otherUsernames
+        for pairedPlayer in pairedPlayers {
+            unpairedPairs.removeAll { $0 == pairedPlayer }
+        }
+        return unpairedPairs
+    }
+    
     private var pairState: PairState = .noPlayers {
         didSet {
             switch pairState {

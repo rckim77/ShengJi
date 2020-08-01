@@ -165,8 +165,10 @@ extension HostGameViewController: HostLobbyViewDelegate {
     }
     
     func didTapPairButton() {
+        let currentlyUnpairedPlayers = lobbyView?.currentlyUnpairedPlayers.joined(separator: ", ") ?? ""
+        let currentlyUnpairedPlayersMessage = "Available players to pair:\n\(currentlyUnpairedPlayers)"
         let pairAlert = UIAlertController(title: "Who would you like to pair?",
-                                          message: "Make sure you type in their usernames correctly.",
+                                          message: currentlyUnpairedPlayersMessage,
                                           preferredStyle: .alert)
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         pairAlert.addAction(cancelAction)
