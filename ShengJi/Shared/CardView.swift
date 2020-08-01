@@ -13,7 +13,7 @@ final class CardView: UIView {
 
     private lazy var cardLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 118)
+        label.font = .systemFont(ofSize: 130)
         return label
     }()
     

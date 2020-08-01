@@ -102,7 +102,7 @@ final class GameStartView: UIView {
         
         drawDeckLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview().offset(-36)
+            make.centerY.equalToSuperview().offset(-54)
         }
         
         drawDeckButton.snp.makeConstraints { make in
