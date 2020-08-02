@@ -9,11 +9,15 @@
 import Foundation
 
 struct PairEvent: Codable {
-    let pair: [String] // contains two usernames
+    /// Always returns exactly two usernames
+    let pair: [String]
 }
 
 struct DrawEvent: Codable {
-    let nextPlayerToDraw: String // username
+    /// Returns the username of the next player to draw
+    let nextPlayerToDraw: String
     let playerHands: [[String]]
     let cardsRemainingCount: Int
+    /// The initial draw event will return a nil value. All subsequent draws must return a value.
+    let drawnCard: String?
 }

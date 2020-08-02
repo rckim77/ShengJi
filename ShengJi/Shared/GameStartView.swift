@@ -26,6 +26,13 @@ final class GameStartView: UIView {
         return button
     }()
     
+    private lazy var levelTrumpLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .center
+        label.font = .preferredFont(forTextStyle: .title1)
+        return label
+    }()
+    
     private lazy var drawDeckRemainingLabel: UILabel = {
         let label = UILabel()
         label.text = "54 remaining"
@@ -77,6 +84,7 @@ final class GameStartView: UIView {
     private var indexOffset: Int? {
         playerTurnOrder.firstIndex(of: username)
     }
+    private var hasDrawnLevelTrumpCard = false
     private weak var delegate: GameStartViewDelegate?
     
     // MARK: - AnyCancellables
@@ -95,6 +103,7 @@ final class GameStartView: UIView {
         super.init(frame: .zero)
         
         addSubview(leaveButton)
+        addSubview(levelTrumpLabel)
         addSubview(drawDeckLabel)
         addSubview(drawDeckRemainingLabel)
         addSubview(drawDeckButton)
@@ -104,8 +113,13 @@ final class GameStartView: UIView {
         addSubview(rightPlayerView)
         
         leaveButton.snp.makeConstraints { make in
-            make.top.equalTo(safeAreaLayoutGuide.snp.top).inset(12)
+            make.top.equalTo(safeAreaLayoutGuide.snp.top).inset(8)
             make.leading.equalToSuperview().inset(16)
+        }
+        
+        levelTrumpLabel.snp.makeConstraints { make in
+            make.top.equalTo(safeAreaLayoutGuide.snp.top).inset(12)
+            make.trailing.equalToSuperview().inset(16)
         }
         
         drawDeckLabel.snp.makeConstraints { make in
@@ -134,7 +148,7 @@ final class GameStartView: UIView {
         }
         
         topPlayerView.snp.makeConstraints { make in
-            make.top.equalTo(safeAreaLayoutGuide.snp.top).offset(8)
+            make.top.equalTo(safeAreaLayoutGuide.snp.top).inset(8)
             make.centerX.equalToSuperview()
         }
         
@@ -163,7 +177,7 @@ final class GameStartView: UIView {
         topPlayerView.configure(username: playerTurnOrder[(indexOffset + 2) % 4])
         leftPlayerView.configure(username: playerTurnOrder[(indexOffset + 3) % 4])
         
-        let initialDrawEvent = DrawEvent(nextPlayerToDraw: hostUsername, playerHands: [[], [], [], []], cardsRemainingCount: 54)
+        let initialDrawEvent = DrawEvent(nextPlayerToDraw: hostUsername, playerHands: [[], [], [], []], cardsRemainingCount: 54, drawnCard: nil)
         update(initialDrawEvent)
     }
     
@@ -195,6 +209,15 @@ final class GameStartView: UIView {
         let prevPlayerIndex = nextPlayerIndex == 0 ? 3 : nextPlayerIndex - 1
         
         viewContainingPreviousUsername(playerTurnOrder[prevPlayerIndex])?.updateHandUI(hand: drawEvent.playerHands[prevPlayerIndex])
+        
+        if let drawnCard = drawEvent.drawnCard, drawnCard.contains("2") && !hasDrawnLevelTrumpCard {
+            hasDrawnLevelTrumpCard = true
+            levelTrumpLabel.text = drawnCard.convertedCardAbbreviationToUnicode()
+            let suitIndex = drawnCard.index(after: drawnCard.startIndex)
+            let drawnCardSuit = drawnCard[suitIndex]
+            let isRedSuit = drawnCardSuit == "H" || drawnCardSuit == "D"
+            levelTrumpLabel.textColor = isRedSuit ? .systemRed : .label
+        }
     }
     
     private func viewContainingPreviousUsername(_ username: String) -> PlayerHandView? {

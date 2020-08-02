@@ -97,3 +97,36 @@ extension Array {
         return shiftedArray
     }
 }
+
+extension String {
+    /// Given an input such as "2C", this function will output "2♣".
+    func convertedCardAbbreviationToUnicode() -> String {
+        guard self.count == 2 else {
+            return ""
+        }
+        
+        let suitIndex = self.index(after: self.startIndex)
+        let suit = self[suitIndex]
+        let digit = self[self.startIndex]
+        
+        let unicodeSuit: String?
+        switch suit {
+        case "S":
+            unicodeSuit = "♠"
+        case "H":
+            unicodeSuit = "♥"
+        case "D":
+            unicodeSuit = "♦"
+        case "C":
+            unicodeSuit = "♣"
+        default:
+            unicodeSuit = nil
+        }
+
+        if let unicodeSuit = unicodeSuit {
+            return "\(digit)\(unicodeSuit)"
+        } else {
+            return ""
+        }
+    }
+}
