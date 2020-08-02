@@ -19,7 +19,7 @@ protocol GameStartViewDelegate: class {
 
 final class GameStartView: UIView {
     
-    private lazy var leaveButton: UIButton = {
+    private lazy var endGameButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("End", for: .normal)
         button.addTarget(self, action: #selector(leaveButtonTapped), for: .touchUpInside)
@@ -105,7 +105,7 @@ final class GameStartView: UIView {
         self.delegate = delegate
         super.init(frame: .zero)
         
-        addSubview(leaveButton)
+        addSubview(endGameButton)
         addSubview(levelTrumpLabel)
         addSubview(drawDeckLabel)
         addSubview(drawDeckRemainingLabel)
@@ -115,7 +115,7 @@ final class GameStartView: UIView {
         addSubview(topPlayerView)
         addSubview(rightPlayerView)
         
-        leaveButton.snp.makeConstraints { make in
+        endGameButton.snp.makeConstraints { make in
             make.top.equalTo(safeAreaLayoutGuide.snp.top).inset(8)
             make.leading.equalToSuperview().inset(16)
         }
@@ -160,7 +160,7 @@ final class GameStartView: UIView {
             make.centerY.equalToSuperview()
         }
         
-        leaveButton.isHidden = participantType == .player
+        endGameButton.isHidden = participantType == .player
         setupPlayerPositions()
     }
     
