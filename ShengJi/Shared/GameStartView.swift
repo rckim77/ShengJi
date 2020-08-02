@@ -187,7 +187,7 @@ final class GameStartView: UIView {
         
         drawDeckRemainingLabel.text = "\(drawEvent.cardsRemainingCount) remaining"
         
-        // Update the UI for only the player that just drew
+        // update the UI for only the player that just drew
         guard let nextPlayerIndex = playerTurnOrder.firstIndex(of: nextUsername), drawEvent.playerHands.count == 4 else {
             return
         }

@@ -101,7 +101,6 @@ final class PlayerHandView: UIView {
         }
 
         turnLabel.text = position == .bottom ? "Your turn" : "Their turn"
-        handImageView.isHidden = true
     }
     
     required init?(coder: NSCoder) {
@@ -113,11 +112,17 @@ final class PlayerHandView: UIView {
     }
     
     func hideTurnLabel(_ shouldHide: Bool) {
-        turnLabel.isHidden = shouldHide
+        // only update isHidden if it's different from current value due to a stack view bug
+        // where the same calls to isHidden accumulate
+        guard shouldHide != turnLabel.isHidden else {
+            return
+        }
+        UIView.animate(withDuration: 0.2) {
+            self.turnLabel.isHidden = shouldHide
+        }
     }
     
     func updateHandUI(hand: [String]) {
-        handImageView.isHidden = hand.count == 0
         handLabel.text = "\(hand.count)"
 
         if position == .bottom {
