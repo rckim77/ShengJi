@@ -68,7 +68,7 @@ final class HostLobbyView: UIView {
     private lazy var actionsStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
-        stackView.spacing = 16
+        stackView.spacing = 8
         return stackView
     }()
     

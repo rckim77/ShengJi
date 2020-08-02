@@ -15,7 +15,7 @@ final class PlayerHandDetailView: UIView {
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
-        stackView.spacing = -74
+        stackView.spacing = -76
         return stackView
     }()
     

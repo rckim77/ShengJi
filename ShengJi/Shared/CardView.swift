@@ -10,12 +10,6 @@ import UIKit
 import SnapKit
 
 final class CardView: UIView {
-
-    private lazy var cardLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 130)
-        return label
-    }()
     
     private lazy var cardImageView: UIImageView = {
         let imageView = UIImageView(image: cardImage)
@@ -39,8 +33,8 @@ final class CardView: UIView {
         
         cardImageView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
-            make.height.equalTo(138)
-            make.width.equalTo(98)
+            make.height.equalTo(140)
+            make.width.equalTo(99)
         }
     }
     
