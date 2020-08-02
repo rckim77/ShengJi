@@ -13,6 +13,7 @@ protocol HostLobbyViewDelegate: class {
     func didTapLeaveButton()
     func didTapStartButton()
     func didTapPairButton()
+    func didTapAutoPairButton()
     func didDebugTap()
 }
 
@@ -69,6 +70,18 @@ final class HostLobbyView: UIView {
         stackView.axis = .horizontal
         stackView.spacing = 16
         return stackView
+    }()
+    
+    private lazy var autoPairButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Auto-pair", for: .normal)
+        button.setTitleColor(.systemGray, for: .disabled)
+        button.setTitleColor(.systemBlue, for: .normal)
+        button.titleLabel?.font = .preferredFont(forTextStyle: .title3)
+        button.addRoundedBorder(color: .systemGray)
+        button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
+        button.addTarget(self, action: #selector(autoPairButtonTapped), for: .touchUpInside)
+        return button
     }()
     
     private lazy var pairButton: UIButton = {
@@ -137,7 +150,7 @@ final class HostLobbyView: UIView {
     
     var currentlyUnpairedPlayers: [String] {
         let pairedPlayers = pairs.flatMap { $0 }
-        var unpairedPairs = otherUsernames
+        var unpairedPairs = otherUsernames + [username]
         for pairedPlayer in pairedPlayers {
             unpairedPairs.removeAll { $0 == pairedPlayer }
         }
@@ -150,7 +163,7 @@ final class HostLobbyView: UIView {
             case .noPlayers:
                 startButton.isEnabled = false
                 pairButton.isHidden = true
-                pairButton.layer.borderColor = UIColor.systemGray.cgColor
+                autoPairButton.isHidden = true
                 startButton.setTitle("Waiting for players to join...", for: .disabled)
                 pairsLabel.isHidden = true
             case .noPairs:
@@ -158,6 +171,9 @@ final class HostLobbyView: UIView {
                 pairButton.isHidden = false
                 pairButton.isEnabled = true
                 pairButton.layer.borderColor = UIColor.systemBlue.cgColor
+                autoPairButton.isHidden = false
+                autoPairButton.isEnabled = otherUsernames.count == 3
+                autoPairButton.layer.borderColor = UIColor.systemBlue.cgColor
                 startButton.setTitle("Please pair players", for: .disabled)
                 pairsLabel.isHidden = false
                 pairsLabel.text = "Pairs: Please pair players..."
@@ -166,6 +182,9 @@ final class HostLobbyView: UIView {
                 pairButton.isHidden = false
                 pairButton.isEnabled = true
                 pairButton.layer.borderColor = UIColor.systemBlue.cgColor
+                autoPairButton.isHidden = false
+                autoPairButton.isEnabled = true
+                autoPairButton.layer.borderColor = UIColor.systemBlue.cgColor
                 startButton.setTitle("Please pair players", for: .disabled)
                 pairsLabel.isHidden = false
             case .sufficientPairs:
@@ -173,6 +192,9 @@ final class HostLobbyView: UIView {
                 pairButton.isHidden = false
                 pairButton.isEnabled = false
                 pairButton.layer.borderColor = UIColor.systemGray.cgColor
+                autoPairButton.isHidden = false
+                autoPairButton.isEnabled = false
+                autoPairButton.layer.borderColor = UIColor.systemGray.cgColor
                 pairsLabel.isHidden = false
                 startButton.setTitle("Start game", for: .normal)
             }
@@ -194,6 +216,7 @@ final class HostLobbyView: UIView {
         addSubview(usersJoinedLabel)
         addSubview(pairsLabel)
         addSubview(actionsStackView)
+        actionsStackView.addArrangedSubview(autoPairButton)
         actionsStackView.addArrangedSubview(pairButton)
         actionsStackView.addArrangedSubview(leaveButton)
         addSubview(startButton)
@@ -269,6 +292,11 @@ final class HostLobbyView: UIView {
     @objc
     private func pairButtonTapped() {
         delegate?.didTapPairButton()
+    }
+    
+    @objc
+    private func autoPairButtonTapped() {
+        delegate?.didTapAutoPairButton()
     }
     
     @objc

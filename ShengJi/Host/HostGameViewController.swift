@@ -195,6 +195,13 @@ extension HostGameViewController: HostLobbyViewDelegate {
         present(pairAlert, animated: true, completion: nil)
     }
     
+    func didTapAutoPairButton() {
+        guard let currentlyUnpairedPlayers = lobbyView?.currentlyUnpairedPlayers, currentlyUnpairedPlayers.count > 1 else {
+            return
+        }
+        pair(currentlyUnpairedPlayers[0], with: currentlyUnpairedPlayers[1])
+    }
+    
     func didTapStartButton() {
         guard let channelName = channel?.name,
             let url = URL(string: "https://fast-garden-35127.herokuapp.com/start/\(channelName)") else {
