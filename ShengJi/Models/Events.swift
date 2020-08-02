@@ -15,4 +15,5 @@ struct PairEvent: Codable {
 struct DrawEvent: Codable {
     let nextPlayerToDraw: String // username
     let playerHands: [[String]]
+    let cardsRemainingCount: Int
 }

@@ -26,6 +26,13 @@ final class GameStartView: UIView {
         return button
     }()
     
+    private lazy var drawDeckRemainingLabel: UILabel = {
+        let label = UILabel()
+        label.text = "54 remaining"
+        label.font = .preferredFont(forTextStyle: .title3)
+        return label
+    }()
+    
     private lazy var drawDeckLabel: UILabel = {
         let label = UILabel()
         label.text = "🂠"
@@ -89,6 +96,7 @@ final class GameStartView: UIView {
         
         addSubview(leaveButton)
         addSubview(drawDeckLabel)
+        addSubview(drawDeckRemainingLabel)
         addSubview(drawDeckButton)
         addSubview(bottomPlayerView)
         addSubview(leftPlayerView)
@@ -102,11 +110,16 @@ final class GameStartView: UIView {
         
         drawDeckLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview().offset(-60)
+            make.centerY.equalToSuperview().offset(-88)
+        }
+        
+        drawDeckRemainingLabel.snp.makeConstraints { make in
+            make.top.equalTo(drawDeckLabel.snp.bottom)
+            make.centerX.equalToSuperview()
         }
         
         drawDeckButton.snp.makeConstraints { make in
-            make.top.equalTo(drawDeckLabel.snp.bottom).offset(2)
+            make.top.equalTo(drawDeckRemainingLabel.snp.bottom).offset(10)
             make.centerX.equalToSuperview()
         }
         
@@ -150,7 +163,7 @@ final class GameStartView: UIView {
         topPlayerView.configure(username: playerTurnOrder[(indexOffset + 2) % 4])
         rightPlayerView.configure(username: playerTurnOrder[(indexOffset + 3) % 4])
         
-        let initialDrawEvent = DrawEvent(nextPlayerToDraw: hostUsername, playerHands: [[], [], [], []])
+        let initialDrawEvent = DrawEvent(nextPlayerToDraw: hostUsername, playerHands: [[], [], [], []], cardsRemainingCount: 54)
         update(initialDrawEvent)
     }
     
@@ -171,6 +184,8 @@ final class GameStartView: UIView {
         leftPlayerView.hideTurnLabel(nextUsername != leftPlayerView.username)
         topPlayerView.hideTurnLabel(nextUsername != topPlayerView.username)
         rightPlayerView.hideTurnLabel(nextUsername != rightPlayerView.username)
+        
+        drawDeckRemainingLabel.text = "\(drawEvent.cardsRemainingCount) remaining"
         
         // Update the UI for only the player that just drew
         guard let nextPlayerIndex = playerTurnOrder.firstIndex(of: nextUsername), drawEvent.playerHands.count == 4 else {
