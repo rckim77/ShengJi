@@ -17,17 +17,31 @@ final class CardView: UIView {
         return label
     }()
     
-    init(text: String) {
+    private lazy var cardImageView: UIImageView = {
+        let imageView = UIImageView(image: cardImage)
+        imageView.contentMode = .scaleAspectFit
+        return imageView
+    }()
+    
+    private var cardImage: UIImage? {
+        UIImage(named: cardAbbreviation)
+    }
+    
+    private let cardAbbreviation: String
+    
+    /// Input can be, for example, "2C" for the 2 of clubs.
+    init(cardAbbreviation: String) {
+        self.cardAbbreviation = cardAbbreviation
         super.init(frame: .zero)
 
         backgroundColor = .systemGroupedBackground
-        addSubview(cardLabel)
+        addSubview(cardImageView)
         
-        cardLabel.snp.makeConstraints { make in
+        cardImageView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
+            make.height.equalTo(138)
+            make.width.equalTo(98)
         }
-        
-        cardLabel.text = text
     }
     
     required init?(coder: NSCoder) {

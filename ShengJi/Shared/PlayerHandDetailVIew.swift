@@ -15,7 +15,7 @@ final class PlayerHandDetailView: UIView {
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
-        stackView.spacing = -68
+        stackView.spacing = -74
         return stackView
     }()
     
@@ -39,7 +39,7 @@ final class PlayerHandDetailView: UIView {
         }
         stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         for card in cards {
-            let cardView = CardView(text: card)
+            let cardView = CardView(cardAbbreviation: card)
             stackView.addArrangedSubview(cardView)
         }
     }
