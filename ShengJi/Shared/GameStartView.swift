@@ -179,7 +179,7 @@ final class GameStartView: UIView {
     
     func update(_ drawEvent: DrawEvent) {
         let nextUsername = drawEvent.nextPlayerToDraw
-        drawDeckButton.isHidden = nextUsername != username
+        drawDeckButton.isHidden = nextUsername != username || drawEvent.cardsRemainingCount <= 6
         bottomPlayerView.hideTurnLabel(nextUsername != bottomPlayerView.username)
         leftPlayerView.hideTurnLabel(nextUsername != leftPlayerView.username)
         topPlayerView.hideTurnLabel(nextUsername != topPlayerView.username)
