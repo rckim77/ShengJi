@@ -23,6 +23,8 @@ final class GameStartView: UIView {
         let button = UIButton(type: .system)
         button.setTitle("End", for: .normal)
         button.addTarget(self, action: #selector(leaveButtonTapped), for: .touchUpInside)
+        button.addRoundedBorder(color: .systemBlue)
+        button.contentEdgeInsets = UIEdgeInsets(top: 6, left: 12, bottom: 6, right: 12)
         return button
     }()
     
