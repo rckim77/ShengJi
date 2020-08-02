@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:/Users/raykim/Desktop/Hobby/Dev/ShengJi/ShengJi/Models/LeaderTeam.swift">
+   </FileRef>
+   <FileRef
       location = "group:ShengJi.xcodeproj">
    </FileRef>
    <FileRef

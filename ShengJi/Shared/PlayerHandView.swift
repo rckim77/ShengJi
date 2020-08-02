@@ -23,11 +23,28 @@ final class PlayerHandView: UIView {
         return stackView
     }()
     
+    private lazy var usernameStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.spacing = 2
+        stackView.alignment = .firstBaseline
+        stackView.layoutMargins = UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 4)
+        stackView.isLayoutMarginsRelativeArrangement = true
+        return stackView
+    }()
+    
     private lazy var usernameLabel: UILabel = {
         let label = UILabel()
         label.textColor = .systemGray
         label.font = .preferredFont(forTextStyle: .body)
         return label
+    }()
+    
+    private lazy var dealerImageView: UIImageView = {
+        let image = UIImage(systemName: "star.fill")
+        let imageView = UIImageView(image: image)
+        imageView.tintColor = .systemBlue
+        return imageView
     }()
     
     private lazy var turnLabel: UILabel = {
@@ -77,23 +94,26 @@ final class PlayerHandView: UIView {
         backgroundColor = .systemGroupedBackground
         addRoundedCorners(radius: 8)
         addSubview(stackView)
+        stackView.addArrangedSubview(usernameStackView)
+        usernameStackView.addArrangedSubview(usernameLabel)
+        usernameStackView.addArrangedSubview(dealerImageView)
+        stackView.addArrangedSubview(turnLabel)
+        stackView.addArrangedSubview(handLabel)
         
         switch position {
         case .bottom:
-            stackView.addArrangedSubview(usernameLabel)
-            stackView.addArrangedSubview(turnLabel)
-            stackView.addArrangedSubview(handLabel)
             stackView.addArrangedSubview(bottomHandDetailView)
+            
+            usernameStackView.layoutMargins = UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 4)
             
             stackView.snp.makeConstraints { make in
                 make.top.bottom.equalToSuperview().inset(8)
                 make.leading.trailing.equalToSuperview().inset(2)
             }
         case .left, .right, .top:
-            stackView.addArrangedSubview(usernameLabel)
-            stackView.addArrangedSubview(turnLabel)
-            stackView.addArrangedSubview(handLabel)
             stackView.addArrangedSubview(handImageView)
+            
+            usernameStackView.layoutMargins = .zero
             
             stackView.snp.makeConstraints { make in
                 make.edges.equalToSuperview().inset(12)
@@ -101,6 +121,7 @@ final class PlayerHandView: UIView {
         }
 
         turnLabel.text = position == .bottom ? "Your turn" : "Their turn"
+        dealerImageView.isHidden = true
     }
     
     required init?(coder: NSCoder) {
@@ -128,5 +149,15 @@ final class PlayerHandView: UIView {
         if position == .bottom {
             bottomHandDetailView.updateCards(hand)
         }
+    }
+    
+    func updateAsDealer() {
+        updateAsLeader()
+        dealerImageView.isHidden = false
+    }
+    
+    func updateAsLeader() {
+        layer.borderWidth = 3
+        layer.borderColor = UIColor.systemBlue.cgColor
     }
 }

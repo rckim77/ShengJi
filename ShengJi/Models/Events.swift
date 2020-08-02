@@ -16,6 +16,8 @@ struct PairEvent: Codable {
 struct DrawEvent: Codable {
     /// Returns the username of the next player to draw
     let nextPlayerToDraw: String
+    /// Returns index of the player that just drew. Nil on initial draw event.
+    let drawnPlayerIndex: Int?
     let playerHands: [[String]]
     let cardsRemainingCount: Int
     /// The initial draw event will return a nil value. All subsequent draws must return a value.

@@ -84,7 +84,8 @@ final class GameStartView: UIView {
     private var indexOffset: Int? {
         playerTurnOrder.firstIndex(of: username)
     }
-    private var hasDrawnLevelTrumpCard = false
+    private var levelTrump: String?
+    private var leaderTeam: LeaderTeam?
     private weak var delegate: GameStartViewDelegate?
     
     // MARK: - AnyCancellables
@@ -177,7 +178,11 @@ final class GameStartView: UIView {
         topPlayerView.configure(username: playerTurnOrder[(indexOffset + 2) % 4])
         leftPlayerView.configure(username: playerTurnOrder[(indexOffset + 3) % 4])
         
-        let initialDrawEvent = DrawEvent(nextPlayerToDraw: hostUsername, playerHands: [[], [], [], []], cardsRemainingCount: 54, drawnCard: nil)
+        let initialDrawEvent = DrawEvent(nextPlayerToDraw: hostUsername,
+                                         drawnPlayerIndex: nil,
+                                         playerHands: [[], [], [], []],
+                                         cardsRemainingCount: 54,
+                                         drawnCard: nil)
         update(initialDrawEvent)
     }
     
@@ -202,25 +207,19 @@ final class GameStartView: UIView {
         drawDeckRemainingLabel.text = "\(drawEvent.cardsRemainingCount) remaining"
         
         // update the UI for only the player that just drew
-        guard let nextPlayerIndex = playerTurnOrder.firstIndex(of: nextUsername), drawEvent.playerHands.count == 4 else {
+        guard let drawnPlayerIndex = drawEvent.drawnPlayerIndex, drawEvent.playerHands.count == 4 else {
             return
         }
-        
-        let prevPlayerIndex = nextPlayerIndex == 0 ? 3 : nextPlayerIndex - 1
-        
-        viewContainingPreviousUsername(playerTurnOrder[prevPlayerIndex])?.updateHandUI(hand: drawEvent.playerHands[prevPlayerIndex])
-        
-        if let drawnCard = drawEvent.drawnCard, drawnCard.contains("2") && !hasDrawnLevelTrumpCard {
-            hasDrawnLevelTrumpCard = true
-            levelTrumpLabel.text = drawnCard.convertedCardAbbreviationToUnicode()
-            let suitIndex = drawnCard.index(after: drawnCard.startIndex)
-            let drawnCardSuit = drawnCard[suitIndex]
-            let isRedSuit = drawnCardSuit == "H" || drawnCardSuit == "D"
-            levelTrumpLabel.textColor = isRedSuit ? .systemRed : .label
-        }
+
+        viewContainingUsername(playerTurnOrder[drawnPlayerIndex])?.updateHandUI(hand: drawEvent.playerHands[drawnPlayerIndex])
+        setLevelTrump(drawEvent)
     }
     
-    private func viewContainingPreviousUsername(_ username: String) -> PlayerHandView? {
+    private func viewContainingUsername(_ username: String?) -> PlayerHandView? {
+        guard let username = username else {
+            return nil
+        }
+
         var playerHandView: PlayerHandView?
         [bottomPlayerView, rightPlayerView, topPlayerView, leftPlayerView].forEach { view in
             if view.username == username {
@@ -228,5 +227,27 @@ final class GameStartView: UIView {
             }
         }
         return playerHandView
+    }
+    
+    /// When starting the game, the first 2 automatically determines the trump suit and leader.
+    private func setLevelTrump(_ drawEvent: DrawEvent) {
+        guard let drawnCard = drawEvent.drawnCard,
+            let drawnPlayerIndex = drawEvent.drawnPlayerIndex,
+            drawnCard.contains("2") && levelTrump == nil else {
+            return
+        }
+        
+        levelTrump = drawnCard
+        levelTrumpLabel.text = drawnCard.convertedCardAbbreviationToUnicode()
+        
+        let suitIndex = drawnCard.index(after: drawnCard.startIndex)
+        let drawnCardSuit = drawnCard[suitIndex]
+        let isRedSuit = drawnCardSuit == "H" || drawnCardSuit == "D"
+        levelTrumpLabel.textColor = isRedSuit ? .systemRed : .label
+        
+        let leaderIndex = (drawnPlayerIndex + 2) % 4
+        leaderTeam = LeaderTeam(dealer: playerTurnOrder[drawnPlayerIndex], leader: playerTurnOrder[leaderIndex])
+        viewContainingUsername(leaderTeam?.dealer)?.updateAsDealer()
+        viewContainingUsername(leaderTeam?.leader)?.updateAsLeader()
     }
 }
