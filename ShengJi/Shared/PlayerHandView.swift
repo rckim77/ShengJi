@@ -86,7 +86,7 @@ final class PlayerHandView: UIView {
             stackView.addArrangedSubview(bottomHandDetailView)
             
             stackView.snp.makeConstraints { make in
-                make.top.bottom.equalToSuperview().inset(4)
+                make.top.bottom.equalToSuperview().inset(8)
                 make.leading.trailing.equalToSuperview().inset(2)
             }
         case .left, .right, .top:

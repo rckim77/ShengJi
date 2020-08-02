@@ -152,16 +152,16 @@ final class GameStartView: UIView {
     }
     
     /// In the beginning, the host is the one that draws first. Then, once the host draws,
-    /// the person to the host's left (clockwise) is up to draw.
+    /// the person to the host's right (counter-clockwise) is up to draw.
     private func setupPlayerPositions() {
         guard let indexOffset = indexOffset else {
             return
         }
         
         bottomPlayerView.configure(username: playerTurnOrder[indexOffset] + " (me)")
-        leftPlayerView.configure(username: playerTurnOrder[(indexOffset + 1) % 4])
+        rightPlayerView.configure(username: playerTurnOrder[(indexOffset + 1) % 4])
         topPlayerView.configure(username: playerTurnOrder[(indexOffset + 2) % 4])
-        rightPlayerView.configure(username: playerTurnOrder[(indexOffset + 3) % 4])
+        leftPlayerView.configure(username: playerTurnOrder[(indexOffset + 3) % 4])
         
         let initialDrawEvent = DrawEvent(nextPlayerToDraw: hostUsername, playerHands: [[], [], [], []], cardsRemainingCount: 54)
         update(initialDrawEvent)
@@ -199,7 +199,7 @@ final class GameStartView: UIView {
     
     private func viewContainingPreviousUsername(_ username: String) -> PlayerHandView? {
         var playerHandView: PlayerHandView?
-        [bottomPlayerView, leftPlayerView, topPlayerView, rightPlayerView].forEach { view in
+        [bottomPlayerView, rightPlayerView, topPlayerView, leftPlayerView].forEach { view in
             if view.username == username {
                 playerHandView = view
             }
