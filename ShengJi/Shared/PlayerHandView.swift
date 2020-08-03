@@ -55,6 +55,13 @@ final class PlayerHandView: UIView {
         return label
     }()
     
+    private lazy var handStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.spacing = 4
+        return stackView
+    }()
+    
     private lazy var handLabel: UILabel = {
         let label = UILabel()
         label.font = .preferredFont(forTextStyle: .title1)
@@ -67,6 +74,7 @@ final class PlayerHandView: UIView {
         let image = UIImage(systemName: "square.stack.3d.up.fill", withConfiguration: config)
         let imageView = UIImageView(image: image)
         imageView.tintColor = .label
+        imageView.contentMode = .scaleAspectFit
         return imageView
     }()
     
@@ -98,7 +106,8 @@ final class PlayerHandView: UIView {
         usernameStackView.addArrangedSubview(usernameLabel)
         usernameStackView.addArrangedSubview(dealerImageView)
         stackView.addArrangedSubview(turnLabel)
-        stackView.addArrangedSubview(handLabel)
+        stackView.addArrangedSubview(handStackView)
+        handStackView.addArrangedSubview(handLabel)
         
         switch position {
         case .bottom:
@@ -111,7 +120,7 @@ final class PlayerHandView: UIView {
                 make.leading.trailing.equalToSuperview().inset(2)
             }
         case .left, .right, .top:
-            stackView.addArrangedSubview(handImageView)
+            handStackView.addArrangedSubview(handImageView)
             
             usernameStackView.layoutMargins = .zero
             
