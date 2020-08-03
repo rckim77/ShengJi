@@ -252,7 +252,8 @@ final class GameStartView: UIView {
         guard let dealer = leaderTeam?.dealer else {
             return
         }
-        drawDeckRemainingLabel.text = "Waiting for \(dealer) to start their turn..."
+        
+        drawDeckRemainingLabel.text = dealer == username ? "Waiting for you to start..." : "Waiting for \(dealer) to start their turn..."
     }
     
     private func viewContainingUsername(_ username: String?) -> PlayerHandView? {

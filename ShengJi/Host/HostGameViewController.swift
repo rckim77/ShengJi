@@ -90,6 +90,10 @@ final class HostGameViewController: UIViewController {
             }
             self?.gameStartView?.update(drawEvent)
         })
+        
+        channel?.bind(eventName: "dealerExchanged", eventCallback: { [weak self] _ in
+            self?.gameStartView?.updateForDealerExchanged()
+        })
     }
     
     private func setupLobby(username: String) {
