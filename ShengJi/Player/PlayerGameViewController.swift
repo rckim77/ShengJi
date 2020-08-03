@@ -119,6 +119,11 @@ final class PlayerGameViewController: UIViewController {
             }
             self?.gameStartView?.update(drawEvent)
         })
+        
+        channel?.bind(eventName: "dealerExchanged", eventCallback: { [weak self] _ in
+            // dismiss un-dismissable alert players see while waiting for dealer to finish exchanging
+            self?.dismiss(animated: true, completion: nil)
+        })
     }
     
     private func startGame(playerTurnOrder: [String]) {
@@ -173,5 +178,13 @@ extension PlayerGameViewController: GameStartViewDelegate {
                     self?.showErrorAlert(message: "Could not draw. Try again.", completion: {})
                 }
             }, receiveValue: { _ in })
+    }
+    
+    func gameStartViewWaitForDealerToExchange() {
+        let waitAlert = UIAlertController(title: "Please wait for the dealer to exchange...", message: nil, preferredStyle: .alert)
+        present(waitAlert, animated: true, completion: nil)
+    }
+    
+    func gameStartViewDealerFinishedExchanging() {
     }
 }

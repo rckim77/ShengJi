@@ -13,8 +13,11 @@ import Combine
 protocol GameStartViewDelegate: class {
     /// Only used by host
     func gameStartViewDidTapLeaveButton()
+    func gameStartViewDealerFinishedExchanging()
     /// Used by both host and players
     func gameStartViewDidTapDrawButton()
+    /// Only used by players
+    func gameStartViewWaitForDealerToExchange()
 }
 
 final class GameStartView: UIView {
@@ -76,6 +79,11 @@ final class GameStartView: UIView {
     
     private lazy var rightPlayerView: PlayerHandView = {
         let view = PlayerHandView(position: .right)
+        return view
+    }()
+    
+    private lazy var dealerExchangeView: DealerExchangeView = {
+        let view = DealerExchangeView(delegate: self)
         return view
     }()
     
@@ -183,7 +191,7 @@ final class GameStartView: UIView {
         let initialDrawEvent = DrawEvent(nextPlayerToDraw: hostUsername,
                                          drawnPlayerIndex: nil,
                                          playerHands: [[], [], [], []],
-                                         cardsRemainingCount: 54,
+                                         cardsRemaining: Array(repeating: "", count: 54),
                                          drawnCard: nil)
         update(initialDrawEvent)
     }
@@ -200,13 +208,13 @@ final class GameStartView: UIView {
     
     func update(_ drawEvent: DrawEvent) {
         let nextUsername = drawEvent.nextPlayerToDraw
-        drawDeckButton.isHidden = nextUsername != username || drawEvent.cardsRemainingCount <= 6
+        drawDeckButton.isHidden = nextUsername != username || drawEvent.cardsRemaining.count <= 6
         bottomPlayerView.hideTurnLabel(nextUsername != bottomPlayerView.username)
         leftPlayerView.hideTurnLabel(nextUsername != leftPlayerView.username)
         topPlayerView.hideTurnLabel(nextUsername != topPlayerView.username)
         rightPlayerView.hideTurnLabel(nextUsername != rightPlayerView.username)
         
-        drawDeckRemainingLabel.text = "\(drawEvent.cardsRemainingCount) remaining"
+        drawDeckRemainingLabel.text = "\(drawEvent.cardsRemaining.count) remaining"
         
         // update the UI for only the player that just drew
         guard let drawnPlayerIndex = drawEvent.drawnPlayerIndex, drawEvent.playerHands.count == 4 else {
@@ -215,6 +223,29 @@ final class GameStartView: UIView {
 
         viewContainingUsername(playerTurnOrder[drawnPlayerIndex])?.updateHandUI(hand: drawEvent.playerHands[drawnPlayerIndex])
         setLevelTrump(drawEvent)
+        
+        if drawEvent.cardsRemaining.count == 6 {
+            switch participantType {
+            case .player:
+                delegate?.gameStartViewWaitForDealerToExchange()
+            case .host:
+                displayExchangeableCards(drawEvent.cardsRemaining)
+            }
+        }
+    }
+    
+    private func displayExchangeableCards(_ cardsRemaining: [String]) {
+        addSubview(dealerExchangeView)
+        
+        dealerExchangeView.snp.makeConstraints { make in
+            make.centerX.centerY.equalToSuperview()
+        }
+        
+        dealerExchangeView.configure(cardsRemaining)
+    }
+    
+    func hideExchangeView() {
+        dealerExchangeView.removeFromSuperview()
     }
     
     private func viewContainingUsername(_ username: String?) -> PlayerHandView? {
@@ -251,5 +282,11 @@ final class GameStartView: UIView {
         leaderTeam = LeaderTeam(dealer: playerTurnOrder[drawnPlayerIndex], leader: playerTurnOrder[leaderIndex])
         viewContainingUsername(leaderTeam?.dealer)?.updateAsDealer()
         viewContainingUsername(leaderTeam?.leader)?.updateAsLeader()
+    }
+}
+
+extension GameStartView: DealerExchangeViewDelegate {
+    func dealerExchangeViewDidTapDoneButton() {
+        delegate?.gameStartViewDealerFinishedExchanging()
     }
 }

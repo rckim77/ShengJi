@@ -19,7 +19,7 @@ struct DrawEvent: Codable {
     /// Returns index of the player that just drew. Nil on initial draw event.
     let drawnPlayerIndex: Int?
     let playerHands: [[String]]
-    let cardsRemainingCount: Int
+    let cardsRemaining: [String]
     /// The initial draw event will return a nil value. All subsequent draws must return a value.
     let drawnCard: String?
 }

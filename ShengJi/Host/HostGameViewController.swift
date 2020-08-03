@@ -29,6 +29,7 @@ final class HostGameViewController: UIViewController {
     private var startCancellable: AnyCancellable?
     private var pairCancellable: AnyCancellable?
     private var drawCancellable: AnyCancellable?
+    private var dealerExchangeCancellable: AnyCancellable?
     
     // MARK: - Init methods
     
@@ -252,17 +253,41 @@ extension HostGameViewController: GameStartViewDelegate {
             return
         }
         drawCancellable = URLSession.shared.dataTaskPublisher(for: url)
-            .tryMap({ data, response -> Data in
+            .tryMap { data, response -> Data in
                 guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
                     throw APIError.genericError
                 }
                 return data
-            })
+            }
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] completion in
                 if case Subscribers.Completion.failure(_) = completion {
                     self?.showErrorAlert(message: "Could not draw. Try again.", completion: {})
                 }
             }, receiveValue: { _ in })
+    }
+    
+    func gameStartViewWaitForDealerToExchange() {
+    }
+    
+    func gameStartViewDealerFinishedExchanging() {
+        guard let url = URL(string: "https://fast-garden-35127.herokuapp.com/finish_exchanging/\(presenceChannelName)") else {
+            return
+        }
+        dealerExchangeCancellable = URLSession.shared.dataTaskPublisher(for: url)
+            .tryMap { data, response -> Data in
+                guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+                    throw APIError.genericError
+                }
+                return data
+            }
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { [weak self] completion in
+                if case Subscribers.Completion.failure(_) = completion {
+                    self?.showErrorAlert(message: "Try again.", completion: {})
+                }
+            }, receiveValue: { [weak self] _ in
+                self?.gameStartView?.hideExchangeView()
+            })
     }
 }
