@@ -13,11 +13,9 @@ import Combine
 protocol GameStartViewDelegate: class {
     /// Only used by host
     func gameStartViewDidTapLeaveButton()
-    func gameStartViewDealerFinishedExchanging()
     /// Used by both host and players
     func gameStartViewDidTapDrawButton()
-    /// Only used by players
-    func gameStartViewWaitForDealerToExchange()
+    func gameStartViewDealerFinishedExchanging()
 }
 
 final class GameStartView: UIView {
@@ -42,6 +40,8 @@ final class GameStartView: UIView {
         let label = UILabel()
         label.text = "54 remaining"
         label.font = .preferredFont(forTextStyle: .title3)
+        label.numberOfLines = 0
+        label.textAlignment = .center
         return label
     }()
     
@@ -141,6 +141,7 @@ final class GameStartView: UIView {
         drawDeckRemainingLabel.snp.makeConstraints { make in
             make.top.equalTo(drawDeckLabel.snp.bottom)
             make.centerX.equalToSuperview()
+            make.width.equalTo(136)
         }
         
         drawDeckButton.snp.makeConstraints { make in
@@ -224,12 +225,11 @@ final class GameStartView: UIView {
         viewContainingUsername(playerTurnOrder[drawnPlayerIndex])?.updateHandUI(hand: drawEvent.playerHands[drawnPlayerIndex])
         setLevelTrump(drawEvent)
         
-        if drawEvent.cardsRemaining.count == 6 {
-            switch participantType {
-            case .player:
-                delegate?.gameStartViewWaitForDealerToExchange()
-            case .host:
+        if let dealer = leaderTeam?.dealer, drawEvent.cardsRemaining.count == 6 {
+            if username == dealer {
                 displayExchangeableCards(drawEvent.cardsRemaining)
+            } else {
+                drawDeckRemainingLabel.text = "Waiting for \(dealer) to exchange..."
             }
         }
     }
@@ -246,6 +246,13 @@ final class GameStartView: UIView {
     
     func hideExchangeView() {
         dealerExchangeView.removeFromSuperview()
+    }
+    
+    func updateForDealerExchanged() {
+        guard let dealer = leaderTeam?.dealer else {
+            return
+        }
+        drawDeckRemainingLabel.text = "Waiting for \(dealer) to start their turn..."
     }
     
     private func viewContainingUsername(_ username: String?) -> PlayerHandView? {

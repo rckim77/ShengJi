@@ -26,6 +26,7 @@ final class PlayerGameViewController: UIViewController {
     // MARK: - AnyCancellables
     
     private var drawCancellable: AnyCancellable?
+    private var dealerExchangeCancellable: AnyCancellable?
     
     // MARK: - Init methods
     
@@ -121,8 +122,7 @@ final class PlayerGameViewController: UIViewController {
         })
         
         channel?.bind(eventName: "dealerExchanged", eventCallback: { [weak self] _ in
-            // dismiss un-dismissable alert players see while waiting for dealer to finish exchanging
-            self?.dismiss(animated: true, completion: nil)
+            self?.gameStartView?.updateForDealerExchanged()
         })
     }
     
@@ -180,11 +180,24 @@ extension PlayerGameViewController: GameStartViewDelegate {
             }, receiveValue: { _ in })
     }
     
-    func gameStartViewWaitForDealerToExchange() {
-        let waitAlert = UIAlertController(title: "Please wait for the dealer to exchange...", message: nil, preferredStyle: .alert)
-        present(waitAlert, animated: true, completion: nil)
-    }
-    
     func gameStartViewDealerFinishedExchanging() {
+        guard let url = URL(string: "https://fast-garden-35127.herokuapp.com/finish_exchanging/\(channelName)") else {
+            return
+        }
+        dealerExchangeCancellable = URLSession.shared.dataTaskPublisher(for: url)
+            .tryMap { data, response -> Data in
+                guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+                    throw APIError.genericError
+                }
+                return data
+            }
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { [weak self] completion in
+                if case Subscribers.Completion.failure(_) = completion {
+                    self?.showErrorAlert(message: "Try again.", completion: {})
+                }
+            }, receiveValue: { [weak self] _ in
+                self?.gameStartView?.hideExchangeView()
+            })
     }
 }

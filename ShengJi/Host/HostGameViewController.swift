@@ -267,9 +267,6 @@ extension HostGameViewController: GameStartViewDelegate {
             }, receiveValue: { _ in })
     }
     
-    func gameStartViewWaitForDealerToExchange() {
-    }
-    
     func gameStartViewDealerFinishedExchanging() {
         guard let url = URL(string: "https://fast-garden-35127.herokuapp.com/finish_exchanging/\(presenceChannelName)") else {
             return
