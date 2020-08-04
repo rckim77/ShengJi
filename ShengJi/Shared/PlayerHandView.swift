@@ -102,10 +102,10 @@ final class PlayerHandView: UIView {
         backgroundColor = .systemGroupedBackground
         addRoundedCorners(radius: 8)
         addSubview(stackView)
+        stackView.addArrangedSubview(turnLabel)
         stackView.addArrangedSubview(usernameStackView)
         usernameStackView.addArrangedSubview(usernameLabel)
         usernameStackView.addArrangedSubview(dealerImageView)
-        stackView.addArrangedSubview(turnLabel)
         
         switch position {
         case .bottom:
@@ -149,6 +149,7 @@ final class PlayerHandView: UIView {
         }
         UIView.animate(withDuration: 0.2) {
             self.turnLabel.isHidden = shouldHide
+            self.turnLabel.alpha = shouldHide ? 0 : 1
         }
     }
     
