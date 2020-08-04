@@ -11,10 +11,11 @@ import SnapKit
 
 final class CardView: UIView {
     
-    private lazy var cardImageView: UIImageView = {
-        let imageView = UIImageView(image: cardImage)
-        imageView.contentMode = .scaleAspectFit
-        return imageView
+    private lazy var cardButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setImage(cardImage, for: .normal)
+        // add target
+        return button
     }()
     
     private var cardImage: UIImage? {
@@ -29,9 +30,9 @@ final class CardView: UIView {
         super.init(frame: .zero)
 
         backgroundColor = .systemGroupedBackground
-        addSubview(cardImageView)
+        addSubview(cardButton)
         
-        cardImageView.snp.makeConstraints { make in
+        cardButton.snp.makeConstraints { make in
             make.edges.equalToSuperview()
             make.height.equalTo(140)
             make.width.equalTo(99)
