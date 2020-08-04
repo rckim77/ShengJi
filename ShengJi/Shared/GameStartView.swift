@@ -238,7 +238,8 @@ final class GameStartView: UIView {
         addSubview(dealerExchangeView)
         
         dealerExchangeView.snp.makeConstraints { make in
-            make.centerX.centerY.equalToSuperview()
+            make.top.equalTo(safeAreaLayoutGuide.snp.top).inset(4)
+            make.centerX.equalToSuperview()
         }
         
         dealerExchangeView.configure(cardsRemaining)
