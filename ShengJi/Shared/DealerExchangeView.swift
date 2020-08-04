@@ -15,9 +15,25 @@ protocol DealerExchangeViewDelegate: class {
 
 final class DealerExchangeView: UIView {
     
-    private lazy var cardsRemainingLabel: UILabel = { // todo make into stack views of button images
-        let label = UILabel()
-        return label
+    private lazy var firstRowStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.spacing = 4
+        return stackView
+    }()
+    
+    private lazy var secondRowStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.spacing = 4
+        return stackView
+    }()
+    
+    private lazy var verticalStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = 4
+        return stackView
     }()
     
     private lazy var doneButton: UIButton = {
@@ -40,16 +56,18 @@ final class DealerExchangeView: UIView {
         layer.borderColor = UIColor.systemBlue.cgColor
         layer.borderWidth = 3
         
-        addSubview(cardsRemainingLabel)
+        addSubview(verticalStackView)
+        verticalStackView.addArrangedSubview(firstRowStackView)
+        verticalStackView.addArrangedSubview(secondRowStackView)
         addSubview(doneButton)
         
-        cardsRemainingLabel.snp.makeConstraints { make in
+        verticalStackView.snp.makeConstraints { make in
             make.leading.top.trailing.equalToSuperview().inset(24)
         }
         
         doneButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalTo(cardsRemainingLabel.snp.bottom).offset(16)
+            make.top.equalTo(verticalStackView.snp.bottom).offset(16)
             make.bottom.equalToSuperview().inset(16)
         }
     }
@@ -59,11 +77,38 @@ final class DealerExchangeView: UIView {
     }
     
     func configure(_ cardsRemaining: [String]) {
-        cardsRemainingLabel.text = cardsRemaining.joined()
+        guard cardsRemaining.count == 6 else {
+            return
+        }
+        
+        let firstRow = cardsRemaining[0..<3]
+        for card in firstRow {
+            let button = createCard(card)
+            button.snp.makeConstraints { make in
+                make.size.equalTo(CGSize(width: 99, height: 140))
+            }
+            firstRowStackView.addArrangedSubview(button)
+        }
+        
+        let secondRow = cardsRemaining[3..<6]
+        for card in secondRow {
+            let button = createCard(card)
+            button.snp.makeConstraints { make in
+                make.size.equalTo(CGSize(width: 99, height: 140))
+            }
+            secondRowStackView.addArrangedSubview(button)
+        }
     }
     
     @objc
     private func doneButtonTapped() {
         delegate?.dealerExchangeViewDidTapDoneButton()
+    }
+    
+    private func createCard(_ abbreviation: String) -> UIButton {
+        let button = UIButton(type: .custom)
+        let cardImage = UIImage(named: abbreviation)
+        button.setImage(cardImage, for: .normal)
+        return button
     }
 }
