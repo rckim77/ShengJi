@@ -62,7 +62,7 @@ final class DealerExchangeView: UIView {
         addSubview(doneButton)
         
         verticalStackView.snp.makeConstraints { make in
-            make.leading.top.trailing.equalToSuperview().inset(24)
+            make.leading.top.trailing.equalToSuperview().inset(12)
         }
         
         doneButton.snp.makeConstraints { make in
@@ -85,7 +85,7 @@ final class DealerExchangeView: UIView {
         for card in firstRow {
             let button = createCard(card)
             button.snp.makeConstraints { make in
-                make.size.equalTo(CGSize(width: 99, height: 140))
+                make.size.equalTo(CGSize(width: 102, height: 144))
             }
             firstRowStackView.addArrangedSubview(button)
         }
@@ -94,7 +94,7 @@ final class DealerExchangeView: UIView {
         for card in secondRow {
             let button = createCard(card)
             button.snp.makeConstraints { make in
-                make.size.equalTo(CGSize(width: 99, height: 140))
+                make.size.equalTo(CGSize(width: 102, height: 144))
             }
             secondRowStackView.addArrangedSubview(button)
         }

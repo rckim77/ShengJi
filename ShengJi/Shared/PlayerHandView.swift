@@ -106,8 +106,6 @@ final class PlayerHandView: UIView {
         usernameStackView.addArrangedSubview(usernameLabel)
         usernameStackView.addArrangedSubview(dealerImageView)
         stackView.addArrangedSubview(turnLabel)
-        stackView.addArrangedSubview(handStackView)
-        handStackView.addArrangedSubview(handLabel)
         
         switch position {
         case .bottom:
@@ -120,6 +118,8 @@ final class PlayerHandView: UIView {
                 make.leading.trailing.equalToSuperview().inset(2)
             }
         case .left, .right, .top:
+            stackView.addArrangedSubview(handStackView)
+            handStackView.addArrangedSubview(handLabel)
             handStackView.addArrangedSubview(handImageView)
             
             usernameStackView.layoutMargins = .zero
@@ -153,10 +153,10 @@ final class PlayerHandView: UIView {
     }
     
     func updateHandUI(hand: [String]) {
-        handLabel.text = "\(hand.count)"
-
         if position == .bottom {
-            bottomHandDetailView.updateCards(hand)
+            bottomHandDetailView.addCard(hand)
+        } else {
+            handLabel.text = "\(hand.count)"
         }
     }
     

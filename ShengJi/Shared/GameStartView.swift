@@ -135,7 +135,7 @@ final class GameStartView: UIView {
         
         drawDeckLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview().offset(-88)
+            make.centerY.equalToSuperview().offset(-92)
         }
         
         drawDeckRemainingLabel.snp.makeConstraints { make in
@@ -150,8 +150,9 @@ final class GameStartView: UIView {
         }
         
         bottomPlayerView.snp.makeConstraints { make in
-            make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).inset(4)
-            make.centerX.equalToSuperview()
+            make.bottom.equalToSuperview().offset(36)
+            make.leading.trailing.equalToSuperview().inset(4)
+            make.height.greaterThanOrEqualTo(200)
         }
         
         leftPlayerView.snp.makeConstraints { make in
@@ -254,7 +255,7 @@ final class GameStartView: UIView {
             return
         }
         
-        drawDeckRemainingLabel.text = dealer == username ? "Waiting for you to start..." : "Waiting for \(dealer) to start their turn..."
+        drawDeckRemainingLabel.text = dealer == username ? "Waiting for you to start..." : "Waiting for \(dealer) to start..."
     }
     
     private func viewContainingUsername(_ username: String?) -> PlayerHandView? {
