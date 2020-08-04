@@ -104,26 +104,18 @@ final class PlayerGameViewController: UIViewController {
             self?.startGame(playerTurnOrder: startEvent.playerTurnOrder)
         })
         
-        channel?.bind(eventName: "pair", eventCallback: { [weak self] pairEventData in
-            guard let data = pairEventData.data?.data(using: .utf8),
-                let pairEvent = try? JSONDecoder().decode(PairEvent.self, from: data) else {
-                    return
-            }
+        channel?.bindPairEvent { [weak self] pairEvent in
             self?.pairs.append(pairEvent.pair)
             self?.lobbyView?.pair(pairEvent.pair)
-        })
+        }
         
-        channel?.bind(eventName: "draw", eventCallback: { [weak self] drawEventData in
-            guard let data = drawEventData.data?.data(using: .utf8),
-                let drawEvent = try? JSONDecoder().decode(DrawEvent.self, from: data) else {
-                    return
-            }
+        channel?.bindDrawEvent { [weak self] drawEvent in
             self?.gameStartView?.update(drawEvent)
-        })
+        }
         
-        channel?.bind(eventName: "dealerExchanged", eventCallback: { [weak self] _ in
+        channel?.bindDealerExchangedEvent { [weak self] in
             self?.gameStartView?.updateForDealerExchanged()
-        })
+        }
     }
     
     private func startGame(playerTurnOrder: [String]) {

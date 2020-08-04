@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import PusherSwift
 
 extension UIViewController {
 
@@ -128,5 +129,33 @@ extension String {
         } else {
             return ""
         }
+    }
+}
+
+extension PusherPresenceChannel {
+    func bindPairEvent(_ completion: @escaping((PairEvent) -> Void)) {
+        bind(eventName: "pair", eventCallback: { pairEventData in
+            guard let data = pairEventData.data?.data(using: .utf8),
+                let pairEvent = try? JSONDecoder().decode(PairEvent.self, from: data) else {
+                    return
+            }
+            completion(pairEvent)
+        })
+    }
+    
+    func bindDrawEvent(_ completion: @escaping((DrawEvent) -> Void)) {
+        bind(eventName: "draw", eventCallback: { drawEventData in
+            guard let data = drawEventData.data?.data(using: .utf8),
+                let drawEvent = try? JSONDecoder().decode(DrawEvent.self, from: data) else {
+                    return
+            }
+            completion(drawEvent)
+        })
+    }
+    
+    func bindDealerExchangedEvent(_ completion: @escaping(() -> Void)) {
+        bind(eventName: "dealerExchanged", eventCallback: { _ in
+            completion()
+        })
     }
 }
