@@ -39,6 +39,7 @@ final class PlayerHandDetailView: UIView {
     }
     
     var selectedCard: CardView?
+    private var levelTrump: String?
     private var cards: [String] = []
     
     override init(frame: CGRect) {
@@ -46,6 +47,7 @@ final class PlayerHandDetailView: UIView {
         
         addSubview(cardsStackView)
         cardsStackView.addArrangedSubview(firstRowStackView)
+        cardsStackView.addArrangedSubview(secondRowStackView)
         
         cardsStackView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
@@ -56,7 +58,7 @@ final class PlayerHandDetailView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    /// Only call this function when adding an additional card image. Do not use to remove any cards
+    /// Only call this function when adding an additional card. Do not use to remove any cards
     /// nor to add multiple at once.
     func addCard(_ cards: [String]) {
         guard cards.count == cardsCount + 1 else {
@@ -65,13 +67,16 @@ final class PlayerHandDetailView: UIView {
         
         self.cards = cards
         let cardView = CardView(cardAbbreviation: cards[cards.count - 1], delegate: self)
+        
         if cardsCount < 6 {
             firstRowStackView.addArrangedSubview(cardView)
-        } else if cardsCount == 6 {
-            cardsStackView.addArrangedSubview(secondRowStackView)
-            secondRowStackView.addArrangedSubview(cardView)
         } else {
             secondRowStackView.addArrangedSubview(cardView)
+        }
+        
+        // We'll start sorting after adding once the level trump has been set.
+        if let levelTrump = levelTrump {
+            sortHand(levelTrump: levelTrump)
         }
     }
     
@@ -82,6 +87,17 @@ final class PlayerHandDetailView: UIView {
         selectedCard.update(otherCard)
         selectedCard.unselect()
         self.selectedCard = nil
+    }
+    
+    func sortHand(levelTrump: String) {
+        guard levelTrump.count == 2 else {
+            return
+        }
+        self.levelTrump = levelTrump
+        let startIndex = levelTrump.startIndex
+        let level = levelTrump[startIndex]
+        let trumpSuit = levelTrump[levelTrump.index(after: startIndex)]
+        // fill in
     }
 }
 

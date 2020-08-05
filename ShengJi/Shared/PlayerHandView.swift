@@ -175,6 +175,13 @@ final class PlayerHandView: UIView {
         bottomHandDetailView.exchange(card: card, with: otherCard)
     }
     
+    func sortHand(levelTrump: String) {
+        guard position == .bottom else {
+            return
+        }
+        bottomHandDetailView.sortHand(levelTrump: levelTrump)
+    }
+    
     func updateAsDealer() {
         updateAsLeader()
         dealerImageView.isHidden = false

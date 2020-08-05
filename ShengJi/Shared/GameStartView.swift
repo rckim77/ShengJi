@@ -274,6 +274,7 @@ final class GameStartView: UIView {
     
     /// When starting the game, the first 2 automatically determines the trump suit and leader.
     private func setLevelTrump(_ drawEvent: DrawEvent) {
+        // todo: do not use hardcoded 2 for rounds beyond the first one
         guard let drawnCard = drawEvent.drawnCard,
             let drawnPlayerIndex = drawEvent.drawnPlayerIndex,
             drawnCard.contains("2") && levelTrump == nil else {
@@ -292,6 +293,7 @@ final class GameStartView: UIView {
         leaderTeam = LeaderTeam(dealer: playerTurnOrder[drawnPlayerIndex], leader: playerTurnOrder[leaderIndex])
         viewContainingUsername(leaderTeam?.dealer)?.updateAsDealer()
         viewContainingUsername(leaderTeam?.leader)?.updateAsLeader()
+        bottomPlayerView.sortHand(levelTrump: drawnCard)
     }
 }
 

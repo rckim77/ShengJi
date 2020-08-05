@@ -140,7 +140,7 @@ final class DealerExchangeView: UIView {
             return
         }
         selectedCardButton.setImage(UIImage(named: otherCard), for: .normal)
-        cards?[cardIndex] = card
+        cards?[cardIndex] = otherCard
         selectedCardButton.layer.borderWidth = 0
         self.selectedCardButton = nil
     }
