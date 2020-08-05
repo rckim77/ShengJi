@@ -93,11 +93,30 @@ final class PlayerHandDetailView: UIView {
         guard levelTrump.count == 2 else {
             return
         }
+
         self.levelTrump = levelTrump
         let startIndex = levelTrump.startIndex
-        let level = levelTrump[startIndex]
-        let trumpSuit = levelTrump[levelTrump.index(after: startIndex)]
-        // fill in
+        let level = levelTrump[startIndex] // e.g., "2"
+        let trumpSuit = levelTrump[levelTrump.index(after: startIndex)] // e.g., "H"
+        print("====non sorted cards: \(cards)\n")
+        cards.sort { card, otherCard -> Bool in
+            // trump is higher than all other non-trump
+            card.contains(trumpSuit) && !otherCard.contains(trumpSuit)
+        }
+        print("=====sortedCards: \(cards)")
+        
+        // Both top and bottom rows should be in descending ranking from right to left. The leftmost
+        // card on the top row should be the next highest value card from the rightmost card on the
+        // bottom row.
+        for (index, card) in cards.enumerated() {
+            let firstRowSubviewsCount = firstRowStackView.arrangedSubviews.count
+            let secondRowSubviewsCount = secondRowStackView.arrangedSubviews.count
+            if index < 6, let cardView = firstRowStackView.arrangedSubviews[firstRowSubviewsCount - 1 - index] as? CardView {
+                cardView.update(card)
+            } else if let cardView = secondRowStackView.arrangedSubviews[secondRowSubviewsCount - 1 - (index - 6)] as? CardView {
+                cardView.update(card)
+            }
+        }
     }
 }
 
