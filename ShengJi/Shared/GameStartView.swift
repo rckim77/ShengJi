@@ -152,7 +152,7 @@ final class GameStartView: UIView {
         bottomPlayerView.snp.makeConstraints { make in
             make.bottom.equalToSuperview().offset(36)
             make.leading.trailing.equalToSuperview().inset(4)
-            make.height.greaterThanOrEqualTo(200)
+            make.height.greaterThanOrEqualTo(190)
         }
         
         leftPlayerView.snp.makeConstraints { make in
@@ -297,7 +297,13 @@ final class GameStartView: UIView {
 
 extension GameStartView: DealerExchangeViewDelegate {
     func dealerExchangeViewDidTapExchangeButton() {
-        // fill in
+        guard let selectedBottomCard = bottomPlayerView.selectedCard,
+            let selectedExchangeCard = dealerExchangeView.selectedCardAbbreviation else {
+            return
+        }
+        
+        bottomPlayerView.exchange(card: selectedBottomCard, with: selectedExchangeCard)
+        dealerExchangeView.exchange(card: selectedExchangeCard, with: selectedBottomCard)
     }
     
     func dealerExchangeViewDidSelectCard(_ cardAbbreviation: String) {

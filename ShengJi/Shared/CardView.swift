@@ -26,7 +26,7 @@ final class CardView: UIView {
         UIImage(named: cardAbbreviation)
     }
     
-    private let cardAbbreviation: String
+    var cardAbbreviation: String
     private weak var delegate: CardViewDelegate?
     
     /// Input can be, for example, "2C" for the 2 of clubs.
@@ -55,6 +55,11 @@ final class CardView: UIView {
     
     func unselect() {
         cardButton.layer.borderWidth = 0
+    }
+    
+    func update(_ cardAbbreviation: String) {
+        self.cardAbbreviation = cardAbbreviation
+        cardButton.setImage(cardImage, for: .normal)
     }
     
     @objc

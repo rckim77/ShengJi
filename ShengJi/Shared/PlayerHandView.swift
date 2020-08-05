@@ -83,6 +83,12 @@ final class PlayerHandView: UIView {
         return view
     }()
     
+    /// Used only for the bottom player view. Returns the selected card abbreviation if the user
+    /// is currently exchanging with the bottom fo the draw deck.
+    var selectedCard: String? {
+        bottomHandDetailView.selectedCard?.cardAbbreviation
+    }
+    
     private let position: PlayerPosition
 
     var username: String? {
@@ -159,6 +165,14 @@ final class PlayerHandView: UIView {
         } else {
             handLabel.text = "\(hand.count)"
         }
+    }
+    
+    /// Used for bottom player view only.
+    func exchange(card: String, with otherCard: String) {
+        guard position == .bottom else {
+            return
+        }
+        bottomHandDetailView.exchange(card: card, with: otherCard)
     }
     
     func updateAsDealer() {

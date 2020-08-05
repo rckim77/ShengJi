@@ -64,8 +64,14 @@ final class DealerExchangeView: UIView {
     }()
     
     private weak var delegate: DealerExchangeViewDelegate?
-    private var selectedCard: UIButton?
+    private var selectedCardButton: UIButton?
     private var cards: [String]?
+    var selectedCardAbbreviation: String? {
+        guard let selectedCardIndex = selectedCardButton?.tag else {
+            return nil
+        }
+        return cards?[selectedCardIndex]
+    }
     
     init(delegate: DealerExchangeViewDelegate) {
         self.delegate = delegate
@@ -128,6 +134,17 @@ final class DealerExchangeView: UIView {
         }
     }
     
+    func exchange(card: String, with otherCard: String) {
+        guard let selectedCardButton = selectedCardButton,
+            let cardIndex = cards?.firstIndex(of: card) else {
+            return
+        }
+        selectedCardButton.setImage(UIImage(named: otherCard), for: .normal)
+        cards?[cardIndex] = card
+        selectedCardButton.layer.borderWidth = 0
+        self.selectedCardButton = nil
+    }
+    
     @objc
     private func doneButtonTapped() {
         delegate?.dealerExchangeViewDidTapDoneButton()
@@ -144,11 +161,11 @@ final class DealerExchangeView: UIView {
             return
         }
         
-        if let selectedCard = selectedCard {
+        if let selectedCard = selectedCardButton {
             selectedCard.layer.borderWidth = 0
         }
         
-        self.selectedCard = sender
+        self.selectedCardButton = sender
         sender.addRoundedBorder(radius: 8, width: 2, color: .systemBlue)
         let cardAbbreviation = cards[sender.tag]
         delegate?.dealerExchangeViewDidSelectCard(cardAbbreviation)
