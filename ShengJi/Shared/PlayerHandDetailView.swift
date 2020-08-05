@@ -34,9 +34,11 @@ final class PlayerHandDetailView: UIView {
         return stackView
     }()
     
-    private var cardsCount: Int {
+    var cardsCount: Int {
         firstRowStackView.arrangedSubviews.count + secondRowStackView.arrangedSubviews.count
     }
+    
+    var selectedCard: CardView?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -60,7 +62,7 @@ final class PlayerHandDetailView: UIView {
             return
         }
         
-        let cardView = CardView(cardAbbreviation: cards[cards.count - 1])
+        let cardView = CardView(cardAbbreviation: cards[cards.count - 1], delegate: self)
         if cardsCount < 6 {
             firstRowStackView.addArrangedSubview(cardView)
         } else if cardsCount == 6 {
@@ -69,5 +71,18 @@ final class PlayerHandDetailView: UIView {
         } else {
             secondRowStackView.addArrangedSubview(cardView)
         }
+    }
+}
+
+extension PlayerHandDetailView: CardViewDelegate {
+    func cardViewDidSelectCard(_ card: CardView) {
+        guard cardsCount == 12 else {
+            return
+        }
+        if let selectedCard = selectedCard {
+            selectedCard.unselect()
+        }
+        self.selectedCard = card
+        selectedCard?.select()
     }
 }

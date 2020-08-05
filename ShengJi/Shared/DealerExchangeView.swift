@@ -11,6 +11,8 @@ import SnapKit
 
 protocol DealerExchangeViewDelegate: class {
     func dealerExchangeViewDidTapDoneButton()
+    func dealerExchangeViewDidTapExchangeButton()
+    func dealerExchangeViewDidSelectCard(_ cardAbbreviation: String)
 }
 
 final class DealerExchangeView: UIView {
@@ -36,6 +38,13 @@ final class DealerExchangeView: UIView {
         return stackView
     }()
     
+    private lazy var buttonsStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.spacing = 8
+        return stackView
+    }()
+    
     private lazy var doneButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Done", for: .normal)
@@ -45,7 +54,18 @@ final class DealerExchangeView: UIView {
         return button
     }()
     
+    private lazy var exchangeButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Exchange", for: .normal)
+        button.addTarget(self, action: #selector(exchangeButtonTapped), for: .touchUpInside)
+        button.addRoundedBorder(color: .systemBlue)
+        button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
+        return button
+    }()
+    
     private weak var delegate: DealerExchangeViewDelegate?
+    private var selectedCard: UIButton?
+    private var cards: [String]?
     
     init(delegate: DealerExchangeViewDelegate) {
         self.delegate = delegate
@@ -59,15 +79,17 @@ final class DealerExchangeView: UIView {
         addSubview(verticalStackView)
         verticalStackView.addArrangedSubview(firstRowStackView)
         verticalStackView.addArrangedSubview(secondRowStackView)
-        addSubview(doneButton)
+        addSubview(buttonsStackView)
+        buttonsStackView.addArrangedSubview(doneButton)
+        buttonsStackView.addArrangedSubview(exchangeButton)
         
         verticalStackView.snp.makeConstraints { make in
             make.leading.top.trailing.equalToSuperview().inset(12)
         }
         
-        doneButton.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
+        buttonsStackView.snp.makeConstraints { make in
             make.top.equalTo(verticalStackView.snp.bottom).offset(16)
+            make.centerX.equalToSuperview()
             make.bottom.equalToSuperview().inset(16)
         }
     }
@@ -81,9 +103,13 @@ final class DealerExchangeView: UIView {
             return
         }
         
+        self.cards = cardsRemaining
+        
         let firstRow = cardsRemaining[0..<3]
-        for card in firstRow {
+        for (index, card) in firstRow.enumerated() {
             let button = createCard(card)
+            button.tag = index
+            button.addTarget(self, action: #selector(cardSelected), for: .touchUpInside)
             button.snp.makeConstraints { make in
                 make.size.equalTo(CGSize(width: 102, height: 144))
             }
@@ -91,8 +117,10 @@ final class DealerExchangeView: UIView {
         }
         
         let secondRow = cardsRemaining[3..<6]
-        for card in secondRow {
+        for (index, card) in secondRow.enumerated() {
             let button = createCard(card)
+            button.tag = index + 3
+            button.addTarget(self, action: #selector(cardSelected), for: .touchUpInside)
             button.snp.makeConstraints { make in
                 make.size.equalTo(CGSize(width: 102, height: 144))
             }
@@ -103,6 +131,27 @@ final class DealerExchangeView: UIView {
     @objc
     private func doneButtonTapped() {
         delegate?.dealerExchangeViewDidTapDoneButton()
+    }
+    
+    @objc
+    private func exchangeButtonTapped() {
+        delegate?.dealerExchangeViewDidTapExchangeButton()
+    }
+    
+    @objc
+    private func cardSelected(sender: UIButton) {
+        guard let cards = cards else {
+            return
+        }
+        
+        if let selectedCard = selectedCard {
+            selectedCard.layer.borderWidth = 0
+        }
+        
+        self.selectedCard = sender
+        sender.addRoundedBorder(radius: 8, width: 2, color: .systemBlue)
+        let cardAbbreviation = cards[sender.tag]
+        delegate?.dealerExchangeViewDidSelectCard(cardAbbreviation)
     }
     
     private func createCard(_ abbreviation: String) -> UIButton {

@@ -9,12 +9,16 @@
 import UIKit
 import SnapKit
 
+protocol CardViewDelegate: class {
+    func cardViewDidSelectCard(_ card: CardView)
+}
+
 final class CardView: UIView {
     
     private lazy var cardButton: UIButton = {
         let button = UIButton(type: .custom)
         button.setImage(cardImage, for: .normal)
-        // add target
+        button.addTarget(self, action: #selector(cardButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -23,10 +27,12 @@ final class CardView: UIView {
     }
     
     private let cardAbbreviation: String
+    private weak var delegate: CardViewDelegate?
     
     /// Input can be, for example, "2C" for the 2 of clubs.
-    init(cardAbbreviation: String) {
+    init(cardAbbreviation: String, delegate: CardViewDelegate) {
         self.cardAbbreviation = cardAbbreviation
+        self.delegate = delegate
         super.init(frame: .zero)
 
         backgroundColor = .systemGroupedBackground
@@ -41,5 +47,18 @@ final class CardView: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    func select() {
+        cardButton.addRoundedBorder(radius: 8, width: 2, color: .systemBlue)
+    }
+    
+    func unselect() {
+        cardButton.layer.borderWidth = 0
+    }
+    
+    @objc
+    private func cardButtonTapped() {
+        delegate?.cardViewDidSelectCard(self)
     }
 }

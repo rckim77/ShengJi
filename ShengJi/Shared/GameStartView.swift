@@ -296,6 +296,14 @@ final class GameStartView: UIView {
 }
 
 extension GameStartView: DealerExchangeViewDelegate {
+    func dealerExchangeViewDidTapExchangeButton() {
+        // fill in
+    }
+    
+    func dealerExchangeViewDidSelectCard(_ cardAbbreviation: String) {
+        // fill in
+    }
+    
     func dealerExchangeViewDidTapDoneButton() {
         delegate?.gameStartViewDealerFinishedExchanging()
     }
