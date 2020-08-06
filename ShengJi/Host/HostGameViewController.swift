@@ -24,8 +24,8 @@ final class HostGameViewController: UIViewController {
     
     // MARK: - Helper vars
     
-    private var presenceChannelName: String {
-        "presence-\(roomCode)"
+    private var channelName: String {
+        channel?.name ?? "presence-\(roomCode)"
     }
     private var hostPair: [String]? {
         guard let hostUsername = hostUsername, pairs.count == 2 else {
@@ -73,7 +73,7 @@ final class HostGameViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
-        appDelegate.pusher?.unsubscribe(presenceChannelName)
+        appDelegate.pusher?.unsubscribe(channelName)
         appDelegate.pusher?.delegate = nil
         navigationController?.setNavigationBarHidden(false, animated: true)
     }
@@ -82,7 +82,7 @@ final class HostGameViewController: UIViewController {
     
     private func setupPusher() {
         appDelegate.pusher?.delegate = self
-        channel = appDelegate.pusher?.subscribeToPresenceChannel(channelName: presenceChannelName, onMemberAdded: { [weak self] member in
+        channel = appDelegate.pusher?.subscribeToPresenceChannel(channelName: channelName, onMemberAdded: { [weak self] member in
             self?.lobbyView?.addUsername(member.userId)
         }, onMemberRemoved: { [weak self] member in
             if self?.lobbyView?.isHidden == true { // proxy for game has started
@@ -134,7 +134,7 @@ final class HostGameViewController: UIViewController {
     }
     
     private func pair(_ username: String, with otherUsername: String) {
-        guard let url = URL(string: "https://fast-garden-35127.herokuapp.com/pair/\(presenceChannelName)/\(username)/\(otherUsername)") else {
+        guard let url = URL(string: "https://fast-garden-35127.herokuapp.com/pair/\(channelName)/\(username)/\(otherUsername)") else {
             return
         }
         pairCancellable = URLSession.shared.dataTaskPublisher(for: url)
@@ -262,7 +262,7 @@ extension HostGameViewController: GameStartViewDelegate {
     }
     
     func gameStartViewDidTapScoreButton() {
-        guard let url = URL(string: "https://fast-garden-35127.herokuapp.com/score/\(presenceChannelName)") else {
+        guard let url = URL(string: "https://fast-garden-35127.herokuapp.com/score/\(channelName)") else {
             return
         }
         
@@ -284,7 +284,7 @@ extension HostGameViewController: GameStartViewDelegate {
     
     func gameStartViewDidTapDrawButton() {
         guard let username = hostUsername,
-            let url = URL(string: "https://fast-garden-35127.herokuapp.com/draw/\(presenceChannelName)/\(username)") else {
+            let url = URL(string: "https://fast-garden-35127.herokuapp.com/draw/\(channelName)/\(username)") else {
             return
         }
         drawCancellable = URLSession.shared.dataTaskPublisher(for: url)
@@ -303,7 +303,7 @@ extension HostGameViewController: GameStartViewDelegate {
     }
     
     func gameStartViewDealerFinishedExchanging() {
-        guard let url = URL(string: "https://fast-garden-35127.herokuapp.com/finish_exchanging/\(presenceChannelName)") else {
+        guard let url = URL(string: "https://fast-garden-35127.herokuapp.com/finish_exchanging/\(channelName)") else {
             return
         }
         dealerExchangeCancellable = URLSession.shared.dataTaskPublisher(for: url)
