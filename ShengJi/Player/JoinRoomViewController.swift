@@ -60,6 +60,7 @@ final class JoinRoomViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         appDelegate.pusher?.delegate = self
+        codeField.text = nil
     }
     
     override func viewWillDisappear(_ animated: Bool) {
