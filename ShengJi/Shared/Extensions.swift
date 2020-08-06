@@ -130,12 +130,11 @@ extension String {
             return ""
         }
     }
-}
-
-extension Character {
+    
     /// Returns true if self is higher rank than input otherRank following
-    /// standard playing card rules (Ace down to 2).
-    func isHigherValueThan(_ otherRank: Character) -> Bool {
+    /// standard playing card rules (Ace down to 2). Note this is an extension
+    /// on String because of "10".
+    func isHigherValueThan(_ otherRank: String) -> Bool {
         switch (self, otherRank) {
         case ("A", _):
             return true
@@ -145,8 +144,27 @@ extension Character {
             return val != "A" && val != "K"
         case ("J", let val):
             return val != "A" && val != "K" && val != "Q"
+        case (_, "A"), (_, "K"), (_, "Q"), (_, "J"):
+            return false
         default: // self is a number char (e.g., "10")
-            return Int(String(self)) ?? 0 > Int(String(otherRank)) ?? 1
+            return Int(self) ?? 0 > Int(otherRank) ?? 1
+        }
+    }
+    
+    /// Returns true if self is of a higher suit than input otherSuit
+    /// following standard playing card rules (Spades > Hearts > Clubs > Diamonds).
+    func isHigherSuitThan(_ otherSuit: String) -> Bool {
+        switch (self, otherSuit) {
+        case ("S", _):
+            return true
+        case ("H", let suit):
+            return suit != "S"
+        case ("C", let suit):
+            return suit != "S" && suit != "H"
+        case ("D", let suit):
+            return suit != "S" && suit != "H" && suit != "C"
+        default:
+            return false
         }
     }
 }

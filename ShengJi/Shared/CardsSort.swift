@@ -16,15 +16,14 @@ extension Array where Element == String {
     /// Each non-trump suit is treated equally. Within each suit, order is simply Ace down to
     /// 2, excluding the dominant rank.
     mutating func sortBy(levelTrump: String) {
-        let startIndex = levelTrump.startIndex
-        let level = levelTrump[startIndex] // e.g., "2"
-        let trumpSuit = levelTrump[levelTrump.index(after: startIndex)] // e.g., "H"
+        let level = String(levelTrump.prefix(levelTrump.count == 2 ? 1 : 2))
+        let trumpSuit = String(levelTrump.suffix(1))
 
         self.sort { card, otherCard -> Bool in // return true if card should come before otherCard (ascending)
-            let cardRank = card[card.startIndex]
-            let cardSuit = card[card.index(after: card.startIndex)]
-            let otherCardRank = otherCard[otherCard.startIndex]
-            let otherCardSuit = otherCard[otherCard.index(after: otherCard.startIndex)]
+            let cardRank = String(card.prefix(card.count == 2 ? 1 : 2))
+            let cardSuit = String(card.suffix(1))
+            let otherCardRank = String(otherCard.prefix(otherCard.count == 2 ? 1 : 2))
+            let otherCardSuit = String(otherCard.suffix(1))
             
             // trump-specific
             let cardIsJoker = cardSuit == "J"
@@ -58,17 +57,7 @@ extension Array where Element == String {
             } else if cardSuit == otherCardSuit {
                 return cardRank.isHigherValueThan(otherCardRank)
             } else { // two different suits, both non-trump
-//                if cardSuit == "S" && otherCardSuit != "S" {
-//                    return cardSuit == "S" && otherCardSuit != "S"
-//                } else if cardSuit == "H" && otherCardSuit != "H" {
-//                    return cardSuit == "H" && otherCardSuit != "H"
-//                } else if cardSuit == "C" && otherCardSuit != "C" {
-//                    return cardSuit == "C" && otherCardSuit != "C"
-//                } else if cardSuit == "D" && otherCardSuit != "D" {
-//                    return cardSuit == "D" && otherCardSuit != "D"
-//                }
-                print("card and otherCard are different non-trump suits")
-                return false
+                return cardSuit.isHigherSuitThan(otherCardSuit)
             }
         }
     }
