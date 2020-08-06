@@ -69,6 +69,18 @@ extension UIViewController {
         alertVC.addAction(confirmAction)
         present(alertVC, animated: true, completion: nil)
     }
+    
+    func showScoreAlert(_ scoreResponse: ScoreResponse, hostPair: [String], otherPair: [String]) {
+        guard hostPair.count == 2 && otherPair.count == 2 else {
+            return
+        }
+        let hostPairString = "\(hostPair[0]) and \(hostPair[1]): \(scoreResponse.hostPairLevel)"
+        let otherPairString = "\(otherPair[0]) and \(otherPair[1]): \(scoreResponse.otherPairLevel)"
+        let alertVC = UIAlertController(title: "Current Score", message: "\(hostPairString)\n\(otherPairString)", preferredStyle: .alert)
+        let confirmAction = UIAlertAction(title: "Got it", style: .cancel, handler: nil)
+        alertVC.addAction(confirmAction)
+        present(alertVC, animated: true, completion: nil)
+    }
 }
 
 extension UIView {

@@ -19,14 +19,30 @@ final class PlayerGameViewController: UIViewController {
     private var channel: PusherPresenceChannel?
     private let hostUsername: String
     private var pairs: [[String]] = []
+    
+    // MARK: - Helper vars
+
     private var username: String? {
         channel?.myId
+    }
+    private var hostPair: [String]? {
+        guard pairs.count == 2 else {
+            return nil
+        }
+        return pairs.first(where: { $0.contains(hostUsername) })
+    }
+    private var otherPair: [String]? {
+        guard pairs.count == 2 else {
+            return nil
+        }
+        return pairs.first(where: { !$0.contains(hostUsername) })
     }
     
     // MARK: - AnyCancellables
     
     private var drawCancellable: AnyCancellable?
     private var dealerExchangeCancellable: AnyCancellable?
+    private var getScoreCancellable: AnyCancellable?
     
     // MARK: - Init methods
     
@@ -152,7 +168,24 @@ extension PlayerGameViewController: GameStartViewDelegate {
     }
     
     func gameStartViewDidTapScoreButton() {
-        // show alert
+        guard let url = URL(string: "https://fast-garden-35127.herokuapp.com/score/\(channelName)") else {
+            return
+        }
+        
+        getScoreCancellable = URLSession.shared.dataTaskPublisher(for: url)
+            .map { $0.data }
+            .decode(type: ScoreResponse.self, decoder: JSONDecoder())
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { [weak self] completion in
+                if case Subscribers.Completion.failure(_) = completion {
+                    self?.showErrorAlert(message: "Try again.", completion: {})
+                }
+            }, receiveValue: { [weak self] scoreResponse in
+                guard let strongSelf = self, let hostPair = strongSelf.hostPair, let otherPair = strongSelf.otherPair else {
+                    return
+                }
+                strongSelf.showScoreAlert(scoreResponse, hostPair: hostPair, otherPair: otherPair)
+            })
     }
     
     func gameStartViewDidTapDrawButton() {

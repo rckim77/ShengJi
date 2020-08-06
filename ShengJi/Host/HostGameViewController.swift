@@ -17,12 +17,28 @@ final class HostGameViewController: UIViewController {
     private var gameStartView: GameStartView?
     /// Note: this does not include the 'presence-' prefix
     private let roomCode: String
+    private var hostUsername: String?
+    private var channel: PusherPresenceChannel?
+    private var pairs: [[String]] = []
+    private let loadingVC = LoadingViewController()
+    
+    // MARK: - Helper vars
+    
     private var presenceChannelName: String {
         "presence-\(roomCode)"
     }
-    private var hostUsername: String?
-    private var channel: PusherPresenceChannel?
-    private let loadingVC = LoadingViewController()
+    private var hostPair: [String]? {
+        guard let hostUsername = hostUsername, pairs.count == 2 else {
+            return nil
+        }
+        return pairs.first(where: { $0.contains(hostUsername) })
+    }
+    private var otherPair: [String]? {
+        guard let hostUsername = hostUsername, pairs.count == 2 else {
+            return nil
+        }
+        return pairs.first(where: { !$0.contains(hostUsername) })
+    }
     
     // MARK: - AnyCancellable methods
     
@@ -30,6 +46,7 @@ final class HostGameViewController: UIViewController {
     private var pairCancellable: AnyCancellable?
     private var drawCancellable: AnyCancellable?
     private var dealerExchangeCancellable: AnyCancellable?
+    private var getScoreCancellable: AnyCancellable?
     
     // MARK: - Init methods
     
@@ -76,6 +93,7 @@ final class HostGameViewController: UIViewController {
         })
         
         channel?.bindPairEvent { [weak self] pairEvent in
+            self?.pairs.append(pairEvent.pair)
             self?.lobbyView?.pair(pairEvent.pair)
         }
         
@@ -244,7 +262,24 @@ extension HostGameViewController: GameStartViewDelegate {
     }
     
     func gameStartViewDidTapScoreButton() {
-        // show alert
+        guard let url = URL(string: "https://fast-garden-35127.herokuapp.com/score/\(presenceChannelName)") else {
+            return
+        }
+        
+        getScoreCancellable = URLSession.shared.dataTaskPublisher(for: url)
+            .map { $0.data }
+            .decode(type: ScoreResponse.self, decoder: JSONDecoder())
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { [weak self] completion in
+                if case Subscribers.Completion.failure(_) = completion {
+                    self?.showErrorAlert(message: "Try again.", completion: {})
+                }
+            }, receiveValue: { [weak self] scoreResponse in
+                guard let strongSelf = self, let hostPair = strongSelf.hostPair, let otherPair = strongSelf.otherPair else {
+                    return
+                }
+                strongSelf.showScoreAlert(scoreResponse, hostPair: hostPair, otherPair: otherPair)
+            })
     }
     
     func gameStartViewDidTapDrawButton() {
