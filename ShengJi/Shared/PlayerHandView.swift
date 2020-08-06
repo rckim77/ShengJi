@@ -83,8 +83,7 @@ final class PlayerHandView: UIView {
         return view
     }()
     
-    /// Used only for the bottom player view. Returns the selected card abbreviation if the user
-    /// is currently exchanging with the bottom fo the draw deck.
+    /// Used only for the bottom player view. Returns the selected card abbreviation if any.
     var selectedCard: String? {
         bottomHandDetailView.selectedCard?.cardAbbreviation
     }
@@ -167,7 +166,8 @@ final class PlayerHandView: UIView {
         }
     }
     
-    /// Used for bottom player view only.
+    // MARK: - Bottom position methods
+
     func exchange(card: String, with otherCard: String) {
         guard position == .bottom else {
             return
@@ -181,6 +181,22 @@ final class PlayerHandView: UIView {
         }
         bottomHandDetailView.sortHand(levelTrump: levelTrump)
     }
+    
+    func deselectCards() {
+        guard position == .bottom else {
+            return
+        }
+        bottomHandDetailView.deselectCards()
+    }
+    
+    func setIsEnabled(_ isEnabled: Bool) {
+        guard position == .bottom else {
+            return
+        }
+        bottomHandDetailView.setIsEnabled(isEnabled)
+    }
+    
+    // MARK: - Dealer/Exchange methods
     
     func updateAsDealer() {
         updateAsLeader()

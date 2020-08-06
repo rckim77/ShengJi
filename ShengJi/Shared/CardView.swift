@@ -53,8 +53,12 @@ final class CardView: UIView {
         cardButton.addRoundedBorder(radius: 8, width: 2, color: .systemBlue)
     }
     
-    func unselect() {
+    func deselect() {
         cardButton.layer.borderWidth = 0
+    }
+    
+    func setIsEnabled(_ isEnabled: Bool) {
+        cardButton.isEnabled = isEnabled
     }
     
     func update(_ cardAbbreviation: String) {

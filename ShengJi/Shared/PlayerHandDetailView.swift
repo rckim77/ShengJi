@@ -85,7 +85,7 @@ final class PlayerHandDetailView: UIView {
             return
         }
         selectedCard.update(otherCard)
-        selectedCard.unselect()
+        selectedCard.deselect()
         self.selectedCard = nil
     }
     
@@ -96,9 +96,7 @@ final class PlayerHandDetailView: UIView {
 
         self.levelTrump = levelTrump
 
-        print("====non sorted cards: \(cards)\n")
         cards.sortBy(levelTrump: levelTrump)
-        print("=====sortedCards: \(cards)")
         
         // Both top and bottom rows should be in descending ranking from right to left. The leftmost
         // card on the top row should be the next highest value card from the rightmost card on the
@@ -113,6 +111,16 @@ final class PlayerHandDetailView: UIView {
             }
         }
     }
+    
+    func deselectCards() {
+        selectedCard?.deselect()
+    }
+    
+    func setIsEnabled(_ isEnabled: Bool) {
+        for card in firstRowStackView.arrangedSubviews + secondRowStackView.arrangedSubviews {
+            (card as? CardView)?.setIsEnabled(isEnabled)
+        }
+    }
 }
 
 extension PlayerHandDetailView: CardViewDelegate {
@@ -121,7 +129,7 @@ extension PlayerHandDetailView: CardViewDelegate {
             return
         }
         if let selectedCard = selectedCard {
-            selectedCard.unselect()
+            selectedCard.deselect()
         }
         self.selectedCard = card
         selectedCard?.select()

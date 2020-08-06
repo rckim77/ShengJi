@@ -20,6 +20,17 @@ protocol GameStartViewDelegate: class {
 
 final class GameStartView: UIView {
     
+    private enum GameState {
+        /// Users are drawing in counter-clockwise order.
+        case draw
+        /// Once all users have drawn, the dealer gets to exchange with the bottom cards of the draw
+        /// deck.
+        case dealerExchange
+        /// Once the dealer has finished exchanging, the dealer starts by playing a card from their
+        /// hand.
+        case play
+    }
+    
     private lazy var endGameButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("End", for: .normal)
@@ -96,6 +107,7 @@ final class GameStartView: UIView {
     }
     private var levelTrump: String?
     private var leaderTeam: LeaderTeam?
+    private var gameState: GameState = .draw
     private weak var delegate: GameStartViewDelegate?
     
     // MARK: - AnyCancellables
@@ -227,6 +239,7 @@ final class GameStartView: UIView {
         setLevelTrump(drawEvent)
         
         if let dealer = leaderTeam?.dealer, drawEvent.cardsRemaining.count == 6 {
+            gameState = .dealerExchange
             if username == dealer {
                 displayExchangeableCards(drawEvent.cardsRemaining)
             } else {
@@ -250,12 +263,21 @@ final class GameStartView: UIView {
         dealerExchangeView.removeFromSuperview()
     }
     
+    /// Dealer has completed exchanging and tapped the Done button. The
+    /// dealer is now setup to play their first card.
     func updateForDealerExchanged() {
         guard let dealer = leaderTeam?.dealer else {
             return
         }
-        
+        gameState = .play
         drawDeckRemainingLabel.text = dealer == username ? "Waiting for you to start..." : "Waiting for \(dealer) to start..."
+        drawDeckLabel.isHidden = true
+        bottomPlayerView.deselectCards()
+        
+        if dealer != username {
+            // prevent other users from selecting cards until it' their turn
+            bottomPlayerView.setIsEnabled(false)
+        }
     }
     
     private func viewContainingUsername(_ username: String?) -> PlayerHandView? {
