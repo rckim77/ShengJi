@@ -16,17 +16,17 @@ final class HostGameViewController: UIViewController {
     private var lobbyView: HostLobbyView?
     private var gameStartView: GameStartView?
     /// Note: this does not include the 'presence-' prefix
-    private let roomCode: String
+    private var roomCode: String {
+        channelName.presenceStripped()
+    }
+    private let channelName: String
     private var hostUsername: String?
     private var channel: PusherPresenceChannel?
     private var pairs: [[String]] = []
     private let loadingVC = LoadingViewController()
     
     // MARK: - Helper vars
-    
-    private var channelName: String {
-        channel?.name ?? "presence-\(roomCode)"
-    }
+
     private var hostPair: [String]? {
         guard let hostUsername = hostUsername, pairs.count == 2 else {
             return nil
@@ -50,8 +50,8 @@ final class HostGameViewController: UIViewController {
     
     // MARK: - Init methods
     
-    init(roomCode: String) {
-        self.roomCode = roomCode
+    init(channelName: String) {
+        self.channelName = channelName
         super.init(nibName: nil, bundle: nil)
     }
     

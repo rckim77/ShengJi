@@ -124,9 +124,7 @@ final class JoinRoomViewController: UIViewController {
     }
     
     private func displayFullAlert(for channelName: String) {
-        let presencePrefix = "presence-"
-        let startingIndex = channelName.index(channelName.startIndex, offsetBy: presencePrefix.count)
-        let roomCode = channelName.suffix(from: startingIndex)
+        let roomCode = channelName.presenceStripped()
         let message = "Room \(roomCode) looks like it's already full. Try another room code."
         showErrorAlert(message: message) { [weak self] in
             self?.appDelegate.pusher?.unsubscribe(channelName)

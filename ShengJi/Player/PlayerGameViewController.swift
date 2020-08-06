@@ -16,8 +16,8 @@ final class PlayerGameViewController: UIViewController {
     private var lobbyView: PlayerLobbyView?
     private var gameStartView: GameStartView?
     private let channelName: String
-    private var channel: PusherPresenceChannel?
     private let hostUsername: String
+    private var channel: PusherPresenceChannel?
     private var pairs: [[String]] = []
     
     // MARK: - Helper vars

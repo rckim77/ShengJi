@@ -127,6 +127,13 @@ extension String {
             return false
         }
     }
+    
+    /// Removes "presence-" prefix.
+    func presenceStripped() -> String {
+        let presencePrefix = "presence-"
+        let startingIndex = self.index(self.startIndex, offsetBy: presencePrefix.count)
+        return String(self.suffix(from: startingIndex))
+    }
 }
 
 extension CharacterSet {

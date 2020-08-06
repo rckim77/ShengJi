@@ -112,8 +112,8 @@ final class MenuViewController: UIViewController {
             .sink(receiveCompletion: { _ in
                 loadingVC.remove()
             }, receiveValue: { [weak self] code in
-                let lobbyVC = HostGameViewController(roomCode: "\(code)")
-                self?.navigationController?.pushViewController(lobbyVC, animated: true)
+                let gameVC = HostGameViewController(channelName: "presence-\(code)")
+                self?.navigationController?.pushViewController(gameVC, animated: true)
             })
     }
 }
