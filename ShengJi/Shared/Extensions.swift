@@ -132,6 +132,25 @@ extension String {
     }
 }
 
+extension Character {
+    /// Returns true if self is higher rank than input otherRank following
+    /// standard playing card rules (Ace down to 2).
+    func isHigherValueThan(_ otherRank: Character) -> Bool {
+        switch (self, otherRank) {
+        case ("A", _):
+            return true
+        case ("K", let val):
+            return val != "A"
+        case ("Q", let val):
+            return val != "A" && val != "K"
+        case ("J", let val):
+            return val != "A" && val != "K" && val != "Q"
+        default: // self is a number char (e.g., "10")
+            return Int(String(self)) ?? 0 > Int(String(otherRank)) ?? 1
+        }
+    }
+}
+
 extension CharacterSet {
     func containsUnicodeScalars(of character: Character) -> Bool {
         character.unicodeScalars.allSatisfy(contains(_:))

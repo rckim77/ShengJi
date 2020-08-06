@@ -32,11 +32,6 @@ extension Array where Element == String {
             let cardIsTrump = card.contains(trumpSuit) || card.contains(level) || cardIsJoker
             let otherCardIsTrump = otherCard.contains(trumpSuit) || otherCard.contains(level) || otherCardIsJoker
             
-            // face
-            let faceSet = CharacterSet(charactersIn: "JQKA")
-            let cardIsFace = faceSet.containsUnicodeScalars(of: cardRank)
-            let otherCardIsFace = faceSet.containsUnicodeScalars(of: otherCardRank)
-            
             if cardIsTrump && !otherCardIsTrump {
                 return true
             } else if !cardIsTrump && otherCardIsTrump {
@@ -57,22 +52,11 @@ extension Array where Element == String {
                     return false
                 } else if cardIsLevel && otherCardIsLevel { // trump level card > non-trump level cards
                     return (cardRank == level && otherCardRank != level) || (cardIsLevel && !otherCardIsLevel)
-                } else if cardIsFace && !otherCardIsFace {
-                    return true
-                } else if !cardIsFace && otherCardIsFace {
-                    return false
-                } else if cardIsFace && otherCardIsFace {
-                    return false // todo: differentiate
                 }
-                // return false if Int conversion fails
-                return Int(String(cardRank)) ?? 0 > Int(String(otherCardRank)) ?? 1
+                
+                return cardRank.isHigherValueThan(otherCardRank)
             } else if cardSuit == otherCardSuit {
-                if cardIsFace && !otherCardIsFace {
-                    return true
-                } else if !cardIsFace && otherCardIsFace {
-                    return false
-                }
-                return Int(String(card[card.startIndex])) ?? 1 > Int(String(otherCard[otherCard.startIndex])) ?? 0
+                return cardRank.isHigherValueThan(otherCardRank)
             } else { // two different suits, both non-trump
 //                if cardSuit == "S" && otherCardSuit != "S" {
 //                    return cardSuit == "S" && otherCardSuit != "S"
