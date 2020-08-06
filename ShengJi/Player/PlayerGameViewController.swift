@@ -50,6 +50,7 @@ final class PlayerGameViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .systemBackground
+
         setupPusher()
     }
     
@@ -69,12 +70,9 @@ final class PlayerGameViewController: UIViewController {
         appDelegate.pusher?.delegate = self
         channel = appDelegate.pusher?.subscribeToPresenceChannel(channelName: channelName, onMemberAdded: { _ in }, onMemberRemoved: { [weak self] member in
             if member.userId == self?.hostUsername {
-                let hostLeftAlert = UIAlertController(title: "The host has left the room.", message: "Please try a new room.", preferredStyle: .alert)
-                let confirmAction = UIAlertAction(title: "Got it", style: .default) { _ in
+                self?.showHostLeftAlert { [weak self] in
                     self?.navigationController?.popViewController(animated: true)
                 }
-                hostLeftAlert.addAction(confirmAction)
-                self?.present(hostLeftAlert, animated: true, completion: nil)
             } else if self?.lobbyView?.isHidden == true {
                 self?.showPlayerLeftAlert()
             }

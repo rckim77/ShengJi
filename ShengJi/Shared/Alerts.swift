@@ -9,6 +9,15 @@
 import UIKit
 
 extension UIViewController {
+    
+    func showHostLeftAlert(completion: @escaping(() -> Void)) {
+        let hostLeftAlert = UIAlertController(title: "The host has left the room.", message: "Please try a new room.", preferredStyle: .alert)
+        let confirmAction = UIAlertAction(title: "Got it", style: .default) { _ in
+            completion()
+        }
+        hostLeftAlert.addAction(confirmAction)
+        present(hostLeftAlert, animated: true, completion: nil)
+    }
 
     func showLeaveWarningAlert(as participant: ParticipantType) {
         let message: String

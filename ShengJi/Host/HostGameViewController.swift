@@ -15,15 +15,18 @@ final class HostGameViewController: UIViewController {
     
     private var lobbyView: HostLobbyView?
     private var gameStartView: GameStartView?
-    /// Note: this does not include the 'presence-' prefix
-    private var roomCode: String {
-        channelName.presenceStripped()
-    }
     private let channelName: String
     private var hostUsername: String?
     private var channel: PusherPresenceChannel?
     private var pairs: [[String]] = []
     private let loadingVC = LoadingViewController()
+    
+    // MARK: - Helper vars
+    
+    /// Note: this does not include the 'presence-' prefix
+    private var roomCode: String {
+        channelName.presenceStripped()
+    }
     
     // MARK: - AnyCancellable methods
     
@@ -49,18 +52,17 @@ final class HostGameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationController?.setNavigationBarHidden(true, animated: true)
         view.backgroundColor = .systemBackground
+        navigationController?.setNavigationBarHidden(true, animated: true)
         
         setupPusher()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-
-        appDelegate.pusher?.unsubscribe(channelName)
-        appDelegate.pusher?.delegate = nil
         navigationController?.setNavigationBarHidden(false, animated: true)
+        appDelegate.pusher?.delegate = nil
+        appDelegate.pusher?.unsubscribe(channelName)
     }
     
     // MARK: - Setup methods
