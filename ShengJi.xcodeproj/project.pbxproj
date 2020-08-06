@@ -16,6 +16,7 @@
 		EC2A225824D5BA5E007920D4 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2A225724D5BA5E007920D4 /* CardView.swift */; };
 		EC2A225E24D75EA2007920D4 /* LeaderTeam.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2A225D24D75EA2007920D4 /* LeaderTeam.swift */; };
 		EC2A226224D7B1D6007920D4 /* DealerExchangeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2A226124D7B1D6007920D4 /* DealerExchangeView.swift */; };
+		EC2A226424DB6E05007920D4 /* CardsSort.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2A226324DB6E05007920D4 /* CardsSort.swift */; };
 		ECCACB8924C247250077CD89 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCACB8824C247250077CD89 /* AppDelegate.swift */; };
 		ECCACB8F24C247270077CD89 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ECCACB8E24C247270077CD89 /* Assets.xcassets */; };
 		ECCACB9224C247270077CD89 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ECCACB9124C247270077CD89 /* Preview Assets.xcassets */; };
@@ -49,6 +50,7 @@
 		EC2A225724D5BA5E007920D4 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		EC2A225D24D75EA2007920D4 /* LeaderTeam.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LeaderTeam.swift; path = /Users/raykim/Desktop/Hobby/Dev/ShengJi/ShengJi/Models/LeaderTeam.swift; sourceTree = "<absolute>"; };
 		EC2A226124D7B1D6007920D4 /* DealerExchangeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealerExchangeView.swift; sourceTree = "<group>"; };
+		EC2A226324DB6E05007920D4 /* CardsSort.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsSort.swift; sourceTree = "<group>"; };
 		ECCACB8524C247250077CD89 /* ShengJi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShengJi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ECCACB8824C247250077CD89 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ECCACB8E24C247270077CD89 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -166,6 +168,7 @@
 				ECCACBA224C69A070077CD89 /* LoadingViewController.swift */,
 				EC2A224B24CBFA0F007920D4 /* ParticipantType.swift */,
 				ECCACBA424C69B710077CD89 /* Extensions.swift */,
+				EC2A226324DB6E05007920D4 /* CardsSort.swift */,
 				EC2A224F24D39C22007920D4 /* APIError.swift */,
 			);
 			path = Shared;
@@ -326,6 +329,7 @@
 				EC2A225824D5BA5E007920D4 /* CardView.swift in Sources */,
 				ECCACBB124C7EEE90077CD89 /* NetworkError.swift in Sources */,
 				EC2A225024D39C22007920D4 /* APIError.swift in Sources */,
+				EC2A226424DB6E05007920D4 /* CardsSort.swift in Sources */,
 				ECCACBBE24CBE40C0077CD89 /* GameStartView.swift in Sources */,
 				EC2A225224D4B6E2007920D4 /* StartResponse.swift in Sources */,
 				ECCACBA124C4F9A20077CD89 /* HostGameViewController.swift in Sources */,

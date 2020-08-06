@@ -95,14 +95,9 @@ final class PlayerHandDetailView: UIView {
         }
 
         self.levelTrump = levelTrump
-        let startIndex = levelTrump.startIndex
-        let level = levelTrump[startIndex] // e.g., "2"
-        let trumpSuit = levelTrump[levelTrump.index(after: startIndex)] // e.g., "H"
+
         print("====non sorted cards: \(cards)\n")
-        cards.sort { card, otherCard -> Bool in
-            // trump is higher than all other non-trump
-            card.contains(trumpSuit) && !otherCard.contains(trumpSuit)
-        }
+        cards.sortBy(levelTrump: levelTrump)
         print("=====sortedCards: \(cards)")
         
         // Both top and bottom rows should be in descending ranking from right to left. The leftmost

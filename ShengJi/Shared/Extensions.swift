@@ -132,6 +132,12 @@ extension String {
     }
 }
 
+extension CharacterSet {
+    func containsUnicodeScalars(of character: Character) -> Bool {
+        character.unicodeScalars.allSatisfy(contains(_:))
+    }
+}
+
 extension PusherPresenceChannel {
     func bindPairEvent(_ completion: @escaping((PairEvent) -> Void)) {
         bind(eventName: "pair", eventCallback: { pairEventData in
