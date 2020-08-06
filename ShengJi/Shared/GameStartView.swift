@@ -313,6 +313,9 @@ extension GameStartView: DealerExchangeViewDelegate {
     }
     
     func dealerExchangeViewDidTapDoneButton() {
+        if let levelTrump = levelTrump {
+            bottomPlayerView.sortHand(levelTrump: levelTrump)
+        }
         delegate?.gameStartViewDealerFinishedExchanging()
     }
 }
