@@ -108,6 +108,9 @@ final class GameStartView: UIView {
     private var levelTrump: String?
     private var leaderTeam: LeaderTeam?
     private var gameState: GameState = .draw
+    private var playerHandViews: [PlayerHandView] {
+        [bottomPlayerView, rightPlayerView, topPlayerView, leftPlayerView]
+    }
     private weak var delegate: GameStartViewDelegate?
     
     // MARK: - AnyCancellables
@@ -130,10 +133,7 @@ final class GameStartView: UIView {
         addSubview(drawDeckLabel)
         addSubview(drawDeckRemainingLabel)
         addSubview(drawDeckButton)
-        addSubview(bottomPlayerView)
-        addSubview(leftPlayerView)
-        addSubview(topPlayerView)
-        addSubview(rightPlayerView)
+        playerHandViews.forEach { addSubview($0) }
         
         endGameButton.snp.makeConstraints { make in
             make.top.equalTo(safeAreaLayoutGuide.snp.top).inset(8)
@@ -223,10 +223,7 @@ final class GameStartView: UIView {
     func update(_ drawEvent: DrawEvent) {
         let nextUsername = drawEvent.nextPlayerToDraw
         drawDeckButton.isHidden = nextUsername != username || drawEvent.cardsRemaining.count <= 6
-        bottomPlayerView.hideTurnLabel(nextUsername != bottomPlayerView.username)
-        leftPlayerView.hideTurnLabel(nextUsername != leftPlayerView.username)
-        topPlayerView.hideTurnLabel(nextUsername != topPlayerView.username)
-        rightPlayerView.hideTurnLabel(nextUsername != rightPlayerView.username)
+        playerHandViews.forEach { $0.hideTurnLabel(nextUsername != $0.username) }
         
         drawDeckRemainingLabel.text = "\(drawEvent.cardsRemaining.count) remaining"
         
@@ -238,8 +235,10 @@ final class GameStartView: UIView {
         viewContainingUsername(playerTurnOrder[drawnPlayerIndex])?.updateHandUI(hand: drawEvent.playerHands[drawnPlayerIndex])
         setLevelTrump(drawEvent)
         
+        // begin dealer exchange
         if let dealer = leaderTeam?.dealer, drawEvent.cardsRemaining.count == 6 {
             gameState = .dealerExchange
+            playerHandViews.forEach { $0.hideTurnLabel(true) }
             if username == dealer {
                 displayExchangeableCards(drawEvent.cardsRemaining)
             } else {
@@ -286,9 +285,9 @@ final class GameStartView: UIView {
         }
 
         var playerHandView: PlayerHandView?
-        [bottomPlayerView, rightPlayerView, topPlayerView, leftPlayerView].forEach { view in
-            if view.username == username {
-                playerHandView = view
+        playerHandViews.forEach {
+            if $0.username == username {
+                playerHandView = $0
             }
         }
         return playerHandView
