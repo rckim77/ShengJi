@@ -151,6 +151,10 @@ extension PlayerGameViewController: GameStartViewDelegate {
     func gameStartViewDidTapLeaveButton() { // for host only
     }
     
+    func gameStartViewDidTapScoreButton() {
+        // show alert
+    }
+    
     func gameStartViewDidTapDrawButton() {
         guard let username = username,
             let url = URL(string: "https://fast-garden-35127.herokuapp.com/draw/\(channelName)/\(username)") else {

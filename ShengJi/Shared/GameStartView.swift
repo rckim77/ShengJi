@@ -14,6 +14,7 @@ protocol GameStartViewDelegate: class {
     /// Only used by host
     func gameStartViewDidTapLeaveButton()
     /// Used by both host and players
+    func gameStartViewDidTapScoreButton()
     func gameStartViewDidTapDrawButton()
     func gameStartViewDealerFinishedExchanging()
 }
@@ -31,10 +32,26 @@ final class GameStartView: UIView {
         case play
     }
     
+    private lazy var gameButtonsStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = 8
+        return stackView
+    }()
+    
     private lazy var endGameButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("End", for: .normal)
         button.addTarget(self, action: #selector(leaveButtonTapped), for: .touchUpInside)
+        button.addRoundedBorder(color: .systemBlue)
+        button.contentEdgeInsets = UIEdgeInsets(top: 6, left: 12, bottom: 6, right: 12)
+        return button
+    }()
+    
+    private lazy var scoreButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Score", for: .normal)
+        button.addTarget(self, action: #selector(scoreButtonTapped), for: .touchUpInside)
         button.addRoundedBorder(color: .systemBlue)
         button.contentEdgeInsets = UIEdgeInsets(top: 6, left: 12, bottom: 6, right: 12)
         return button
@@ -128,14 +145,16 @@ final class GameStartView: UIView {
         self.delegate = delegate
         super.init(frame: .zero)
         
-        addSubview(endGameButton)
+        addSubview(gameButtonsStackView)
+        gameButtonsStackView.addArrangedSubview(endGameButton)
+        gameButtonsStackView.addArrangedSubview(scoreButton)
         addSubview(levelTrumpLabel)
         addSubview(drawDeckLabel)
         addSubview(drawDeckRemainingLabel)
         addSubview(drawDeckButton)
         playerHandViews.forEach { addSubview($0) }
         
-        endGameButton.snp.makeConstraints { make in
+        gameButtonsStackView.snp.makeConstraints { make in
             make.top.equalTo(safeAreaLayoutGuide.snp.top).inset(8)
             make.leading.equalToSuperview().inset(16)
         }
@@ -213,6 +232,11 @@ final class GameStartView: UIView {
     @objc
     private func leaveButtonTapped() {
         delegate?.gameStartViewDidTapLeaveButton()
+    }
+    
+    @objc
+    private func scoreButtonTapped() {
+        delegate?.gameStartViewDidTapScoreButton()
     }
     
     @objc
