@@ -50,12 +50,19 @@ extension UIViewController {
         present(alertVC, animated: true, completion: nil)
     }
     
-    func showScoreAlert(_ scoreResponse: ScoreResponse, hostPair: [String], otherPair: [String]) {
-        guard hostPair.count == 2 && otherPair.count == 2 else {
+    func showScoreAlert(_ scoreResponse: ScoreResponse, currentPlayer: String) {
+        guard scoreResponse.hostPair.count == 2 && scoreResponse.otherPair.count == 2 else {
             return
         }
-        let hostPairString = "\(hostPair[0]) and \(hostPair[1]): \(scoreResponse.hostPairLevel)"
-        let otherPairString = "\(otherPair[0]) and \(otherPair[1]): \(scoreResponse.otherPairLevel)"
+        
+        let hostPairUsernameFirst = currentPlayer == scoreResponse.hostPair[0] ? "You" : scoreResponse.hostPair[0]
+        let hostPairUsernameSecond = currentPlayer == scoreResponse.hostPair[1] ? "you" : scoreResponse.hostPair[1]
+        let hostPairString = "\(hostPairUsernameFirst) and \(hostPairUsernameSecond): \(scoreResponse.hostPairLevel)"
+        
+        let otherPairUsernameFirst = currentPlayer == scoreResponse.otherPair[0] ? "You" : scoreResponse.otherPair[0]
+        let otherPairUsernameSecond = currentPlayer == scoreResponse.otherPair[1] ? "you" : scoreResponse.otherPair[1]
+        let otherPairString = "\(otherPairUsernameFirst) and \(otherPairUsernameSecond): \(scoreResponse.otherPairLevel)"
+        
         let alertVC = UIAlertController(title: "Current Score", message: "\(hostPairString)\n\(otherPairString)", preferredStyle: .alert)
         let confirmAction = UIAlertAction(title: "Got it", style: .cancel, handler: nil)
         alertVC.addAction(confirmAction)

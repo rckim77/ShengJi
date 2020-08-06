@@ -25,18 +25,6 @@ final class PlayerGameViewController: UIViewController {
     private var username: String? {
         channel?.myId
     }
-    private var hostPair: [String]? {
-        guard pairs.count == 2 else {
-            return nil
-        }
-        return pairs.first(where: { $0.contains(hostUsername) })
-    }
-    private var otherPair: [String]? {
-        guard pairs.count == 2 else {
-            return nil
-        }
-        return pairs.first(where: { !$0.contains(hostUsername) })
-    }
     
     // MARK: - AnyCancellables
     
@@ -181,10 +169,10 @@ extension PlayerGameViewController: GameStartViewDelegate {
                     self?.showErrorAlert(message: "Try again.", completion: {})
                 }
             }, receiveValue: { [weak self] scoreResponse in
-                guard let strongSelf = self, let hostPair = strongSelf.hostPair, let otherPair = strongSelf.otherPair else {
+                guard let username = self?.username else {
                     return
                 }
-                strongSelf.showScoreAlert(scoreResponse, hostPair: hostPair, otherPair: otherPair)
+                self?.showScoreAlert(scoreResponse, currentPlayer: username)
             })
     }
     

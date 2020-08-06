@@ -25,21 +25,6 @@ final class HostGameViewController: UIViewController {
     private var pairs: [[String]] = []
     private let loadingVC = LoadingViewController()
     
-    // MARK: - Helper vars
-
-    private var hostPair: [String]? {
-        guard let hostUsername = hostUsername, pairs.count == 2 else {
-            return nil
-        }
-        return pairs.first(where: { $0.contains(hostUsername) })
-    }
-    private var otherPair: [String]? {
-        guard let hostUsername = hostUsername, pairs.count == 2 else {
-            return nil
-        }
-        return pairs.first(where: { !$0.contains(hostUsername) })
-    }
-    
     // MARK: - AnyCancellable methods
     
     private var startCancellable: AnyCancellable?
@@ -275,10 +260,10 @@ extension HostGameViewController: GameStartViewDelegate {
                     self?.showErrorAlert(message: "Try again.", completion: {})
                 }
             }, receiveValue: { [weak self] scoreResponse in
-                guard let strongSelf = self, let hostPair = strongSelf.hostPair, let otherPair = strongSelf.otherPair else {
+                guard let username = self?.hostUsername else {
                     return
                 }
-                strongSelf.showScoreAlert(scoreResponse, hostPair: hostPair, otherPair: otherPair)
+                self?.showScoreAlert(scoreResponse, currentPlayer: username)
             })
     }
     

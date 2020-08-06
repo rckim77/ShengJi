@@ -11,4 +11,6 @@ import Foundation
 struct ScoreResponse: Codable {
     let hostPairLevel: String
     let otherPairLevel: String
+    let hostPair: [String]
+    let otherPair: [String]
 }
