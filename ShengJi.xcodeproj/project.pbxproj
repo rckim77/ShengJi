@@ -18,6 +18,7 @@
 		EC2A226224D7B1D6007920D4 /* DealerExchangeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2A226124D7B1D6007920D4 /* DealerExchangeView.swift */; };
 		EC2A226424DB6E05007920D4 /* CardsSort.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2A226324DB6E05007920D4 /* CardsSort.swift */; };
 		EC2A226624DCAA51007920D4 /* ScoreResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2A226524DCAA51007920D4 /* ScoreResponse.swift */; };
+		EC2A226824DCBC1E007920D4 /* Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2A226724DCBC1E007920D4 /* Alerts.swift */; };
 		ECCACB8924C247250077CD89 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCACB8824C247250077CD89 /* AppDelegate.swift */; };
 		ECCACB8F24C247270077CD89 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ECCACB8E24C247270077CD89 /* Assets.xcassets */; };
 		ECCACB9224C247270077CD89 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ECCACB9124C247270077CD89 /* Preview Assets.xcassets */; };
@@ -53,6 +54,7 @@
 		EC2A226124D7B1D6007920D4 /* DealerExchangeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealerExchangeView.swift; sourceTree = "<group>"; };
 		EC2A226324DB6E05007920D4 /* CardsSort.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsSort.swift; sourceTree = "<group>"; };
 		EC2A226524DCAA51007920D4 /* ScoreResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreResponse.swift; sourceTree = "<group>"; };
+		EC2A226724DCBC1E007920D4 /* Alerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alerts.swift; sourceTree = "<group>"; };
 		ECCACB8524C247250077CD89 /* ShengJi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShengJi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ECCACB8824C247250077CD89 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ECCACB8E24C247270077CD89 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -171,6 +173,7 @@
 				ECCACBA224C69A070077CD89 /* LoadingViewController.swift */,
 				EC2A224B24CBFA0F007920D4 /* ParticipantType.swift */,
 				ECCACBA424C69B710077CD89 /* Extensions.swift */,
+				EC2A226724DCBC1E007920D4 /* Alerts.swift */,
 				EC2A226324DB6E05007920D4 /* CardsSort.swift */,
 				EC2A224F24D39C22007920D4 /* APIError.swift */,
 			);
@@ -324,6 +327,7 @@
 				EC2A225424D51387007920D4 /* PlayerHandView.swift in Sources */,
 				ECCACBA324C69A070077CD89 /* LoadingViewController.swift in Sources */,
 				EC2A225624D53536007920D4 /* PlayerHandDetailView.swift in Sources */,
+				EC2A226824DCBC1E007920D4 /* Alerts.swift in Sources */,
 				EC2A225E24D75EA2007920D4 /* LeaderTeam.swift in Sources */,
 				EC2A224C24CBFA0F007920D4 /* ParticipantType.swift in Sources */,
 				EC2A224E24CE1761007920D4 /* Events.swift in Sources */,
