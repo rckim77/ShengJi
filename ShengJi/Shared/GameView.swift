@@ -29,8 +29,9 @@ final class GameView: UIView {
         /// deck.
         case dealerExchange
         /// Once the dealer has finished exchanging, the dealer starts by playing a card from their
-        /// hand. The associated value is the current player to play's username.
-        case play(String)
+        /// hand. The first associated value is the current player to play's username. The second
+        /// associated value is the card abbreviation (e.g., "2C").
+        case play(String, String)
     }
     
     private lazy var gameButtonsStackView: UIStackView = {
@@ -128,6 +129,16 @@ final class GameView: UIView {
     var leaderTeam: LeaderTeam?
     private var gameState: GameState = .draw {
         didSet {
+            leftPlayerView.snp.remakeConstraints { make in
+                make.leading.equalToSuperview().inset(8)
+                make.centerY.equalToSuperview().offset(-48)
+            }
+            
+            rightPlayerView.snp.remakeConstraints { make in
+                make.trailing.equalToSuperview().inset(8)
+                make.centerY.equalToSuperview().offset(-48)
+            }
+            
             playerHandViews.forEach { $0.gameState = gameState }
         }
     }
@@ -255,7 +266,7 @@ final class GameView: UIView {
         drawDeckButton.isHidden = nextUsername != username || drawEvent.cardsRemaining.count <= 6
         playerHandViews.forEach { $0.hideTurnLabel(nextUsername != $0.username) }
         
-        drawDeckRemainingLabel.text = "\(drawEvent.cardsRemaining.count) remaining"
+        drawDeckRemainingLabel.text = "\(drawEvent.cardsRemaining.count) left"
         
         // update the UI for only the player that just drew
         guard let drawnPlayerIndex = drawEvent.drawnPlayerIndex, drawEvent.playerHands.count == 4 else {
@@ -278,7 +289,9 @@ final class GameView: UIView {
     }
     
     func updateOnPlay(_ playEvent: PlayEvent) {
-        // fill in
+        let playedUsername = playerTurnOrder[playEvent.playedPlayerIndex]
+        // check out gameState's didSet logic for how this updates UI downstream
+        gameState = .play(playedUsername, playEvent.playedCard)
     }
     
     private func displayExchangeableCards(_ cardsRemaining: [String]) {
@@ -302,7 +315,6 @@ final class GameView: UIView {
         guard let dealer = leaderTeam?.dealer else {
             return
         }
-        gameState = .play(dealer)
         drawDeckRemainingLabel.isHidden = true
         drawDeckLabel.isHidden = true
         playerHandViews.forEach { $0.hideTurnLabel(leaderTeam?.dealer != $0.username) }
@@ -372,14 +384,18 @@ extension GameView: DealerExchangeViewDelegate {
         if let levelTrump = levelTrump {
             bottomPlayerView.sortHand(levelTrump: levelTrump)
         }
+        gameState = .play(username, "")
         delegate?.gameViewDealerFinishedExchanging()
     }
 }
 
 extension GameView: PlayerHandViewDelegate {
     func playerHandViewDidSelectCard(_ cardAbbreviation: String, position: PlayerHandView.PlayerPosition) {
-        if gameState == .play(username) {
+        switch gameState {
+        case .play(username, _):
             delegate?.gameViewUser(username, didPlay: cardAbbreviation)
+        default:
+            break
         }
     }
 }

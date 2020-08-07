@@ -87,6 +87,12 @@ final class PlayerHandView: UIView {
         return view
     }()
     
+    private lazy var playCardImageView: UIImageView = {
+        let imageView = UIImageView(image: nil)
+        imageView.contentMode = .scaleAspectFit
+        return imageView
+    }()
+    
     /// Used only for the bottom player view. Returns the selected card abbreviation if any.
     var selectedCard: String? {
         bottomHandDetailView.selectedCard?.cardAbbreviation
@@ -98,6 +104,23 @@ final class PlayerHandView: UIView {
         didSet {
             if position == .bottom {
                 bottomHandDetailView.gameState = gameState
+            }
+            
+            switch gameState {
+            case .play(let username, let card):
+                playCardImageView.isHidden = false
+                
+                if self.username == username {
+                    playCardImageView.image = card != "" ? UIImage(named: card) : nil
+                }
+                
+                if position != .bottom {
+                    handStackView.isHidden = true
+                }
+                
+                // Note: The rest of bottom view updates are handled when we set bottomHandDetailView.gameState = gameState
+            default:
+                break
             }
         }
     }
@@ -124,6 +147,7 @@ final class PlayerHandView: UIView {
         stackView.addArrangedSubview(usernameStackView)
         usernameStackView.addArrangedSubview(usernameLabel)
         usernameStackView.addArrangedSubview(dealerImageView)
+        stackView.addArrangedSubview(playCardImageView)
         
         switch position {
         case .bottom:
@@ -146,9 +170,14 @@ final class PlayerHandView: UIView {
                 make.edges.equalToSuperview().inset(12)
             }
         }
+        
+        playCardImageView.snp.makeConstraints { make in
+            make.size.equalTo(CGSize(width: 78, height: 110))
+        }
 
         turnLabel.text = position == .bottom ? "Your turn" : "Their turn"
         dealerImageView.isHidden = true
+        playCardImageView.isHidden = true
     }
     
     required init?(coder: NSCoder) {

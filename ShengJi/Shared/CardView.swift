@@ -40,8 +40,7 @@ final class CardView: UIView {
         
         cardButton.snp.makeConstraints { make in
             make.edges.equalToSuperview()
-            make.height.equalTo(140)
-            make.width.equalTo(99)
+            make.size.equalTo(CGSize(width: 99, height: 140))
         }
     }
     

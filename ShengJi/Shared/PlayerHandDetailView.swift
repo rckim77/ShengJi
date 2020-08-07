@@ -42,7 +42,16 @@ final class PlayerHandDetailView: UIView {
         firstRowStackView.arrangedSubviews.count + secondRowStackView.arrangedSubviews.count
     }
     
-    var gameState: GameView.GameState = .draw
+    var gameState: GameView.GameState = .draw {
+        didSet {
+            switch gameState {
+            case .play(let username, let card):
+                print("bottom view didSet game state for username:\(username) and card:\(card)")
+            default:
+                break
+            }
+        }
+    }
     var selectedCard: CardView?
     private var levelTrump: String?
     private var cards: [String] = []
