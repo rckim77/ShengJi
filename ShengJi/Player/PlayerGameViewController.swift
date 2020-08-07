@@ -79,7 +79,7 @@ final class PlayerGameViewController: UIViewController {
         })
         
         channel?.bind(eventName: "pusher:subscription_succeeded", callback: { [weak self] _ in
-            guard let strongSelf = self, let playerUsername = strongSelf.username else {
+            guard let strongSelf = self, let playerUsername = strongSelf.username, strongSelf.lobbyView?.superview == nil else {
                 return
             }
             
@@ -140,6 +140,14 @@ extension PlayerGameViewController: PusherDelegate {
     /// Used for Pusher debugging
     func debugLog(message: String) {
         print("Pusher debug: \(message)")
+    }
+    
+    func changedConnectionState(from old: ConnectionState, to new: ConnectionState) {
+        if new == .disconnected {
+            showDisconnectedAlert { [weak self] in
+                self?.navigationController?.popViewController(animated: true)
+            }
+        }
     }
 }
 

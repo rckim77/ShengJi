@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SnapKit
 
 extension UIViewController {
     
@@ -17,6 +18,21 @@ extension UIViewController {
         }
         hostLeftAlert.addAction(confirmAction)
         present(hostLeftAlert, animated: true, completion: nil)
+    }
+    
+    func showDisconnectedAlert(completion: @escaping(() -> Void)) {
+        let blurEffect = UIBlurEffect(style: .dark)
+        let blurredView = UIVisualEffectView(effect: blurEffect)
+        blurredView.frame = view.bounds
+        view.addSubview(blurredView)
+        
+        let disconnectedAlert = UIAlertController(title: "Uh oh, you've been disconnected. 😦", message: "Please try a new room.", preferredStyle: .alert)
+        let confirmAction = UIAlertAction(title: "Got it", style: .default) { _ in
+            blurredView.removeFromSuperview()
+            completion()
+        }
+        disconnectedAlert.addAction(confirmAction)
+        present(disconnectedAlert, animated: true, completion: nil)
     }
 
     func showLeaveWarningAlert(as participant: ParticipantType) {

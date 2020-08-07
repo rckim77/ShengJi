@@ -145,8 +145,15 @@ extension HostGameViewController: PusherDelegate {
         guard let username = channel?.myId else {
             return
         }
-        hostUsername = username
-        setupLobby(username: username)
+        
+        if let connectionState = appDelegate.pusher?.connection.connectionState, connectionState == .disconnected {
+            showDisconnectedAlert { [weak self] in
+                self?.navigationController?.popViewController(animated: true)
+            }
+        } else {
+            hostUsername = username
+            setupLobby(username: username)
+        }
     }
     
     func failedToSubscribeToChannel(name: String, response: URLResponse?, data: String?, error: NSError?) {
@@ -157,6 +164,14 @@ extension HostGameViewController: PusherDelegate {
         let confirmAction = UIAlertAction(title: "Got it", style: .cancel, handler: nil)
         alertVC.addAction(confirmAction)
         present(alertVC, animated: true, completion: nil)
+    }
+    
+    func changedConnectionState(from old: ConnectionState, to new: ConnectionState) {
+        if new == .disconnected {
+            showDisconnectedAlert { [weak self] in
+                self?.navigationController?.popViewController(animated: true)
+            }
+        }
     }
 }
 
