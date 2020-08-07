@@ -23,3 +23,12 @@ struct DrawEvent: Codable {
     /// The initial draw event will return a nil value. All subsequent draws must return a value.
     let drawnCard: String?
 }
+
+struct PlayEvent: Codable {
+    /// Returns the username of the next player to play
+    let nextPlayerToPlay: String
+    /// Returns index of the player that just played.
+    let playedPlayerIndex: String
+    let playerHands: [[String]]
+    let playedCard: String
+}

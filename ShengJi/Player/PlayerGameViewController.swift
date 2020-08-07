@@ -224,4 +224,8 @@ extension PlayerGameViewController: GameViewDelegate {
                 self?.gameView?.hideExchangeView()
             })
     }
+    
+    func gameViewUser(_ username: String, didPlay card: String) {
+        // fill in
+    }
 }

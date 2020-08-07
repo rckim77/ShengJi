@@ -17,19 +17,20 @@ protocol GameViewDelegate: class {
     func gameViewDidTapScoreButton()
     func gameViewDidTapDrawButton()
     func gameViewDealerFinishedExchanging()
+    func gameViewUser(_ username: String, didPlay card: String)
 }
 
 final class GameView: UIView {
     
-    enum GameState {
+    enum GameState: Equatable {
         /// Users are drawing in counter-clockwise order.
         case draw
         /// Once all users have drawn, the dealer gets to exchange with the bottom cards of the draw
         /// deck.
         case dealerExchange
         /// Once the dealer has finished exchanging, the dealer starts by playing a card from their
-        /// hand.
-        case play
+        /// hand. The associated value is the current player to play's username.
+        case play(String)
     }
     
     private lazy var gameButtonsStackView: UIStackView = {
@@ -276,6 +277,10 @@ final class GameView: UIView {
         }
     }
     
+    func update(_ playEvent: PlayEvent) {
+        // fill in
+    }
+    
     private func displayExchangeableCards(_ cardsRemaining: [String]) {
         addSubview(dealerExchangeView)
         
@@ -297,7 +302,7 @@ final class GameView: UIView {
         guard let dealer = leaderTeam?.dealer else {
             return
         }
-        gameState = .play
+        gameState = .play(dealer)
         drawDeckRemainingLabel.isHidden = true
         drawDeckLabel.isHidden = true
         playerHandViews.forEach { $0.hideTurnLabel(leaderTeam?.dealer != $0.username) }
@@ -373,8 +378,8 @@ extension GameView: DealerExchangeViewDelegate {
 
 extension GameView: PlayerHandViewDelegate {
     func playerHandViewDidSelectCard(_ cardAbbreviation: String, position: PlayerHandView.PlayerPosition) {
-        if gameState == .play && leaderTeam?.dealer == username {
-            // /play/channel/username/cardAbbreviation
+        if gameState == .play(username) {
+            delegate?.gameViewUser(username, didPlay: cardAbbreviation)
         }
     }
 }
