@@ -31,6 +31,7 @@ final class PlayerGameViewController: UIViewController {
     private var drawCancellable: AnyCancellable?
     private var dealerExchangeCancellable: AnyCancellable?
     private var getScoreCancellable: AnyCancellable?
+    private var playCancellable: AnyCancellable?
     
     // MARK: - Init methods
     
@@ -118,6 +119,10 @@ final class PlayerGameViewController: UIViewController {
         channel?.bindDealerExchangedEvent { [weak self] in
             self?.gameView?.updateForDealerExchanged()
         }
+        
+        channel?.bindPlayEvent({ [weak self] playEvent in
+            print("PLAY EVENT: \(playEvent)")
+        })
     }
     
     private func startGame(playerTurnOrder: [String]) {
@@ -226,6 +231,21 @@ extension PlayerGameViewController: GameViewDelegate {
     }
     
     func gameViewUser(_ username: String, didPlay card: String) {
-        // fill in
+        guard let url = URL(string: "https://fast-garden-35127.herokuapp.com/play/\(channelName)/\(username)/\(card)") else {
+            return
+        }
+        playCancellable = URLSession.shared.dataTaskPublisher(for: url)
+            .tryMap { data, response -> Data in
+                guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+                    throw APIError.genericError
+                }
+                return data
+            }
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { [weak self] completion in
+                if case Subscribers.Completion.failure(_) = completion {
+                    self?.showErrorAlert(message: "Try again.", completion: {})
+                }
+            }, receiveValue: { _ in })
     }
 }

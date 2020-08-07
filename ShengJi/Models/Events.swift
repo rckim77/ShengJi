@@ -28,7 +28,7 @@ struct PlayEvent: Codable {
     /// Returns the username of the next player to play
     let nextPlayerToPlay: String
     /// Returns index of the player that just played.
-    let playedPlayerIndex: String
+    let playedPlayerIndex: Int
     let playerHands: [[String]]
     let playedCard: String
 }

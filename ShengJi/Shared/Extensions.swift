@@ -168,4 +168,14 @@ extension PusherPresenceChannel {
             completion()
         })
     }
+    
+    func bindPlayEvent(_ completion: @escaping((PlayEvent) -> Void)) {
+        bind(eventName: "play", eventCallback: { playEventData in
+            guard let data = playEventData.data?.data(using: .utf8),
+                let playEvent = try? JSONDecoder().decode(PlayEvent.self, from: data) else {
+                    return
+            }
+            completion(playEvent)
+        })
+    }
 }
