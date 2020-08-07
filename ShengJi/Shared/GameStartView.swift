@@ -91,22 +91,22 @@ final class GameStartView: UIView {
     }()
     
     private lazy var bottomPlayerView: PlayerHandView = {
-        let view = PlayerHandView(position: .bottom)
+        let view = PlayerHandView(position: .bottom, delegate: self)
         return view
     }()
     
     private lazy var leftPlayerView: PlayerHandView = {
-        let view = PlayerHandView(position: .left)
+        let view = PlayerHandView(position: .left, delegate: self)
         return view
     }()
     
     private lazy var topPlayerView: PlayerHandView = {
-        let view = PlayerHandView(position: .top)
+        let view = PlayerHandView(position: .top, delegate: self)
         return view
     }()
     
     private lazy var rightPlayerView: PlayerHandView = {
-        let view = PlayerHandView(position: .right)
+        let view = PlayerHandView(position: .right, delegate: self)
         return view
     }()
     
@@ -297,8 +297,9 @@ final class GameStartView: UIView {
             return
         }
         gameState = .play
-        drawDeckRemainingLabel.text = dealer == username ? "Waiting for you to start..." : "Waiting for \(dealer) to start..."
+        drawDeckRemainingLabel.isHidden = true
         drawDeckLabel.isHidden = true
+        playerHandViews.forEach { $0.hideTurnLabel(leaderTeam?.dealer != $0.username) }
         bottomPlayerView.deselectCards()
         
         if dealer != username {
@@ -366,5 +367,13 @@ extension GameStartView: DealerExchangeViewDelegate {
             bottomPlayerView.sortHand(levelTrump: levelTrump)
         }
         delegate?.gameStartViewDealerFinishedExchanging()
+    }
+}
+
+extension GameStartView: PlayerHandViewDelegate {
+    func playerHandViewDidSelectCard(_ cardAbbreviation: String, position: PlayerHandView.PlayerPosition) {
+        if gameState == .play && leaderTeam?.dealer == username {
+            print("dealer \(username) in position \(position) selected card \(cardAbbreviation)")
+        }
     }
 }

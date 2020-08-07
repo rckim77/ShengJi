@@ -9,6 +9,10 @@
 import UIKit
 import SnapKit
 
+protocol PlayerHandDetailViewDelegate: class {
+    func playerHandDetailViewDidSelectCard(_ cardAbbreviation: String)
+}
+
 /// Used as the hand view from the user's perspective (i.e., the bottom player) which displays the full card values.
 final class PlayerHandDetailView: UIView {
     
@@ -42,9 +46,11 @@ final class PlayerHandDetailView: UIView {
     var selectedCard: CardView?
     private var levelTrump: String?
     private var cards: [String] = []
+    private weak var delegate: PlayerHandDetailViewDelegate?
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(delegate: PlayerHandDetailViewDelegate) {
+        self.delegate = delegate
+        super.init(frame: .zero)
         
         addSubview(cardsStackView)
         cardsStackView.addArrangedSubview(firstRowStackView)
@@ -133,5 +139,6 @@ extension PlayerHandDetailView: CardViewDelegate {
         selectedCard?.deselect()
         selectedCard = card
         selectedCard?.select()
+        delegate?.playerHandDetailViewDidSelectCard(card.cardAbbreviation)
     }
 }

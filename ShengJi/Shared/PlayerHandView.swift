@@ -9,6 +9,10 @@
 import UIKit
 import SnapKit
 
+protocol PlayerHandViewDelegate: class {
+    func playerHandViewDidSelectCard(_ cardAbbreviation: String, position: PlayerHandView.PlayerPosition)
+}
+
 final class PlayerHandView: UIView {
     
     enum PlayerPosition {
@@ -79,7 +83,7 @@ final class PlayerHandView: UIView {
     }()
     
     private lazy var bottomHandDetailView: PlayerHandDetailView = {
-        let view = PlayerHandDetailView()
+        let view = PlayerHandDetailView(delegate: self)
         return view
     }()
     
@@ -88,6 +92,7 @@ final class PlayerHandView: UIView {
         bottomHandDetailView.selectedCard?.cardAbbreviation
     }
     
+    private weak var delegate: PlayerHandViewDelegate?
     private let position: PlayerPosition
     var gameState: GameStartView.GameState = .draw {
         didSet {
@@ -107,7 +112,8 @@ final class PlayerHandView: UIView {
     
     // MARK: - Init methods
     
-    init(position: PlayerPosition) {
+    init(position: PlayerPosition, delegate: PlayerHandViewDelegate) {
+        self.delegate = delegate
         self.position = position
         super.init(frame: .zero)
         
@@ -213,5 +219,11 @@ final class PlayerHandView: UIView {
     func updateAsLeader() {
         layer.borderWidth = 3
         layer.borderColor = UIColor.systemBlue.cgColor
+    }
+}
+
+extension PlayerHandView: PlayerHandDetailViewDelegate {
+    func playerHandDetailViewDidSelectCard(_ cardAbbreviation: String) {
+        delegate?.playerHandViewDidSelectCard(cardAbbreviation, position: position)
     }
 }
