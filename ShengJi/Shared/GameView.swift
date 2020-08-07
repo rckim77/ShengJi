@@ -124,7 +124,7 @@ final class GameView: UIView {
         playerTurnOrder.firstIndex(of: username)
     }
     private var levelTrump: String?
-    private var leaderTeam: LeaderTeam?
+    var leaderTeam: LeaderTeam?
     private var gameState: GameState = .draw {
         didSet {
             playerHandViews.forEach { $0.gameState = gameState }
@@ -374,7 +374,7 @@ extension GameView: DealerExchangeViewDelegate {
 extension GameView: PlayerHandViewDelegate {
     func playerHandViewDidSelectCard(_ cardAbbreviation: String, position: PlayerHandView.PlayerPosition) {
         if gameState == .play && leaderTeam?.dealer == username {
-            print("dealer \(username) in position \(position) selected card \(cardAbbreviation)")
+            // /play/channel/username/cardAbbreviation
         }
     }
 }

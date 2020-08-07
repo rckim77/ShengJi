@@ -204,7 +204,8 @@ extension PlayerGameViewController: GameViewDelegate {
     }
     
     func gameViewDealerFinishedExchanging() {
-        guard let url = URL(string: "https://fast-garden-35127.herokuapp.com/finish_exchanging/\(channelName)") else {
+        guard let leaderTeam = gameView?.leaderTeam,
+            let url = URL(string: "https://fast-garden-35127.herokuapp.com/finish_exchanging/\(channelName)/\(leaderTeam.dealer)/\(leaderTeam.leader)") else {
             return
         }
         dealerExchangeCancellable = URLSession.shared.dataTaskPublisher(for: url)
