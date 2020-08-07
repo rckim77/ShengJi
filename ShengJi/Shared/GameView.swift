@@ -35,15 +35,16 @@ final class GameView: UIView {
     private lazy var gameButtonsStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
-        stackView.spacing = 8
+        stackView.spacing = 12
         return stackView
     }()
     
     private lazy var endGameButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("End", for: .normal)
+        button.setTitleColor(.systemRed, for: .normal)
         button.addTarget(self, action: #selector(leaveButtonTapped), for: .touchUpInside)
-        button.addRoundedBorder(color: .systemBlue)
+        button.addRoundedBorder(color: .systemRed)
         button.contentEdgeInsets = UIEdgeInsets(top: 6, left: 12, bottom: 6, right: 12)
         return button
     }()
