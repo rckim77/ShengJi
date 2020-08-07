@@ -38,6 +38,7 @@ final class PlayerHandDetailView: UIView {
         firstRowStackView.arrangedSubviews.count + secondRowStackView.arrangedSubviews.count
     }
     
+    var gameState: GameStartView.GameState = .draw
     var selectedCard: CardView?
     private var levelTrump: String?
     private var cards: [String] = []
@@ -125,13 +126,12 @@ final class PlayerHandDetailView: UIView {
 
 extension PlayerHandDetailView: CardViewDelegate {
     func cardViewDidSelectCard(_ card: CardView) {
-        guard cardsCount == 12 else {
+        guard gameState != .draw else {
             return
         }
-        if let selectedCard = selectedCard {
-            selectedCard.deselect()
-        }
-        self.selectedCard = card
+        
+        selectedCard?.deselect()
+        selectedCard = card
         selectedCard?.select()
     }
 }

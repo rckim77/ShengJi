@@ -89,6 +89,13 @@ final class PlayerHandView: UIView {
     }
     
     private let position: PlayerPosition
+    var gameState: GameStartView.GameState = .draw {
+        didSet {
+            if position == .bottom {
+                bottomHandDetailView.gameState = gameState
+            }
+        }
+    }
 
     var username: String? {
         guard let name = usernameLabel.text else {

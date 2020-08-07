@@ -21,7 +21,7 @@ protocol GameStartViewDelegate: class {
 
 final class GameStartView: UIView {
     
-    private enum GameState {
+    enum GameState {
         /// Users are drawing in counter-clockwise order.
         case draw
         /// Once all users have drawn, the dealer gets to exchange with the bottom cards of the draw
@@ -124,7 +124,11 @@ final class GameStartView: UIView {
     }
     private var levelTrump: String?
     private var leaderTeam: LeaderTeam?
-    private var gameState: GameState = .draw
+    private var gameState: GameState = .draw {
+        didSet {
+            playerHandViews.forEach { $0.gameState = gameState }
+        }
+    }
     private var playerHandViews: [PlayerHandView] {
         [bottomPlayerView, rightPlayerView, topPlayerView, leftPlayerView]
     }
