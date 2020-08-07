@@ -14,7 +14,7 @@ import PusherSwift
 final class HostGameViewController: UIViewController {
     
     private var lobbyView: HostLobbyView?
-    private var gameStartView: GameStartView?
+    private var gameView: GameView?
     private let channelName: String
     private var hostUsername: String?
     private var channel: PusherPresenceChannel?
@@ -85,11 +85,11 @@ final class HostGameViewController: UIViewController {
         }
         
         channel?.bindDrawEvent { [weak self] drawEvent in
-            self?.gameStartView?.update(drawEvent)
+            self?.gameView?.update(drawEvent)
         }
         
         channel?.bindDealerExchangedEvent { [weak self] in
-            self?.gameStartView?.updateForDealerExchanged()
+            self?.gameView?.updateForDealerExchanged()
         }
     }
     
@@ -110,12 +110,12 @@ final class HostGameViewController: UIViewController {
             return
         }
         
-        gameStartView = GameStartView(as: .host, hostUsername: hostUsername, username: hostUsername, playerTurnOrder: playerTurnOrder, delegate: self)
-        guard let gameStartView = gameStartView else {
+        gameView = GameView(as: .host, hostUsername: hostUsername, username: hostUsername, playerTurnOrder: playerTurnOrder, delegate: self)
+        guard let gameView = gameView else {
             return
         }
-        view.addSubview(gameStartView)
-        gameStartView.snp.makeConstraints { make in
+        view.addSubview(gameView)
+        gameView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
     }
@@ -258,12 +258,12 @@ extension HostGameViewController: DebugViewControllerDelegate {
     }
 }
 
-extension HostGameViewController: GameStartViewDelegate {
-    func gameStartViewDidTapLeaveButton() {
+extension HostGameViewController: GameViewDelegate {
+    func gameViewDidTapLeaveButton() {
         showLeaveWarningAlert(as: .host)
     }
     
-    func gameStartViewDidTapScoreButton() {
+    func gameViewDidTapScoreButton() {
         guard let url = URL(string: "https://fast-garden-35127.herokuapp.com/score/\(channelName)") else {
             return
         }
@@ -284,7 +284,7 @@ extension HostGameViewController: GameStartViewDelegate {
             })
     }
     
-    func gameStartViewDidTapDrawButton() {
+    func gameViewDidTapDrawButton() {
         guard let username = hostUsername,
             let url = URL(string: "https://fast-garden-35127.herokuapp.com/draw/\(channelName)/\(username)") else {
             return
@@ -304,7 +304,7 @@ extension HostGameViewController: GameStartViewDelegate {
             }, receiveValue: { _ in })
     }
     
-    func gameStartViewDealerFinishedExchanging() {
+    func gameViewDealerFinishedExchanging() {
         guard let url = URL(string: "https://fast-garden-35127.herokuapp.com/finish_exchanging/\(channelName)") else {
             return
         }
@@ -321,7 +321,7 @@ extension HostGameViewController: GameStartViewDelegate {
                     self?.showErrorAlert(message: "Try again.", completion: {})
                 }
             }, receiveValue: { [weak self] _ in
-                self?.gameStartView?.hideExchangeView()
+                self?.gameView?.hideExchangeView()
             })
     }
 }

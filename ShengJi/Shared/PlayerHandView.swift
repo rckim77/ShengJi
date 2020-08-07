@@ -94,7 +94,7 @@ final class PlayerHandView: UIView {
     
     private weak var delegate: PlayerHandViewDelegate?
     private let position: PlayerPosition
-    var gameState: GameStartView.GameState = .draw {
+    var gameState: GameView.GameState = .draw {
         didSet {
             if position == .bottom {
                 bottomHandDetailView.gameState = gameState

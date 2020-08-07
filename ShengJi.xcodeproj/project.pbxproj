@@ -34,7 +34,7 @@
 		ECCACBB324C8F0730077CD89 /* JoinResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCACBB224C8F0730077CD89 /* JoinResponse.swift */; };
 		ECCACBBA24CAA3680077CD89 /* HostLobbyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCACBB924CAA3680077CD89 /* HostLobbyView.swift */; };
 		ECCACBBC24CAA8600077CD89 /* PlayerLobbyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCACBBB24CAA8600077CD89 /* PlayerLobbyView.swift */; };
-		ECCACBBE24CBE40C0077CD89 /* GameStartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCACBBD24CBE40C0077CD89 /* GameStartView.swift */; };
+		ECCACBBE24CBE40C0077CD89 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCACBBD24CBE40C0077CD89 /* GameView.swift */; };
 		ECCACBC024CBEB420077CD89 /* DebugViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCACBBF24CBEB420077CD89 /* DebugViewController.swift */; };
 		F2ACBAC8C88F57D0A4CB4A1B /* Pods_ShengJi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A2411FE280B73A920C93D27 /* Pods_ShengJi.framework */; };
 /* End PBXBuildFile section */
@@ -72,7 +72,7 @@
 		ECCACBB224C8F0730077CD89 /* JoinResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinResponse.swift; sourceTree = "<group>"; };
 		ECCACBB924CAA3680077CD89 /* HostLobbyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostLobbyView.swift; sourceTree = "<group>"; };
 		ECCACBBB24CAA8600077CD89 /* PlayerLobbyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerLobbyView.swift; sourceTree = "<group>"; };
-		ECCACBBD24CBE40C0077CD89 /* GameStartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStartView.swift; sourceTree = "<group>"; };
+		ECCACBBD24CBE40C0077CD89 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		ECCACBBF24CBEB420077CD89 /* DebugViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -165,7 +165,7 @@
 		ECCACBB824CA9CB00077CD89 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				ECCACBBD24CBE40C0077CD89 /* GameStartView.swift */,
+				ECCACBBD24CBE40C0077CD89 /* GameView.swift */,
 				EC2A225324D51387007920D4 /* PlayerHandView.swift */,
 				EC2A225524D53536007920D4 /* PlayerHandDetailView.swift */,
 				EC2A225724D5BA5E007920D4 /* CardView.swift */,
@@ -338,7 +338,7 @@
 				ECCACBB124C7EEE90077CD89 /* NetworkError.swift in Sources */,
 				EC2A225024D39C22007920D4 /* APIError.swift in Sources */,
 				EC2A226424DB6E05007920D4 /* CardsSort.swift in Sources */,
-				ECCACBBE24CBE40C0077CD89 /* GameStartView.swift in Sources */,
+				ECCACBBE24CBE40C0077CD89 /* GameView.swift in Sources */,
 				EC2A225224D4B6E2007920D4 /* StartResponse.swift in Sources */,
 				ECCACBA124C4F9A20077CD89 /* HostGameViewController.swift in Sources */,
 			);

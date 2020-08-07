@@ -42,7 +42,7 @@ final class PlayerHandDetailView: UIView {
         firstRowStackView.arrangedSubviews.count + secondRowStackView.arrangedSubviews.count
     }
     
-    var gameState: GameStartView.GameState = .draw
+    var gameState: GameView.GameState = .draw
     var selectedCard: CardView?
     private var levelTrump: String?
     private var cards: [String] = []

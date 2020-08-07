@@ -1,5 +1,5 @@
 //
-//  GameStartView.swift
+//  GameView.swift
 //  ShengJi
 //
 //  Created by Ray Kim on 7/24/20.
@@ -10,16 +10,16 @@ import UIKit
 import SnapKit
 import Combine
 
-protocol GameStartViewDelegate: class {
+protocol GameViewDelegate: class {
     /// Only used by host
-    func gameStartViewDidTapLeaveButton()
+    func gameViewDidTapLeaveButton()
     /// Used by both host and players
-    func gameStartViewDidTapScoreButton()
-    func gameStartViewDidTapDrawButton()
-    func gameStartViewDealerFinishedExchanging()
+    func gameViewDidTapScoreButton()
+    func gameViewDidTapDrawButton()
+    func gameViewDealerFinishedExchanging()
 }
 
-final class GameStartView: UIView {
+final class GameView: UIView {
     
     enum GameState {
         /// Users are drawing in counter-clockwise order.
@@ -132,7 +132,7 @@ final class GameStartView: UIView {
     private var playerHandViews: [PlayerHandView] {
         [bottomPlayerView, rightPlayerView, topPlayerView, leftPlayerView]
     }
-    private weak var delegate: GameStartViewDelegate?
+    private weak var delegate: GameViewDelegate?
     
     // MARK: - AnyCancellables
     
@@ -141,7 +141,7 @@ final class GameStartView: UIView {
     // MARK: - Init methods
     
     /// For hosts, the hostUsername and username fields are equivalent.
-    init(as participantType: ParticipantType, hostUsername: String, username: String, playerTurnOrder: [String], delegate: GameStartViewDelegate) {
+    init(as participantType: ParticipantType, hostUsername: String, username: String, playerTurnOrder: [String], delegate: GameViewDelegate) {
         self.participantType = participantType
         self.hostUsername = hostUsername
         self.username = username
@@ -235,17 +235,17 @@ final class GameStartView: UIView {
     
     @objc
     private func leaveButtonTapped() {
-        delegate?.gameStartViewDidTapLeaveButton()
+        delegate?.gameViewDidTapLeaveButton()
     }
     
     @objc
     private func scoreButtonTapped() {
-        delegate?.gameStartViewDidTapScoreButton()
+        delegate?.gameViewDidTapScoreButton()
     }
     
     @objc
     private func drawDeckButtonTapped() {
-        delegate?.gameStartViewDidTapDrawButton()
+        delegate?.gameViewDidTapDrawButton()
     }
     
     func update(_ drawEvent: DrawEvent) {
@@ -347,7 +347,7 @@ final class GameStartView: UIView {
     }
 }
 
-extension GameStartView: DealerExchangeViewDelegate {
+extension GameView: DealerExchangeViewDelegate {
     func dealerExchangeViewDidTapExchangeButton() {
         guard let selectedBottomCard = bottomPlayerView.selectedCard,
             let selectedExchangeCard = dealerExchangeView.selectedCardAbbreviation else {
@@ -366,11 +366,11 @@ extension GameStartView: DealerExchangeViewDelegate {
         if let levelTrump = levelTrump {
             bottomPlayerView.sortHand(levelTrump: levelTrump)
         }
-        delegate?.gameStartViewDealerFinishedExchanging()
+        delegate?.gameViewDealerFinishedExchanging()
     }
 }
 
-extension GameStartView: PlayerHandViewDelegate {
+extension GameView: PlayerHandViewDelegate {
     func playerHandViewDidSelectCard(_ cardAbbreviation: String, position: PlayerHandView.PlayerPosition) {
         if gameState == .play && leaderTeam?.dealer == username {
             print("dealer \(username) in position \(position) selected card \(cardAbbreviation)")
