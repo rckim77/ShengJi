@@ -232,7 +232,7 @@ final class GameView: UIView {
                                          playerHands: [[], [], [], []],
                                          cardsRemaining: Array(repeating: "", count: 54),
                                          drawnCard: nil)
-        update(initialDrawEvent)
+        updateOnDraw(initialDrawEvent)
     }
     
     @objc
@@ -250,7 +250,7 @@ final class GameView: UIView {
         delegate?.gameViewDidTapDrawButton()
     }
     
-    func update(_ drawEvent: DrawEvent) {
+    func updateOnDraw(_ drawEvent: DrawEvent) {
         let nextUsername = drawEvent.nextPlayerToDraw
         drawDeckButton.isHidden = nextUsername != username || drawEvent.cardsRemaining.count <= 6
         playerHandViews.forEach { $0.hideTurnLabel(nextUsername != $0.username) }
@@ -277,7 +277,7 @@ final class GameView: UIView {
         }
     }
     
-    func update(_ playEvent: PlayEvent) {
+    func updateOnPlay(_ playEvent: PlayEvent) {
         // fill in
     }
     

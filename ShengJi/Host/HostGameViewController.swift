@@ -86,7 +86,7 @@ final class HostGameViewController: UIViewController {
         }
         
         channel?.bindDrawEvent { [weak self] drawEvent in
-            self?.gameView?.update(drawEvent)
+            self?.gameView?.updateOnDraw(drawEvent)
         }
         
         channel?.bindDealerExchangedEvent { [weak self] in
@@ -94,7 +94,7 @@ final class HostGameViewController: UIViewController {
         }
         
         channel?.bindPlayEvent { [weak self] playEvent in
-            print("PLAY EVENT: \(playEvent)")
+            self?.gameView?.updateOnPlay(playEvent)
         }
     }
     
