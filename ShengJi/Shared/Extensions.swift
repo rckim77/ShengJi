@@ -128,6 +128,37 @@ extension String {
         }
     }
     
+    /// First, you must play a card in the turn start card's suit if hand contains cards in that suit.
+    /// Second, if hand doesn't contain any cards in that suit, then you can play anything.
+    /// The trump suit is treated specially since it includes level cards and jokers which don't
+    /// have a suit.
+    func isValidForTurn(hand: [String], levelTrump: String, turnStartCard: String) -> Bool {
+        guard hand.contains(self) else {
+            return false
+        }
+        
+        let turnSuit = turnStartCard.suffix(1)
+        
+        if turnStartCard.isTrump(levelTrump: levelTrump) {
+            if hand.contains(where: { $0.isTrump(levelTrump: levelTrump) }) {
+                return self.isTrump(levelTrump: levelTrump) // self must be trump
+            } else {
+                return true // can play anything
+            }
+        } else if hand.contains(where: { $0.contains(turnSuit) }) {
+            return self.contains(turnSuit) // self must be in turn suit
+        } else {
+            return true // can play anything
+        }
+    }
+    
+    func isTrump(levelTrump: String) -> Bool {
+        let trumpSuit = levelTrump.suffix(1)
+        let level = String(levelTrump.prefix(levelTrump.count == 2 ? 1 : 2))
+        let currentSuit = self.suffix(1)
+        return currentSuit == "J" || currentSuit == trumpSuit || self.contains(level)
+    }
+    
     /// Removes "presence-" prefix.
     func presenceStripped() -> String {
         let presencePrefix = "presence-"

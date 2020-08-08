@@ -230,7 +230,7 @@ extension PlayerGameViewController: GameViewDelegate {
             })
     }
     
-    func gameViewUser(_ username: String, didPlay card: String, withHand: [String]) {
+    func gameViewUser(_ username: String, didPlay card: String) {
         guard let url = URL(string: "https://fast-garden-35127.herokuapp.com/play/\(channelName)/\(username)/\(card)") else {
             return
         }
@@ -247,5 +247,9 @@ extension PlayerGameViewController: GameViewDelegate {
                     self?.showErrorAlert(message: "Try again.", completion: {})
                 }
             }, receiveValue: { _ in })
+    }
+    
+    func gameViewUserDidTryToPlayInvalidCard() {
+        showInvalidTurnAlert()
     }
 }

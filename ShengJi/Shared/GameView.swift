@@ -17,7 +17,8 @@ protocol GameViewDelegate: class {
     func gameViewDidTapScoreButton()
     func gameViewDidTapDrawButton()
     func gameViewDealerFinishedExchanging()
-    func gameViewUser(_ username: String, didPlay card: String, withHand: [String])
+    func gameViewUser(_ username: String, didPlay card: String)
+    func gameViewUserDidTryToPlayInvalidCard()
 }
 
 final class GameView: UIView {
@@ -127,6 +128,7 @@ final class GameView: UIView {
         playerTurnOrder.firstIndex(of: username)
     }
     private var levelTrump: String?
+    private var turnStartCard: String? // e.g., "AD" for ace of diamonds
     var leaderTeam: LeaderTeam?
     private var gameState: GameState = .draw {
         didSet {
@@ -291,6 +293,12 @@ final class GameView: UIView {
     
     func updateOnPlay(_ playEvent: PlayEvent) {
         let username = playerTurnOrder[playEvent.playedPlayerIndex]
+        
+        // first turn, store played card
+        if let dealer = leaderTeam?.dealer, gameState == .play("", "", dealer) {
+            turnStartCard = playEvent.playedCard
+        }
+        
         // check out gameState's didSet logic for how this updates UI downstream
         gameState = .play(username, playEvent.playedCard, playEvent.nextPlayerToPlay)
     }
@@ -389,8 +397,17 @@ extension GameView: DealerExchangeViewDelegate {
 extension GameView: PlayerHandViewDelegate {
     func playerHandViewDidSelectCard(_ cardAbbreviation: String, position: PlayerHandView.PlayerPosition, hand: [String]) {
         switch gameState {
-        case .play(_, _, username):
-            delegate?.gameViewUser(username, didPlay: cardAbbreviation, withHand: hand)
+        case .play(_, _, username): // this is called right before we hit the play endpoint
+            if let levelTrump = levelTrump,
+                let turnStartCard = turnStartCard,
+                cardAbbreviation.isValidForTurn(hand: hand, levelTrump: levelTrump, turnStartCard: turnStartCard) {
+                delegate?.gameViewUser(username, didPlay: cardAbbreviation)
+            } else if turnStartCard == nil  { // first turn bypasses validation
+                turnStartCard = cardAbbreviation
+                delegate?.gameViewUser(username, didPlay: cardAbbreviation)
+            } else {
+                delegate?.gameViewUserDidTryToPlayInvalidCard()
+            }
         default:
             break
         }

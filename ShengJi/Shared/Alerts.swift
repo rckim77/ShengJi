@@ -93,4 +93,13 @@ extension UIViewController {
         alertVC.addAction(confirmAction)
         present(alertVC, animated: true, completion: nil)
     }
+    
+    func showInvalidTurnAlert() {
+        let alertVC = UIAlertController(title: "You can't play that card right now. 😦",
+                                        message: "if you have any cards left in the suit that was first played, you must play a card in that suit.",
+                                        preferredStyle: .alert)
+        let confirmAction = UIAlertAction(title: "Got it", style: .cancel, handler: nil)
+        alertVC.addAction(confirmAction)
+        present(alertVC, animated: true, completion: nil)
+    }
 }
