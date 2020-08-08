@@ -230,7 +230,7 @@ extension PlayerGameViewController: GameViewDelegate {
             })
     }
     
-    func gameViewUser(_ username: String, didPlay card: String) {
+    func gameViewUser(_ username: String, didPlay card: String, withHand: [String]) {
         guard let url = URL(string: "https://fast-garden-35127.herokuapp.com/play/\(channelName)/\(username)/\(card)") else {
             return
         }

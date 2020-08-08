@@ -17,7 +17,7 @@ protocol GameViewDelegate: class {
     func gameViewDidTapScoreButton()
     func gameViewDidTapDrawButton()
     func gameViewDealerFinishedExchanging()
-    func gameViewUser(_ username: String, didPlay card: String)
+    func gameViewUser(_ username: String, didPlay card: String, withHand: [String])
 }
 
 final class GameView: UIView {
@@ -387,10 +387,10 @@ extension GameView: DealerExchangeViewDelegate {
 }
 
 extension GameView: PlayerHandViewDelegate {
-    func playerHandViewDidSelectCard(_ cardAbbreviation: String, position: PlayerHandView.PlayerPosition) {
+    func playerHandViewDidSelectCard(_ cardAbbreviation: String, position: PlayerHandView.PlayerPosition, hand: [String]) {
         switch gameState {
         case .play(_, _, username):
-            delegate?.gameViewUser(username, didPlay: cardAbbreviation)
+            delegate?.gameViewUser(username, didPlay: cardAbbreviation, withHand: hand)
         default:
             break
         }

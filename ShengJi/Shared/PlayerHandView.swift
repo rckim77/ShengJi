@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 
 protocol PlayerHandViewDelegate: class {
-    func playerHandViewDidSelectCard(_ cardAbbreviation: String, position: PlayerHandView.PlayerPosition)
+    func playerHandViewDidSelectCard(_ cardAbbreviation: String, position: PlayerHandView.PlayerPosition, hand: [String])
 }
 
 final class PlayerHandView: UIView {
@@ -246,7 +246,7 @@ final class PlayerHandView: UIView {
 }
 
 extension PlayerHandView: PlayerHandDetailViewDelegate {
-    func playerHandDetailViewDidSelectCard(_ cardAbbreviation: String) {
-        delegate?.playerHandViewDidSelectCard(cardAbbreviation, position: position)
+    func playerHandDetailViewDidSelectCard(_ cardAbbreviation: String, withHand hand: [String]) {
+        delegate?.playerHandViewDidSelectCard(cardAbbreviation, position: position, hand: hand)
     }
 }

@@ -53,9 +53,9 @@ extension Array where Element == String {
                     return (cardRank == level && otherCardRank != level) || (cardIsLevel && !otherCardIsLevel)
                 }
                 
-                return cardRank.isHigherValueThan(otherCardRank)
+                return cardRank.isHigherRankValueThan(otherCardRank)
             } else if cardSuit == otherCardSuit {
-                return cardRank.isHigherValueThan(otherCardRank)
+                return cardRank.isHigherRankValueThan(otherCardRank)
             } else { // two different suits, both non-trump
                 return cardSuit.isHigherSuitThan(otherCardSuit)
             }

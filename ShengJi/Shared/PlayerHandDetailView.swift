@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 
 protocol PlayerHandDetailViewDelegate: class {
-    func playerHandDetailViewDidSelectCard(_ cardAbbreviation: String)
+    func playerHandDetailViewDidSelectCard(_ cardAbbreviation: String, withHand hand: [String])
 }
 
 /// Used as the hand view from the user's perspective (i.e., the bottom player) which displays the full card values.
@@ -152,6 +152,6 @@ extension PlayerHandDetailView: CardViewDelegate {
         selectedCard?.deselect()
         selectedCard = card
         selectedCard?.select()
-        delegate?.playerHandDetailViewDidSelectCard(card.cardAbbreviation)
+        delegate?.playerHandDetailViewDidSelectCard(card.cardAbbreviation, withHand: cards)
     }
 }

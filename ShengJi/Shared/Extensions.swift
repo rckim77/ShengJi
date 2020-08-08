@@ -94,7 +94,7 @@ extension String {
     /// Returns true if self is higher rank than input otherRank following
     /// standard playing card rules (Ace down to 2). Note this is an extension
     /// on String because of "10".
-    func isHigherValueThan(_ otherRank: String) -> Bool {
+    func isHigherRankValueThan(_ otherRank: String) -> Bool {
         switch (self, otherRank) {
         case ("A", _):
             return true
