@@ -90,14 +90,16 @@ final class PlayerHandDetailView: UIView {
         guard !cards.isEmpty && cardAbbreviation != "" else {
             return
         }
-        print("remove card: \(cardAbbreviation)")
         
-//        self.cards.removeAll(where: { $0 == cardAbbreviation })
+        self.cards.removeAll(where: { $0 == cardAbbreviation })
         
-//        if let selectedCard = selectedCard {
-//            firstRowStackView.removeArrangedSubview(selectedCard)
-//            secondRowStackView.removeArrangedSubview(selectedCard)
-//        }
+        if let selectedCard = selectedCard {
+            firstRowStackView.removeArrangedSubview(selectedCard)
+            secondRowStackView.removeArrangedSubview(selectedCard)
+            selectedCard.deselect()
+            selectedCard.removeFromSuperview()
+        }
+        selectedCard = nil
     }
     
     func exchange(card: String, with otherCard: String) {
