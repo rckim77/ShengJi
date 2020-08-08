@@ -119,6 +119,16 @@ final class PlayerHandView: UIView {
                 }
 
                 handStackView.isHidden = position != .bottom
+            case .turnEnd(let username, let card):
+                hideTurnLabel(true)
+                
+                if position == .bottom {
+                    bottomHandDetailView.setIsEnabled(false)
+                }
+                
+                if self.username == username {
+                    playCardImageView.image = UIImage(named: card)
+                }
             default:
                 break
             }

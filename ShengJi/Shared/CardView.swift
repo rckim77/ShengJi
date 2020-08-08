@@ -19,6 +19,8 @@ final class CardView: UIView {
         let button = UIButton(type: .custom)
         button.setImage(cardImage, for: .normal)
         button.addTarget(self, action: #selector(cardButtonTapped), for: .touchUpInside)
+        button.backgroundColor = .systemGroupedBackground
+        button.layer.cornerRadius = 6
         return button
     }()
     
@@ -35,7 +37,7 @@ final class CardView: UIView {
         self.delegate = delegate
         super.init(frame: .zero)
 
-        backgroundColor = .systemGroupedBackground
+        backgroundColor = .clear
         addSubview(cardButton)
         
         cardButton.snp.makeConstraints { make in

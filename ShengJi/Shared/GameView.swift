@@ -152,8 +152,9 @@ final class GameView: UIView {
                     }
                 }
             case .turnEnd:
-                // fill in
-                leftPlayerView.isHidden = true
+                drawDeckRemainingLabel.isHidden = false
+                drawDeckRemainingLabel.text = "Winner is..."
+                // update dealer, etc.
             default:
                 break
             }
@@ -311,12 +312,13 @@ final class GameView: UIView {
         // first turn, store played card
         if let dealer = leaderTeam?.dealer, gameState == .play("", "", dealer) {
             turnStartCard = playEvent.playedCard
-        } else if playEvent.nextPlayerToPlay == leaderTeam?.dealer {
-            gameState = .turnEnd(username, playEvent.playedCard)
         }
         
-        // check out gameState's didSet logic for how this updates UI downstream
-        gameState = .play(username, playEvent.playedCard, playEvent.nextPlayerToPlay)
+        if playEvent.nextPlayerToPlay == leaderTeam?.dealer { // everybody has played a card
+            gameState = .turnEnd(username, playEvent.playedCard)
+        } else {
+           gameState = .play(username, playEvent.playedCard, playEvent.nextPlayerToPlay)
+        }
     }
     
     private func displayExchangeableCards(_ cardsRemaining: [String]) {
