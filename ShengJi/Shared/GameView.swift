@@ -53,9 +53,9 @@ final class GameView: UIView {
         return button
     }()
     
-    private lazy var scoreButton: UIButton = {
+    private lazy var levelsButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Score", for: .normal)
+        button.setTitle("Levels", for: .normal)
         button.addTarget(self, action: #selector(scoreButtonTapped), for: .touchUpInside)
         button.addRoundedBorder(color: .systemBlue)
         button.contentEdgeInsets = UIEdgeInsets(top: 6, left: 12, bottom: 6, right: 12)
@@ -167,7 +167,7 @@ final class GameView: UIView {
         
         addSubview(gameButtonsStackView)
         gameButtonsStackView.addArrangedSubview(endGameButton)
-        gameButtonsStackView.addArrangedSubview(scoreButton)
+        gameButtonsStackView.addArrangedSubview(levelsButton)
         addSubview(levelTrumpLabel)
         addSubview(drawDeckLabel)
         addSubview(drawDeckRemainingLabel)

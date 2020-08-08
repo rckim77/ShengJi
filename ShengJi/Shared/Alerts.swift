@@ -75,7 +75,7 @@ extension UIViewController {
         present(alertVC, animated: true, completion: nil)
     }
     
-    func showScoreAlert(_ scoreResponse: ScoreResponse, currentPlayer: String) {
+    func showLevelsAlert(_ scoreResponse: ScoreResponse, currentPlayer: String) {
         guard scoreResponse.hostPair.count == 2 && scoreResponse.otherPair.count == 2 else {
             return
         }
@@ -88,7 +88,7 @@ extension UIViewController {
         let otherPairUsernameSecond = currentPlayer == scoreResponse.otherPair[1] ? "you" : scoreResponse.otherPair[1]
         let otherPairString = "\(otherPairUsernameFirst) and \(otherPairUsernameSecond): \(scoreResponse.otherPairLevel)"
         
-        let alertVC = UIAlertController(title: "Current Score", message: "\(hostPairString)\n\(otherPairString)", preferredStyle: .alert)
+        let alertVC = UIAlertController(title: "Current Levels", message: "\(hostPairString)\n\(otherPairString)", preferredStyle: .alert)
         let confirmAction = UIAlertAction(title: "Got it", style: .cancel, handler: nil)
         alertVC.addAction(confirmAction)
         present(alertVC, animated: true, completion: nil)

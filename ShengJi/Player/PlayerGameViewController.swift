@@ -183,7 +183,7 @@ extension PlayerGameViewController: GameViewDelegate {
                 guard let username = self?.username else {
                     return
                 }
-                self?.showScoreAlert(scoreResponse, currentPlayer: username)
+                self?.showLevelsAlert(scoreResponse, currentPlayer: username)
             })
     }
     

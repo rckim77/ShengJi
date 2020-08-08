@@ -285,7 +285,7 @@ extension HostGameViewController: GameViewDelegate {
                 guard let username = self?.hostUsername else {
                     return
                 }
-                self?.showScoreAlert(scoreResponse, currentPlayer: username)
+                self?.showLevelsAlert(scoreResponse, currentPlayer: username)
             })
     }
     
