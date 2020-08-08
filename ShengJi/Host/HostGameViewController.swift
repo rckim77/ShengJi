@@ -263,7 +263,7 @@ extension HostGameViewController: GameViewDelegate {
     }
     
     func gameViewDidTapLevelsButton() {
-        guard let url = URL(string: "https://fast-garden-35127.herokuapp.com/score/\(channelName)") else {
+        guard let url = URL(string: "https://fast-garden-35127.herokuapp.com/levels/\(channelName)") else {
             return
         }
         

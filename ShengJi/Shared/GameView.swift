@@ -34,6 +34,10 @@ final class GameView: UIView {
         /// associated value is the card abbreviation (e.g., "2C"). The third is the next username to
         /// play.
         case play(String, String, String)
+        /// Once every player has played a card, players can no longer play cards. We score, display it,
+        /// then begin the next turn and go back to the play state. The first associated value is the
+        /// username of the player who just played. The second associated value is the card abbreviation.
+        case turnEnd(String, String)
     }
     
     private lazy var gameButtonsStackView: UIStackView = {
@@ -145,6 +149,19 @@ final class GameView: UIView {
                     make.trailing.equalToSuperview().inset(8)
                     make.centerY.equalToSuperview().offset(UIDevice.current.isSmallDevice ? -114 : -64)
                 }
+            case .turnEnd:
+                leftPlayerView.snp.remakeConstraints { make in
+                    make.leading.equalToSuperview().inset(8)
+                    make.centerY.equalToSuperview().offset(UIDevice.current.isSmallDevice ? -114 : -64)
+                }
+                
+                rightPlayerView.snp.remakeConstraints { make in
+                    make.trailing.equalToSuperview().inset(8)
+                    make.centerY.equalToSuperview().offset(UIDevice.current.isSmallDevice ? -114 : -64)
+                }
+                
+                leftPlayerView.isHidden = true
+                rightPlayerView.isHidden = true
             default:
                 break
             }
@@ -302,6 +319,8 @@ final class GameView: UIView {
         // first turn, store played card
         if let dealer = leaderTeam?.dealer, gameState == .play("", "", dealer) {
             turnStartCard = playEvent.playedCard
+        } else if playEvent.nextPlayerToPlay == leaderTeam?.dealer {
+            gameState = .turnEnd(username, playEvent.playedCard)
         }
         
         // check out gameState's didSet logic for how this updates UI downstream
