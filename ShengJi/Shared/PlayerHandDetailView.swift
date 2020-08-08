@@ -103,9 +103,11 @@ final class PlayerHandDetailView: UIView {
     }
     
     func exchange(card: String, with otherCard: String) {
-        guard cards.count == 12, let selectedCard = selectedCard else {
+        guard cards.count == 12, let selectedCard = selectedCard, let selectedCardIndex = cards.firstIndex(of: card) else {
             return
         }
+        
+        cards[selectedCardIndex] = otherCard
         selectedCard.update(otherCard)
         selectedCard.deselect()
         self.selectedCard = nil
