@@ -162,13 +162,7 @@ extension HostGameViewController: PusherDelegate {
     }
     
     func failedToSubscribeToChannel(name: String, response: URLResponse?, data: String?, error: NSError?) {
-        let presencePrefix = "presence-"
-        let startingIndex = name.index(name.startIndex, offsetBy: presencePrefix.count)
-        let roomCode = name.suffix(from: startingIndex)
-        let alertVC = UIAlertController(title: "Oops, that didn't work. 😦", message: "Unable to connect to room \(roomCode).", preferredStyle: .alert)
-        let confirmAction = UIAlertAction(title: "Got it", style: .cancel, handler: nil)
-        alertVC.addAction(confirmAction)
-        present(alertVC, animated: true, completion: nil)
+        showUnableToSubscribeAlert(channelName: name)
     }
     
     func changedConnectionState(from old: ConnectionState, to new: ConnectionState) {

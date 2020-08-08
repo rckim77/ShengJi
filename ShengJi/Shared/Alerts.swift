@@ -34,6 +34,16 @@ extension UIViewController {
         disconnectedAlert.addAction(confirmAction)
         present(disconnectedAlert, animated: true, completion: nil)
     }
+    
+    func showUnableToSubscribeAlert(channelName: String) {
+        let presencePrefix = "presence-"
+        let startingIndex = channelName.index(channelName.startIndex, offsetBy: presencePrefix.count)
+        let roomCode = channelName.suffix(from: startingIndex)
+        let alertVC = UIAlertController(title: "Oops, that didn't work. 😦", message: "Unable to connect to room \(roomCode).", preferredStyle: .alert)
+        let confirmAction = UIAlertAction(title: "Got it", style: .cancel, handler: nil)
+        alertVC.addAction(confirmAction)
+        present(alertVC, animated: true, completion: nil)
+    }
 
     func showLeaveWarningAlert(as participant: ParticipantType) {
         let message: String
