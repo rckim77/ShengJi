@@ -131,12 +131,12 @@ final class GameView: UIView {
         didSet {
             leftPlayerView.snp.remakeConstraints { make in
                 make.leading.equalToSuperview().inset(8)
-                make.centerY.equalToSuperview().offset(UIDevice.current.isSmallDevice ? -100 : -64)
+                make.centerY.equalToSuperview().offset(UIDevice.current.isSmallDevice ? -114 : -64)
             }
             
             rightPlayerView.snp.remakeConstraints { make in
                 make.trailing.equalToSuperview().inset(8)
-                make.centerY.equalToSuperview().offset(UIDevice.current.isSmallDevice ? -100 : -64)
+                make.centerY.equalToSuperview().offset(UIDevice.current.isSmallDevice ? -114 : -64)
             }
             
             playerHandViews.forEach { $0.gameState = gameState }

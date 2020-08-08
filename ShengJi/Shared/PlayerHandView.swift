@@ -177,7 +177,7 @@ final class PlayerHandView: UIView {
         }
         
         playCardImageView.snp.makeConstraints { make in
-            make.size.equalTo(CGSize(width: 78, height: 110))
+            make.size.equalTo(CGSize(width: UIDevice.current.isSmallDevice ? 75 : 81, height: UIDevice.current.isSmallDevice ? 105 : 114))
         }
 
         turnLabel.text = position == .bottom ? "Your turn" : "Their turn"
