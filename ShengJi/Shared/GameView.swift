@@ -140,28 +140,20 @@ final class GameView: UIView {
             
             switch gameState {
             case .play(_, _, _):
-                leftPlayerView.snp.remakeConstraints { make in
-                    make.leading.equalToSuperview().inset(8)
-                    make.centerY.equalToSuperview().offset(UIDevice.current.isSmallDevice ? -114 : -64)
-                }
-                
-                rightPlayerView.snp.remakeConstraints { make in
-                    make.trailing.equalToSuperview().inset(8)
-                    make.centerY.equalToSuperview().offset(UIDevice.current.isSmallDevice ? -114 : -64)
+                if oldValue == .dealerExchange { // keep this layout for .turnEnd as well
+                    leftPlayerView.snp.remakeConstraints { make in
+                        make.leading.equalToSuperview().inset(8)
+                        make.centerY.equalToSuperview().offset(UIDevice.current.isSmallDevice ? -114 : -64)
+                    }
+                    
+                    rightPlayerView.snp.remakeConstraints { make in
+                        make.trailing.equalToSuperview().inset(8)
+                        make.centerY.equalToSuperview().offset(UIDevice.current.isSmallDevice ? -114 : -64)
+                    }
                 }
             case .turnEnd:
-                leftPlayerView.snp.remakeConstraints { make in
-                    make.leading.equalToSuperview().inset(8)
-                    make.centerY.equalToSuperview().offset(UIDevice.current.isSmallDevice ? -114 : -64)
-                }
-                
-                rightPlayerView.snp.remakeConstraints { make in
-                    make.trailing.equalToSuperview().inset(8)
-                    make.centerY.equalToSuperview().offset(UIDevice.current.isSmallDevice ? -114 : -64)
-                }
-                
+                // fill in
                 leftPlayerView.isHidden = true
-                rightPlayerView.isHidden = true
             default:
                 break
             }

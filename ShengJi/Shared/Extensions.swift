@@ -146,7 +146,8 @@ extension String {
                 return true // can play anything
             }
         } else if hand.contains(where: { $0.contains(turnSuit) }) {
-            return self.contains(turnSuit) // self must be in turn suit
+            // self must be in turn suit AND cannot contain level (despite it having the same literal suit)
+            return self.contains(turnSuit) && !self.isTrump(levelTrump: levelTrump)
         } else {
             return true // can play anything
         }
