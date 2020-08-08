@@ -45,8 +45,11 @@ final class PlayerHandDetailView: UIView {
     var gameState: GameView.GameState = .draw {
         didSet {
             switch gameState {
-            case .play(let username, let card):
-                print("bottom view didSet game state for username:\(username) and card:\(card)")
+            case .play(let username, let card, _):
+                guard self.username == username, card != "" else {
+                    return
+                }
+//                removeCard(card)
             default:
                 break
             }
@@ -55,9 +58,11 @@ final class PlayerHandDetailView: UIView {
     var selectedCard: CardView?
     private var levelTrump: String?
     private var cards: [String] = []
+    private let username: String
     private weak var delegate: PlayerHandDetailViewDelegate?
     
-    init(delegate: PlayerHandDetailViewDelegate) {
+    init(username: String, delegate: PlayerHandDetailViewDelegate) {
+        self.username = username
         self.delegate = delegate
         super.init(frame: .zero)
         
@@ -93,6 +98,22 @@ final class PlayerHandDetailView: UIView {
         // We'll start sorting after adding once the level trump has been set.
         if let levelTrump = levelTrump {
             sortHand(levelTrump: levelTrump)
+        }
+    }
+    
+    func removeCard(_ cardAbbreviation: String) {
+        guard !cards.isEmpty else {
+            return
+        }
+        
+        self.cards.removeAll(where: { $0 == cardAbbreviation })
+        
+        if let subview = firstRowStackView.arrangedSubviews.first(where: { ($0 as? CardView)?.cardAbbreviation == cardAbbreviation }) {
+            firstRowStackView.removeArrangedSubview(subview)
+            firstRowStackView.layoutIfNeeded()
+        } else if let subview = secondRowStackView.arrangedSubviews.first(where: { ($0 as? CardView)?.cardAbbreviation == cardAbbreviation }) {
+            secondRowStackView.removeArrangedSubview(subview)
+            secondRowStackView.layoutIfNeeded()
         }
     }
     

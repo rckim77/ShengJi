@@ -29,9 +29,10 @@ final class GameView: UIView {
         /// deck.
         case dealerExchange
         /// Once the dealer has finished exchanging, the dealer starts by playing a card from their
-        /// hand. The first associated value is the current player to play's username. The second
-        /// associated value is the card abbreviation (e.g., "2C").
-        case play(String, String)
+        /// hand. The first associated value is the username of the player who just played. The second
+        /// associated value is the card abbreviation (e.g., "2C"). The third is the next username to
+        /// play.
+        case play(String, String, String)
     }
     
     private lazy var gameButtonsStackView: UIStackView = {
@@ -289,9 +290,9 @@ final class GameView: UIView {
     }
     
     func updateOnPlay(_ playEvent: PlayEvent) {
-        let playedUsername = playerTurnOrder[playEvent.playedPlayerIndex]
+        let username = playerTurnOrder[playEvent.playedPlayerIndex]
         // check out gameState's didSet logic for how this updates UI downstream
-        gameState = .play(playedUsername, playEvent.playedCard)
+        gameState = .play(username, playEvent.playedCard, playEvent.nextPlayerToPlay)
     }
     
     private func displayExchangeableCards(_ cardsRemaining: [String]) {
@@ -320,7 +321,7 @@ final class GameView: UIView {
         drawDeckLabel.isHidden = true
         bottomPlayerView.deselectCards()
         
-        gameState = .play(dealer, "")
+        gameState = .play("", "", dealer)
     }
     
     private func viewContainingUsername(_ username: String?) -> PlayerHandView? {
@@ -381,7 +382,6 @@ extension GameView: DealerExchangeViewDelegate {
         if let levelTrump = levelTrump {
             bottomPlayerView.sortHand(levelTrump: levelTrump)
         }
-        gameState = .play(username, "")
         delegate?.gameViewDealerFinishedExchanging()
     }
 }
@@ -389,7 +389,7 @@ extension GameView: DealerExchangeViewDelegate {
 extension GameView: PlayerHandViewDelegate {
     func playerHandViewDidSelectCard(_ cardAbbreviation: String, position: PlayerHandView.PlayerPosition) {
         switch gameState {
-        case .play(username, _):
+        case .play(_, _, username):
             delegate?.gameViewUser(username, didPlay: cardAbbreviation)
         default:
             break

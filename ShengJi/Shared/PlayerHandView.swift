@@ -83,7 +83,7 @@ final class PlayerHandView: UIView {
     }()
     
     private lazy var bottomHandDetailView: PlayerHandDetailView = {
-        let view = PlayerHandDetailView(delegate: self)
+        let view = PlayerHandDetailView(username: username ?? "", delegate: self)
         return view
     }()
     
@@ -107,22 +107,17 @@ final class PlayerHandView: UIView {
             }
             
             switch gameState {
-            case .play(let username, let card):
+            case .play(let username, let card, let nextUsername):
+                // sync turn label, show play card for username, enable detail view only for nextUsername
                 playCardImageView.isHidden = false
-                hideTurnLabel(username != self.username)
+                hideTurnLabel(nextUsername != self.username)
+                bottomHandDetailView.setIsEnabled(self.username == nextUsername)
                 
-                if self.username == username {
-                    playCardImageView.image = card != "" ? UIImage(named: card) : nil
-                    bottomHandDetailView.setIsEnabled(true)
-                } else {
-                    bottomHandDetailView.setIsEnabled(false)
+                if self.username == username && card != "" {
+                    playCardImageView.image = UIImage(named: card)
                 }
-                
-                if position != .bottom {
-                    handStackView.isHidden = true
-                }
-                
-                // Note: The rest of bottom view updates are handled when we set bottomHandDetailView.gameState = gameState
+
+                handStackView.isHidden = position != .bottom
             default:
                 break
             }
