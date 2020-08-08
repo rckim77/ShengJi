@@ -109,9 +109,13 @@ final class PlayerHandView: UIView {
             switch gameState {
             case .play(let username, let card):
                 playCardImageView.isHidden = false
+                hideTurnLabel(username != self.username)
                 
                 if self.username == username {
                     playCardImageView.image = card != "" ? UIImage(named: card) : nil
+                    bottomHandDetailView.setIsEnabled(true)
+                } else {
+                    bottomHandDetailView.setIsEnabled(false)
                 }
                 
                 if position != .bottom {
@@ -167,7 +171,8 @@ final class PlayerHandView: UIView {
             usernameStackView.layoutMargins = .zero
             
             stackView.snp.makeConstraints { make in
-                make.edges.equalToSuperview().inset(12)
+                make.top.bottom.equalToSuperview().inset(UIDevice.current.isSmallDevice ? 8 : 12)
+                make.leading.trailing.equalToSuperview().inset(8)
             }
         }
         

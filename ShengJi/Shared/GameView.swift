@@ -37,7 +37,7 @@ final class GameView: UIView {
     private lazy var gameButtonsStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
-        stackView.spacing = 12
+        stackView.spacing = UIDevice.current.isSmallDevice ? 8 : 12
         return stackView
     }()
     
@@ -131,12 +131,12 @@ final class GameView: UIView {
         didSet {
             leftPlayerView.snp.remakeConstraints { make in
                 make.leading.equalToSuperview().inset(8)
-                make.centerY.equalToSuperview().offset(-48)
+                make.centerY.equalToSuperview().offset(UIDevice.current.isSmallDevice ? -100 : -64)
             }
             
             rightPlayerView.snp.remakeConstraints { make in
                 make.trailing.equalToSuperview().inset(8)
-                make.centerY.equalToSuperview().offset(-48)
+                make.centerY.equalToSuperview().offset(UIDevice.current.isSmallDevice ? -100 : -64)
             }
             
             playerHandViews.forEach { $0.gameState = gameState }
@@ -315,15 +315,12 @@ final class GameView: UIView {
         guard let dealer = leaderTeam?.dealer else {
             return
         }
+        
         drawDeckRemainingLabel.isHidden = true
         drawDeckLabel.isHidden = true
-        playerHandViews.forEach { $0.hideTurnLabel(leaderTeam?.dealer != $0.username) }
         bottomPlayerView.deselectCards()
         
-        if dealer != username {
-            // prevent other users from selecting cards until it' their turn
-            bottomPlayerView.setIsEnabled(false)
-        }
+        gameState = .play(dealer, "")
     }
     
     private func viewContainingUsername(_ username: String?) -> PlayerHandView? {
