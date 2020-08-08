@@ -83,7 +83,7 @@ final class PlayerHandView: UIView {
     }()
     
     private lazy var bottomHandDetailView: PlayerHandDetailView = {
-        let view = PlayerHandDetailView(username: username ?? "", delegate: self)
+        let view = PlayerHandDetailView(delegate: self)
         return view
     }()
     
@@ -102,16 +102,17 @@ final class PlayerHandView: UIView {
     private let position: PlayerPosition
     var gameState: GameView.GameState = .draw {
         didSet {
-            if position == .bottom {
-                bottomHandDetailView.gameState = gameState
-            }
-            
+            // Note: bottomHandDetailView does not maintain its own state.
             switch gameState {
             case .play(let username, let card, let nextUsername):
                 // sync turn label, show play card for username, enable detail view only for nextUsername
                 playCardImageView.isHidden = false
                 hideTurnLabel(nextUsername != self.username)
-                bottomHandDetailView.setIsEnabled(self.username == nextUsername)
+                
+                if position == .bottom {
+                    bottomHandDetailView.setIsEnabled(self.username == nextUsername)
+                    bottomHandDetailView.removeCard(card)
+                }
                 
                 if self.username == username && card != "" {
                     playCardImageView.image = UIImage(named: card)
@@ -229,13 +230,6 @@ final class PlayerHandView: UIView {
             return
         }
         bottomHandDetailView.deselectCards()
-    }
-    
-    func setIsEnabled(_ isEnabled: Bool) {
-        guard position == .bottom else {
-            return
-        }
-        bottomHandDetailView.setIsEnabled(isEnabled)
     }
     
     // MARK: - Dealer/Exchange methods

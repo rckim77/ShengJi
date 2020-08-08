@@ -41,28 +41,13 @@ final class PlayerHandDetailView: UIView {
     var cardsCount: Int {
         firstRowStackView.arrangedSubviews.count + secondRowStackView.arrangedSubviews.count
     }
-    
-    var gameState: GameView.GameState = .draw {
-        didSet {
-            switch gameState {
-            case .play(let username, let card, _):
-                guard self.username == username, card != "" else {
-                    return
-                }
-//                removeCard(card)
-            default:
-                break
-            }
-        }
-    }
+
     var selectedCard: CardView?
     private var levelTrump: String?
     private var cards: [String] = []
-    private let username: String
     private weak var delegate: PlayerHandDetailViewDelegate?
     
-    init(username: String, delegate: PlayerHandDetailViewDelegate) {
-        self.username = username
+    init(delegate: PlayerHandDetailViewDelegate) {
         self.delegate = delegate
         super.init(frame: .zero)
         
@@ -102,19 +87,17 @@ final class PlayerHandDetailView: UIView {
     }
     
     func removeCard(_ cardAbbreviation: String) {
-        guard !cards.isEmpty else {
+        guard !cards.isEmpty && cardAbbreviation != "" else {
             return
         }
+        print("remove card: \(cardAbbreviation)")
         
-        self.cards.removeAll(where: { $0 == cardAbbreviation })
+//        self.cards.removeAll(where: { $0 == cardAbbreviation })
         
-        if let subview = firstRowStackView.arrangedSubviews.first(where: { ($0 as? CardView)?.cardAbbreviation == cardAbbreviation }) {
-            firstRowStackView.removeArrangedSubview(subview)
-            firstRowStackView.layoutIfNeeded()
-        } else if let subview = secondRowStackView.arrangedSubviews.first(where: { ($0 as? CardView)?.cardAbbreviation == cardAbbreviation }) {
-            secondRowStackView.removeArrangedSubview(subview)
-            secondRowStackView.layoutIfNeeded()
-        }
+//        if let selectedCard = selectedCard {
+//            firstRowStackView.removeArrangedSubview(selectedCard)
+//            secondRowStackView.removeArrangedSubview(selectedCard)
+//        }
     }
     
     func exchange(card: String, with otherCard: String) {
@@ -162,10 +145,6 @@ final class PlayerHandDetailView: UIView {
 
 extension PlayerHandDetailView: CardViewDelegate {
     func cardViewDidSelectCard(_ card: CardView) {
-        guard gameState != .draw else {
-            return
-        }
-        
         selectedCard?.deselect()
         selectedCard = card
         selectedCard?.select()
