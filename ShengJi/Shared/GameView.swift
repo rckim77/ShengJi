@@ -14,7 +14,7 @@ protocol GameViewDelegate: class {
     /// Only used by host
     func gameViewDidTapLeaveButton()
     /// Used by both host and players
-    func gameViewDidTapScoreButton()
+    func gameViewDidTapLevelsButton()
     func gameViewDidTapDrawButton()
     func gameViewDealerFinishedExchanging()
     func gameViewUser(_ username: String, didPlay card: String)
@@ -261,7 +261,7 @@ final class GameView: UIView {
     
     @objc
     private func scoreButtonTapped() {
-        delegate?.gameViewDidTapScoreButton()
+        delegate?.gameViewDidTapLevelsButton()
     }
     
     @objc

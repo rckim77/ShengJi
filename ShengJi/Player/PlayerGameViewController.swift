@@ -166,14 +166,14 @@ extension PlayerGameViewController: GameViewDelegate {
     func gameViewDidTapLeaveButton() { // for host only
     }
     
-    func gameViewDidTapScoreButton() {
-        guard let url = URL(string: "https://fast-garden-35127.herokuapp.com/score/\(channelName)") else {
+    func gameViewDidTapLevelsButton() {
+        guard let url = URL(string: "https://fast-garden-35127.herokuapp.com/levels/\(channelName)") else {
             return
         }
         
         getScoreCancellable = URLSession.shared.dataTaskPublisher(for: url)
             .map { $0.data }
-            .decode(type: ScoreResponse.self, decoder: JSONDecoder())
+            .decode(type: LevelsResponse.self, decoder: JSONDecoder())
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] completion in
                 if case Subscribers.Completion.failure(_) = completion {

@@ -85,7 +85,7 @@ extension UIViewController {
         present(alertVC, animated: true, completion: nil)
     }
     
-    func showLevelsAlert(_ scoreResponse: ScoreResponse, currentPlayer: String) {
+    func showLevelsAlert(_ scoreResponse: LevelsResponse, currentPlayer: String) {
         guard scoreResponse.hostPair.count == 2 && scoreResponse.otherPair.count == 2 else {
             return
         }

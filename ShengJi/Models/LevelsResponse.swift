@@ -1,5 +1,5 @@
 //
-//  ScoreResponse.swift
+//  LevelsResponse.swift
 //  ShengJi
 //
 //  Created by Ray Kim on 8/6/20.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct ScoreResponse: Codable {
+struct LevelsResponse: Codable {
     let hostPairLevel: String
     let otherPairLevel: String
     let hostPair: [String]

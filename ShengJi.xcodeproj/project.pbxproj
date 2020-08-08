@@ -17,7 +17,7 @@
 		EC2A225E24D75EA2007920D4 /* LeaderTeam.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2A225D24D75EA2007920D4 /* LeaderTeam.swift */; };
 		EC2A226224D7B1D6007920D4 /* DealerExchangeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2A226124D7B1D6007920D4 /* DealerExchangeView.swift */; };
 		EC2A226424DB6E05007920D4 /* CardsSort.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2A226324DB6E05007920D4 /* CardsSort.swift */; };
-		EC2A226624DCAA51007920D4 /* ScoreResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2A226524DCAA51007920D4 /* ScoreResponse.swift */; };
+		EC2A226624DCAA51007920D4 /* LevelsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2A226524DCAA51007920D4 /* LevelsResponse.swift */; };
 		EC2A226824DCBC1E007920D4 /* Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2A226724DCBC1E007920D4 /* Alerts.swift */; };
 		EC2A226A24DE5442007920D4 /* UIDevice+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2A226924DE5442007920D4 /* UIDevice+Helpers.swift */; };
 		ECCACB8924C247250077CD89 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCACB8824C247250077CD89 /* AppDelegate.swift */; };
@@ -54,7 +54,7 @@
 		EC2A225D24D75EA2007920D4 /* LeaderTeam.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LeaderTeam.swift; path = /Users/raykim/Desktop/Hobby/Dev/ShengJi/ShengJi/Models/LeaderTeam.swift; sourceTree = "<absolute>"; };
 		EC2A226124D7B1D6007920D4 /* DealerExchangeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealerExchangeView.swift; sourceTree = "<group>"; };
 		EC2A226324DB6E05007920D4 /* CardsSort.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsSort.swift; sourceTree = "<group>"; };
-		EC2A226524DCAA51007920D4 /* ScoreResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreResponse.swift; sourceTree = "<group>"; };
+		EC2A226524DCAA51007920D4 /* LevelsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelsResponse.swift; sourceTree = "<group>"; };
 		EC2A226724DCBC1E007920D4 /* Alerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alerts.swift; sourceTree = "<group>"; };
 		EC2A226924DE5442007920D4 /* UIDevice+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIDevice+Helpers.swift"; sourceTree = "<group>"; };
 		ECCACB8524C247250077CD89 /* ShengJi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShengJi.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -158,7 +158,7 @@
 				EC2A225D24D75EA2007920D4 /* LeaderTeam.swift */,
 				ECCACBB224C8F0730077CD89 /* JoinResponse.swift */,
 				EC2A225124D4B6E2007920D4 /* StartResponse.swift */,
-				EC2A226524DCAA51007920D4 /* ScoreResponse.swift */,
+				EC2A226524DCAA51007920D4 /* LevelsResponse.swift */,
 				ECCACBB024C7EEE90077CD89 /* NetworkError.swift */,
 			);
 			path = Models;
@@ -320,7 +320,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EC2A226224D7B1D6007920D4 /* DealerExchangeView.swift in Sources */,
-				EC2A226624DCAA51007920D4 /* ScoreResponse.swift in Sources */,
+				EC2A226624DCAA51007920D4 /* LevelsResponse.swift in Sources */,
 				ECCACBB324C8F0730077CD89 /* JoinResponse.swift in Sources */,
 				ECCACB8924C247250077CD89 /* AppDelegate.swift in Sources */,
 				ECCACBA524C69B710077CD89 /* Extensions.swift in Sources */,
