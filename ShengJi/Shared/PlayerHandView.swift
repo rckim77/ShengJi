@@ -92,14 +92,12 @@ final class PlayerHandView: UIView {
         imageView.contentMode = .scaleAspectFit
         return imageView
     }()
-    
-    /// Used only for the bottom player view. Returns the selected card abbreviation if any.
-    var selectedCard: String? {
-        bottomHandDetailView.selectedCard?.cardAbbreviation
-    }
+
+    var playedCard: String?
     
     private weak var delegate: PlayerHandViewDelegate?
     private let position: PlayerPosition
+
     var gameState: GameView.GameState = .draw {
         didSet {
             // Note: bottomHandDetailView does not maintain its own state.
@@ -115,6 +113,7 @@ final class PlayerHandView: UIView {
                 }
                 
                 if self.username == username && card != "" {
+                    playedCard = card
                     playCardImageView.image = UIImage(named: card)
                 }
 
@@ -134,6 +133,8 @@ final class PlayerHandView: UIView {
             }
         }
     }
+    
+    // MARK: - Helper vars
 
     var username: String? {
         guard let name = usernameLabel.text else {
@@ -141,6 +142,11 @@ final class PlayerHandView: UIView {
         }
         // remove " (me)" part for bottom text
         return position == .bottom ? name.components(separatedBy: " ").first : name
+    }
+    
+    /// Used only for the bottom player view. Returns the selected card abbreviation if any.
+    var selectedCard: String? {
+        bottomHandDetailView.selectedCard?.cardAbbreviation
     }
     
     // MARK: - Init methods

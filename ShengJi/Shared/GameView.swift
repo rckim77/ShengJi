@@ -128,12 +128,11 @@ final class GameView: UIView {
     private let hostUsername: String
     private let username: String
     private let playerTurnOrder: [String]
-    private var indexOffset: Int? {
-        playerTurnOrder.firstIndex(of: username)
-    }
     private var levelTrump: String?
     private var turnStartCard: String? // e.g., "AD" for ace of diamonds
+    private weak var delegate: GameViewDelegate?
     var leaderTeam: LeaderTeam?
+    
     private var gameState: GameState = .draw {
         didSet {
             playerHandViews.forEach { $0.gameState = gameState }
@@ -151,19 +150,37 @@ final class GameView: UIView {
                         make.centerY.equalToSuperview().offset(UIDevice.current.isSmallDevice ? -114 : -64)
                     }
                 }
-            case .turnEnd:
+            case .turnEnd(_, _):
+                guard let levelTrump = levelTrump else {
+                    return
+                }
+                
                 drawDeckRemainingLabel.isHidden = false
-                drawDeckRemainingLabel.text = "Winner is..."
+                playerHandViews.forEach { $0.deselectCards() }
+                
+                var playedCards = playerHandViews.compactMap { $0.playedCard }
+                playedCards.sortBy(levelTrump: levelTrump)
+                let winningCard = playedCards[0]
+                if let winningUsername = playerHandViews.first(where: { $0.playedCard == winningCard })?.username {
+                    drawDeckRemainingLabel.text = "\(winningUsername) wins! They'll start the next turn."
+                }
+                
                 // update dealer, etc.
             default:
                 break
             }
         }
     }
+    
+    // MARK: - Helper vars
+
+    private var indexOffset: Int? {
+        playerTurnOrder.firstIndex(of: username)
+    }
+    
     private var playerHandViews: [PlayerHandView] {
         [bottomPlayerView, rightPlayerView, topPlayerView, leftPlayerView]
     }
-    private weak var delegate: GameViewDelegate?
     
     // MARK: - AnyCancellables
     
