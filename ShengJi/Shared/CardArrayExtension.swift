@@ -1,5 +1,5 @@
 //
-//  CardsSort.swift
+//  CardArrayExtension.swift
 //  ShengJi
 //
 //  Created by Ray Kim on 8/5/20.
@@ -59,6 +59,28 @@ extension Array where Element == String {
             } else { // two different suits, both non-trump
                 return cardSuit.isHigherSuitThan(otherCardSuit)
             }
+        }
+    }
+    
+    /// The winning card is normally the highest value card within the turn start card's
+    /// suit. However, if that player did not have any cards within that suit, then they
+    /// can play any card. If they play a trump card, then they'll be compared to any other
+    /// trump cards played. In that case, the highest value trump card wins.
+    func findHighestValue(levelTrump: String, turnStartCard: String) -> String {
+        if self.contains(where: { $0.isTrump(levelTrump: levelTrump )}) { // highest trump wins
+            var sortedCards = self
+            sortedCards.sortBy(levelTrump: levelTrump)
+            return sortedCards[0]
+        } else { // highest card in turn start card suit wins
+            let turnStartSuit = String(turnStartCard.suffix(1))
+            let turnStartSuitCards = self.filter({ $0.contains(turnStartSuit) })
+            let sortedSuitCards = turnStartSuitCards.sorted(by: { (first, second) in
+                let firstRank = String(first.prefix(first.count == 3 ? 2 : 1))
+                let secondRank = String(second.prefix(first.count == 3 ? 2 : 1))
+                return firstRank.isHigherRankValueThan(secondRank)
+            })
+            print("sorted suit cards: \(sortedSuitCards)")
+            return sortedSuitCards[0]
         }
     }
 }

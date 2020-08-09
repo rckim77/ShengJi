@@ -66,6 +66,13 @@ final class GameView: UIView {
         return button
     }()
     
+    private lazy var pointsLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Points: \(points)"
+        label.font = .preferredFont(forTextStyle: .body)
+        return label
+    }()
+    
     private lazy var levelTrumpLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
@@ -130,6 +137,11 @@ final class GameView: UIView {
     private let playerTurnOrder: [String]
     private var levelTrump: String?
     private var turnStartCard: String? // e.g., "AD" for ace of diamonds
+    private var points = 0 {
+        didSet {
+            pointsLabel.text = "Points: \(points)"
+        }
+    }
     private weak var delegate: GameViewDelegate?
     var leaderTeam: LeaderTeam?
     
@@ -149,15 +161,17 @@ final class GameView: UIView {
                         make.trailing.equalToSuperview().inset(8)
                         make.centerY.equalToSuperview().offset(UIDevice.current.isSmallDevice ? -114 : -64)
                     }
+                    
+                    pointsLabel.isHidden = false
                 }
             case .turnEnd(_, _):
-                guard let levelTrump = levelTrump else {
+                guard let levelTrump = levelTrump, let turnStartCard = turnStartCard else {
                     return
                 }
                 
                 if case .play = oldValue {
                     drawDeckRemainingLabel.snp.remakeConstraints { make in
-                        make.top.equalTo(drawDeckLabel.snp.bottom).offset(UIDevice.current.isSmallDevice ? -72 : -48)
+                        make.top.equalTo(drawDeckLabel.snp.bottom).offset(UIDevice.current.isSmallDevice ? -84 : -48)
                         make.centerX.equalToSuperview()
                         make.width.equalTo(120)
                     }
@@ -166,13 +180,23 @@ final class GameView: UIView {
                 drawDeckRemainingLabel.isHidden = false
                 playerHandViews.forEach { $0.deselectCards() }
                 
-                var playedCards = playerHandViews.compactMap { $0.playedCard }
-                playedCards.sortBy(levelTrump: levelTrump)
-                let winningCard = playedCards[0]
+                let playedCards = playerHandViews.compactMap { $0.playedCard }
+                let winningCard = playedCards.findHighestValue(levelTrump: levelTrump, turnStartCard: turnStartCard)
+
                 if let winningPlayerHandView = playerHandViews.first(where: { $0.playedCard == winningCard }),
-                    let username = winningPlayerHandView.username {
-                    drawDeckRemainingLabel.text = "\(username) wins! Now it's their turn to start."
+                    let winningUsername = winningPlayerHandView.username,
+                    let winningPlayerIndex = playerTurnOrder.firstIndex(where: { $0 == winningUsername }) {
+                    drawDeckRemainingLabel.text = "\(winningUsername) wins! Now it's their turn to start."
                     winningPlayerHandView.hideTurnLabel(false)
+                    
+                    // add up any points collected by follower team only
+                    if leaderTeam?.dealer != winningUsername && leaderTeam?.leader != winningUsername {
+                        let pairPlayerIndex = (Int(winningPlayerIndex) + 2) % 4
+                        let pairPlayerUsername = playerTurnOrder[pairPlayerIndex]
+                        let pairPlayerCard = playerHandViews.first(where: { $0.username == pairPlayerUsername })?.playedCard
+                        let winningPairCards = [winningCard, pairPlayerCard].compactMap({ $0 })
+                        points += winningPairCards.sumPoints()
+                    }
                 }
             default:
                 break
@@ -208,6 +232,7 @@ final class GameView: UIView {
         addSubview(gameButtonsStackView)
         gameButtonsStackView.addArrangedSubview(endGameButton)
         gameButtonsStackView.addArrangedSubview(levelsButton)
+        gameButtonsStackView.addArrangedSubview(pointsLabel)
         addSubview(levelTrumpLabel)
         addSubview(drawDeckLabel)
         addSubview(drawDeckRemainingLabel)
@@ -261,6 +286,7 @@ final class GameView: UIView {
             make.centerY.equalToSuperview()
         }
         
+        pointsLabel.isHidden = true
         endGameButton.isHidden = participantType == .player
         setupPlayerPositions()
     }

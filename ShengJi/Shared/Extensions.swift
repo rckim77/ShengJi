@@ -59,6 +59,24 @@ extension Array {
     }
 }
 
+extension Array where Element == String {
+
+    func sumPoints() -> Int {
+        var points = 0
+        
+        for card in self {
+            let rank = card.prefix(card.count == 3 ? 2 : 1)
+            if rank == "5" {
+                points += 5
+            } else if rank == "10" || rank == "K" {
+                points += 10
+            }
+        }
+        
+        return points
+    }
+}
+
 extension String {
     /// Given an input such as "2C", this function will output "2♣".
     func convertedCardAbbreviationToUnicode() -> String {

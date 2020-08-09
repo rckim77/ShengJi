@@ -16,7 +16,7 @@
 		EC2A225824D5BA5E007920D4 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2A225724D5BA5E007920D4 /* CardView.swift */; };
 		EC2A225E24D75EA2007920D4 /* LeaderTeam.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2A225D24D75EA2007920D4 /* LeaderTeam.swift */; };
 		EC2A226224D7B1D6007920D4 /* DealerExchangeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2A226124D7B1D6007920D4 /* DealerExchangeView.swift */; };
-		EC2A226424DB6E05007920D4 /* CardsSort.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2A226324DB6E05007920D4 /* CardsSort.swift */; };
+		EC2A226424DB6E05007920D4 /* CardArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2A226324DB6E05007920D4 /* CardArrayExtension.swift */; };
 		EC2A226624DCAA51007920D4 /* LevelsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2A226524DCAA51007920D4 /* LevelsResponse.swift */; };
 		EC2A226824DCBC1E007920D4 /* Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2A226724DCBC1E007920D4 /* Alerts.swift */; };
 		EC2A226A24DE5442007920D4 /* UIDevice+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2A226924DE5442007920D4 /* UIDevice+Helpers.swift */; };
@@ -53,7 +53,7 @@
 		EC2A225724D5BA5E007920D4 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		EC2A225D24D75EA2007920D4 /* LeaderTeam.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LeaderTeam.swift; path = /Users/raykim/Desktop/Hobby/Dev/ShengJi/ShengJi/Models/LeaderTeam.swift; sourceTree = "<absolute>"; };
 		EC2A226124D7B1D6007920D4 /* DealerExchangeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealerExchangeView.swift; sourceTree = "<group>"; };
-		EC2A226324DB6E05007920D4 /* CardsSort.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsSort.swift; sourceTree = "<group>"; };
+		EC2A226324DB6E05007920D4 /* CardArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardArrayExtension.swift; sourceTree = "<group>"; };
 		EC2A226524DCAA51007920D4 /* LevelsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelsResponse.swift; sourceTree = "<group>"; };
 		EC2A226724DCBC1E007920D4 /* Alerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alerts.swift; sourceTree = "<group>"; };
 		EC2A226924DE5442007920D4 /* UIDevice+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIDevice+Helpers.swift"; sourceTree = "<group>"; };
@@ -176,7 +176,7 @@
 				EC2A224B24CBFA0F007920D4 /* ParticipantType.swift */,
 				ECCACBA424C69B710077CD89 /* Extensions.swift */,
 				EC2A226724DCBC1E007920D4 /* Alerts.swift */,
-				EC2A226324DB6E05007920D4 /* CardsSort.swift */,
+				EC2A226324DB6E05007920D4 /* CardArrayExtension.swift */,
 				EC2A224F24D39C22007920D4 /* APIError.swift */,
 				EC2A226924DE5442007920D4 /* UIDevice+Helpers.swift */,
 			);
@@ -341,7 +341,7 @@
 				ECCACBB124C7EEE90077CD89 /* NetworkError.swift in Sources */,
 				EC2A225024D39C22007920D4 /* APIError.swift in Sources */,
 				EC2A226A24DE5442007920D4 /* UIDevice+Helpers.swift in Sources */,
-				EC2A226424DB6E05007920D4 /* CardsSort.swift in Sources */,
+				EC2A226424DB6E05007920D4 /* CardArrayExtension.swift in Sources */,
 				ECCACBBE24CBE40C0077CD89 /* GameView.swift in Sources */,
 				EC2A225224D4B6E2007920D4 /* StartResponse.swift in Sources */,
 				ECCACBA124C4F9A20077CD89 /* HostGameViewController.swift in Sources */,

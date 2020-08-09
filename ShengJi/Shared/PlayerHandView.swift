@@ -127,6 +127,7 @@ final class PlayerHandView: UIView {
                 }
                 
                 if self.username == username {
+                    playedCard = card
                     playCardImageView.image = UIImage(named: card)
                 }
             default:
