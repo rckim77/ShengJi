@@ -157,7 +157,7 @@ final class GameView: UIView {
                 
                 if case .play = oldValue {
                     drawDeckRemainingLabel.snp.remakeConstraints { make in
-                        make.top.equalTo(drawDeckLabel.snp.bottom).offset(-48)
+                        make.top.equalTo(drawDeckLabel.snp.bottom).offset(UIDevice.current.isSmallDevice ? -72 : -48)
                         make.centerX.equalToSuperview()
                         make.width.equalTo(120)
                     }
@@ -169,11 +169,11 @@ final class GameView: UIView {
                 var playedCards = playerHandViews.compactMap { $0.playedCard }
                 playedCards.sortBy(levelTrump: levelTrump)
                 let winningCard = playedCards[0]
-                if let winningUsername = playerHandViews.first(where: { $0.playedCard == winningCard })?.username {
-                    drawDeckRemainingLabel.text = "\(winningUsername) wins! They'll start the next turn."
+                if let winningPlayerHandView = playerHandViews.first(where: { $0.playedCard == winningCard }),
+                    let username = winningPlayerHandView.username {
+                    drawDeckRemainingLabel.text = "\(username) wins! Now it's their turn to start."
+                    winningPlayerHandView.hideTurnLabel(false)
                 }
-                
-                // update dealer, etc.
             default:
                 break
             }
