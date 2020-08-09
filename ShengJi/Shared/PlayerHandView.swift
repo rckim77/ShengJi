@@ -123,6 +123,7 @@ final class PlayerHandView: UIView {
                 
                 if position == .bottom {
                     bottomHandDetailView.setIsEnabled(false)
+                    bottomHandDetailView.removeCard(card)
                 }
                 
                 if self.username == username {

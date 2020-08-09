@@ -76,7 +76,7 @@ final class GameView: UIView {
     private lazy var drawDeckRemainingLabel: UILabel = {
         let label = UILabel()
         label.text = "54 remaining"
-        label.font = .preferredFont(forTextStyle: .title3)
+        label.font = .preferredFont(forTextStyle: .body)
         label.numberOfLines = 0
         label.textAlignment = .center
         return label
@@ -153,6 +153,14 @@ final class GameView: UIView {
             case .turnEnd(_, _):
                 guard let levelTrump = levelTrump else {
                     return
+                }
+                
+                if case .play = oldValue {
+                    drawDeckRemainingLabel.snp.remakeConstraints { make in
+                        make.top.equalTo(drawDeckLabel.snp.bottom).offset(-48)
+                        make.centerX.equalToSuperview()
+                        make.width.equalTo(120)
+                    }
                 }
                 
                 drawDeckRemainingLabel.isHidden = false
